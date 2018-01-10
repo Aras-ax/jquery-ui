@@ -1,6 +1,5 @@
 # Reasy-UI
 Form表单组件库
-
 # 组件使用说明书
 
 ------
@@ -104,7 +103,7 @@ $("#demo1").FormInput({
 >通过组件名称形式条用，配置参数同第一种形式
 > 以上三种调用形式为常用的调用形式，其它调用形式暂不列出，仅供框架内部调用
 
-##4. 公共属性方法使用demo
+## 4. 公共属性方法使用demo
 ```
 <!-- html模板 -->
 <div id="tk" data-key="FormInput"></div>
@@ -181,7 +180,7 @@ $tk.bindValidateEvent("change",function(){
 ```
 
 ---
-#文本框组件
+# 文本框组件
 支持普通文本，密码文本，指定的文本校验格式，只读状态与编辑状态切换
 ```
 <!-- html模板 -->
@@ -202,7 +201,7 @@ $tk.bindValidateEvent("change",function(){
 | focusCallBack | 文本框获取焦点回调,this指向当前组件实例  |  function  | -- |
 
 ##  使用
-###1. 普通文本
+### 1. 普通文本
 ```
 $("#formInput1").Rcomponent({
 	dataKey:"FormInput",
@@ -211,7 +210,7 @@ $("#formInput1").Rcomponent({
 	placeholder:"普通文本测试"
 });
 ```
-###2. 密码输入框
+### 2. 密码输入框
 ```
 $("#formInput2").Rcomponent({
 	dataKey:"FormInput",
@@ -221,7 +220,7 @@ $("#formInput2").Rcomponent({
 	type:"password"
 });
 ```
-###3. 密码输入框 - hasEyes:true
+### 3. 密码输入框 - hasEyes:true
 ```
 $("#formInput3").Rcomponent({
 	dataKey:"FormInput",
@@ -232,7 +231,7 @@ $("#formInput3").Rcomponent({
 	hasEyes:true
 });
 ```
-###4. 只读模式
+### 4. 只读模式
 ```
 $("#formInput4").Rcomponent({
 	dataKey:"FormInput",
@@ -242,7 +241,7 @@ $("#formInput4").Rcomponent({
 	defaultValue:"只读"
 });
 ```
-###5. 切换模式, defaultText，switchCallBack
+### 5. 切换模式, defaultText，switchCallBack
 ```
 $("#formInput5").Rcomponent({
 	dataKey:"FormInput",
@@ -257,7 +256,7 @@ $("#formInput5").Rcomponent({
 	}
 });
 ```
-###6. 数据校验模式
+### 6. 数据校验模式
 ```
 $("#formInput6").Rcomponent({
 	dataKey:"FormInput",
@@ -267,7 +266,7 @@ $("#formInput6").Rcomponent({
 	dataOptions:[{type:"num",args:[1,6]}]
 });
 ```
-###7. removeSpace，focusCallBack
+### 7. removeSpace，focusCallBack
 ```
 $("#formInput7").Rcomponent({
 	dataKey:"FormInput",
@@ -284,7 +283,7 @@ $("#formInput7").Rcomponent({
 > 其它API遵循BaseComponent的API进行使用
 
 ---
-#下拉框组件(FormSelect)
+# 下拉框组件(FormSelect)
 支持下拉框选项的添加，删除，修改等操作
 ```
 <!-- html模板 -->
@@ -303,7 +302,7 @@ $("#formInput7").Rcomponent({
 | addItem(key)  | 增加下拉选项 |  string,array或object    |
 
 ##  使用
-###1. 基础使用-selectArray为array
+### 1. 基础使用-selectArray为array
 ```
 var $ts = $("#formselect1").Rcomponent({
 	dataTitle:"selectArray为数组",
@@ -315,7 +314,7 @@ var $ts = $("#formselect1").Rcomponent({
 	}
 });
 ```
-###2. selectArray为object
+### 2. selectArray为object
 ```
 $("#formselect2").Rcomponent({
 	dataTitle:"selectArray为对象",
@@ -327,13 +326,13 @@ $("#formselect2").Rcomponent({
 	}
 });
 ```
-###3. removeItem
+### 3. removeItem
 ```
 $ts.removeItem("test2");
 $ts.removeItem(["test3","test4"]);
 ```
 
-###4. addIem
+### 4. addIem
 ```
 $ts.addItem("test5");
 $ts.addItem("test6","test哈哈");
@@ -342,7 +341,7 @@ $ts.addItem({a:1,b:2});
 > 其它API遵循BaseComponent的API进行使用
 
 ---
-#checkboxlist组件（FormCheckList）
+# checkboxlist组件（FormCheckList）
 多个checkbox排列显示，支持添加和删除项
 ```
 <!-- html模板 -->
@@ -358,7 +357,7 @@ $ts.addItem({a:1,b:2});
 | removeItem  | 移除可选项 |  string或array |
 | addItem  | 增加可选项 |  string，array或object |
 ##  使用
-###1. 基础使用-selectArray为array
+### 1. 基础使用-selectArray为array
 ```
 var $tc = $("#formchecklist").Rcomponent({
 	dataTitle:"formchecklist",
@@ -370,7 +369,7 @@ var $tc = $("#formchecklist").Rcomponent({
 	}
 });
 ```
-###2. selectArray为object
+### 2. selectArray为object
 ```
 var $tc = $("#formchecklist").Rcomponent({
 	dataTitle:"formchecklist",
@@ -382,12 +381,12 @@ var $tc = $("#formchecklist").Rcomponent({
 	}
 });
 ```
-###3. removeItem(key)
+### 3. removeItem(key)
 ```
 $tc.removeItem("test2");
 $tc.removeItem(["test3","test4"]);
 ```
-###3. addItem(key)
+### 4. addItem(key)
 ```
 $tc.addItem("test5");
 $tc.addItem("test6","test哈哈");
@@ -396,7 +395,7 @@ $tc.addItem("test6","test哈哈");
 > 其它API遵循BaseComponent的API进行使用
 
 ---
-#radiolist组件(FormRadioList)
+# radiolist组件(FormRadioList)
 支持下拉框选项的添加，删除，修改等操作
 ```
 <!-- html模板 -->
@@ -412,7 +411,7 @@ $tc.addItem("test6","test哈哈");
 | removeItem  | 移除可选项 |  string或array |
 | addItem  | 增加可选项 |  string，array或object |
 ##  使用
-###1. 基础使用-selectArray为array
+### 1. 基础使用-selectArray为array
 ```
 var $tr = $("#formradiolist").Rcomponent({
 	dataTitle:"FormRadioList",
@@ -424,7 +423,7 @@ var $tr = $("#formradiolist").Rcomponent({
 	}
 });
 ```
-###2. selectArray为object
+### 2. selectArray为object
 ```
 var $tr = $("#formradiolist").Rcomponent({
 	dataTitle:"FormRadioList",
@@ -433,12 +432,12 @@ var $tr = $("#formradiolist").Rcomponent({
 	selectArray:{test1:"test1", test2:"test2", test3:"test3", test4:"test4"}
 });
 ```
-###3. removeItem(key)
+### 3. removeItem(key)
 ```
 $tc.removeItem("test2");
 $tc.removeItem(["test3","test4"]);
 ```
-###3. addItem(key, value)
+### 4. addItem(key, value)
 ```
 $tc.addItem("test5");
 $tc.addItem("test6","test哈哈");
@@ -447,7 +446,7 @@ $tc.addItem("test6","test哈哈");
 > 其它API遵循BaseComponent的API进行使用
 
 ---
-#开关组件（FormCheckbox）
+# 开关组件（FormCheckbox）
 支持on，off两种状态
 ```
 <!-- html模板 -->
@@ -459,7 +458,7 @@ $tc.addItem("test6","test哈哈");
 | text    | 显示文本 |  string  | null |
 
 ##  使用
-###1. 基础使用--无文本
+### 1. 基础使用--无文本
 ```
 var $tcb = $("#formcheckbox").Rcomponent({
 	dataTitle:"FormCheckbox",
@@ -469,7 +468,7 @@ var $tcb = $("#formcheckbox").Rcomponent({
 	}
 });
 ```
-###2. 基础使用--有文本
+### 2. 基础使用--有文本
 ```
 var $tcb = $("#formcheckbox").Rcomponent({
 	dataTitle:"FormCheckbox",
@@ -484,12 +483,12 @@ var $tcb = $("#formcheckbox").Rcomponent({
 ---
 
 ---
-#自定义下拉组件（FormDropDownList）
+# 自定义下拉组件（FormDropDownList）
 ```
 <!-- html模板 -->
 <div id="formDropDownList" data-key="FormDropDownList"></div>
 ```
-##  特有配置属性，方法
+## 特有配置属性，方法
 | 属性名称        | 描述   |  值类型/范围  | 默认值 |
 | :--------   | :-----:  | :----:  | :----:  |
 | selectArray    | 可选配置项 |  array或object  | null |
@@ -499,8 +498,8 @@ var $tcb = $("#formcheckbox").Rcomponent({
 | customText    | 自定义选项文本，若该字段不为空，则表示有自定义选项 |  string  | null |
 | focusCallBack    | 自定义情况下文本框获取焦点回调函数(customText不为空时才有效) |  function  | null |
 
-##  使用
-###1. selectArray
+## 使用
+### 1. selectArray
 ```
 var $tcb = $("#formDropDownList").Rcomponent({
     dataValueType:"num",
@@ -521,7 +520,7 @@ var $tcb = $("#formDropDownList").Rcomponent({
     }
 });
 ```
-###2. dataOptions
+### 2. dataOptions
 ```
 var $tcb = $("#formDropDownList").Rcomponent({
     dataValueType:"num",
@@ -530,7 +529,7 @@ var $tcb = $("#formDropDownList").Rcomponent({
     selectArray:{0:_("No limit"), 32:"32 KB/s", 64:"64 KB/s", 128:"128 KB/s"}
 });
 ```
-###3. clickCallBack
+### 3. clickCallBack
 ```
 var $tcb = $("#formDropDownList").Rcomponent({
     dataValueType:"num",
@@ -546,7 +545,7 @@ var $tcb = $("#formDropDownList").Rcomponent({
     }
 });
 ```
-###4. showSelfText
+### 4. showSelfText
 ```
 var $tcb = $("#formDropDownList").Rcomponent({
     dataValueType:"num",
@@ -555,7 +554,7 @@ var $tcb = $("#formDropDownList").Rcomponent({
     selectArray:{0:_("No limit"), 32:"32 KB/s", 64:"64 KB/s", 128:"128 KB/s"}
 });
 ```
-###5. customText
+### 5. customText
 ```
 var $tcb = $("#formDropDownList").Rcomponent({
     customText:_("Manual (Unit: KB/s)"),
@@ -566,7 +565,7 @@ var $tcb = $("#formDropDownList").Rcomponent({
     }
 });
 ```
-###6. focusCallBack
+### 6. focusCallBack
 ```
 var $tcb = $("#formDropDownList").Rcomponent({
     dataValueType:"num",
@@ -582,12 +581,12 @@ var $tcb = $("#formDropDownList").Rcomponent({
 ---
 
 ---
-#日历组件（FormCalendar）
+# 日历组件（FormCalendar）
 ```
 <!-- html模板 -->
 <input type="text" id="formCalendar" data-key="FormCalendar">
 ```
-##  特有配置属性，方法
+## 特有配置属性，方法
 | 属性名称    | 描述         |  值类型/范围  | 默认值 |
 | :--------   | :-----:      | :----:        | :----: |
 | hasWeekday  | 是否显示星期 |  bool         | false  |
@@ -596,7 +595,7 @@ var $tcb = $("#formDropDownList").Rcomponent({
 | scanAble    | 是否可输入   |  bool         | true   |
 
 ##  使用
-###1. 基础使用
+### 1. 基础使用
 ```
 var $tcb = $("#formCalendar").Rcomponent({
 	dataTitle:"日历组件",
@@ -609,18 +608,18 @@ var $tcb = $("#formCalendar").Rcomponent({
 ---
 
 ---
-#选项卡组件（FormTab）
+# 选项卡组件（FormTab）
 ```
 <!-- html模板 -->
 <div id="formTab" data-key="FormTab"></div>
 ```
-##  特有配置属性，方法
+## 特有配置属性，方法
 | 属性名称        | 描述   |  值类型/范围  | 默认值 |
 | :--------   | :-----:  | :----:  | :----:  |
 | selectArray    | 按钮配置项 |  object或array  | false |
 
 ##  使用
-###1. 基础使用
+### 1. 基础使用
 ```
 var$("#formtab").Rcomponent({
     selectArray:{1:_("Online Devices"), 2:_("Blacklist")},
@@ -641,12 +640,12 @@ var$("#formtab").Rcomponent({
 > 其它API遵循BaseComponent的API进行使用
 ---
 
-#功能组件
+# 功能组件
 ---
-#消息提示框组件 ($.FormMessage)
+# 消息提示框组件 ($.FormMessage)
 消息提示框，几秒钟后自动消失
 
-##  配置属性参数
+## 配置属性参数
 | 属性名称        | 描述   |  值类型/范围  | 默认值 |
 | :--------   | :-----:  | :----:  | :----:  |
 | message    | 消息内容 |  string | -- |
@@ -662,7 +661,7 @@ var$("#formtab").Rcomponent({
 | hide    | 隐藏消息提示框,隐藏后对应的node节点会在整个文档流中移除 | -- |
         
 ##  使用
-###1. 基础使用
+### 1. 基础使用
 ```
 $.FormMessage({
     message:"消息",
@@ -671,10 +670,10 @@ $.FormMessage({
 })
 ```
 ---
-#弹出框组件（$.modalDialog）
+# 弹出框组件（$.modalDialog）
 支持弹出框标题，内容，操作按钮，皮肤主题自定义
 
-##  配置属性，方法
+## 配置属性，方法
 | 属性名称        | 描述   |  值类型/范围  | 默认值 |
 | :--------   | :-----:  | :----:  | :----:  |
 | title    | 消息框标题（必填） | string | -- |
@@ -693,8 +692,8 @@ $.FormMessage({
 | autoHide     | 点击按钮后是否关闭弹出窗   |  bool  | true |
 | callback    | 点击按钮的回调 |  t  | edit |
 
-##  使用
-###1. 基础使用
+## 使用
+### 1. 基础使用
 ```
 $.modalDialog({
 	title:'test',
@@ -712,13 +711,13 @@ $.modalDialog({
 
 ---
 
-#table组件（FormTable）
+# table组件（FormTable）
 
 ```
 <!-- html模板 -->
 <table id="FormTable"></table>
 ```
-##  配置属性
+## 配置属性
 | 属性名称        | 描述   |  值类型/范围  | 默认值 |
 | :--------   | :-----  | :----  | :----  |
 | data | 表格数据 | array | -- |
@@ -773,7 +772,7 @@ $.modalDialog({
 |  |  |  |
 
 ##  使用
-###1. 基础使用
+### 1. 基础使用
 ```
 <!--html-->
 <table id="formTablenormal">
@@ -798,7 +797,7 @@ $("#formTablenormal").TablePage({
 });
 ```
 
-###2. 配置使用-配置信息加载 自定义列头显示,列宽设置
+### 2. 配置使用-配置信息加载 自定义列头显示,列宽设置
 ```
 <!--html-->
 <table id="formTable"></table>
@@ -816,7 +815,7 @@ $("#formTable").TablePage({
 	pageIndex:0
 });
 ```
-###3. 重写列数据值
+### 3. 重写列数据值
 ```
 $("#formTable").TablePage({
 	data:tableData,
@@ -832,7 +831,7 @@ $("#formTable").TablePage({
 	pageIndex:0
 });
 ```
-###4. 显示复选框 
+### 4. 显示复选框 
 ```
 $("#formTable").TablePage({
 	data:tableData,
@@ -848,7 +847,7 @@ $("#formTable").TablePage({
 	pageIndex:0
 });
 ```
-###5. 显示操作按钮
+### 5. 显示操作按钮
 ```
 $("#formTable").TablePage({
 	data:tableData,
@@ -885,7 +884,7 @@ $("#formTable").TablePage({
 	pageIndex:3
 });
 ```
-###6. FormTable排序
+### 6. FormTable排序
 ```
 $("#formTable").FormTable({
     data:tableData,
@@ -917,7 +916,7 @@ $("#formTable").FormTable({
     }
 });
 ```
-###7. FormTable与其他组件混合使用
+### 7. FormTable与其他组件混合使用
 ```
 $("#customTable").FormTable({
     requestUrl:"/goform/module", //请求地址
@@ -1048,7 +1047,7 @@ $("#customTable").FormTable({
 >  其它API自行验证
 
 ---
-#ComponentManager
+# ComponentManager
 多个组件操作类，提供便捷的组件组群操作
 
 ##  配置参数
@@ -1075,7 +1074,7 @@ $("#customTable").FormTable({
 | getValue(dataField) | 获取组件的值 |dataField: 组件字段, 为空则返回所有组件的值|
 
 ##  使用
-###1. 基础使用
+### 1. 基础使用
 ```
 <!--html-->
 <div id="text"></div>
