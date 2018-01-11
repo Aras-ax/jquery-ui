@@ -1,0 +1,263 @@
+$color-mian:#ff642b;
+$font-color1:#616b72;
+
+*{
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+body{
+	background-color: #fff;
+	// color: $font-color1;
+	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+header{
+    background-color: $color-mian;
+    color: #fff;
+    height: 120px;
+    line-height: 120px;
+    font-size: 50px;
+    text-align: center;
+}
+
+pre.prettyprint{
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+	font-size: 13px;
+	line-height: 1.42857143;
+	color: #333;
+	word-break: break-all;
+	word-wrap: break-word;
+	border-radius: 0 0 4px 4px;
+	padding: 9px 14px;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+    border-top: 0;
+    margin-bottom: 1.2em;
+    overflow: auto;
+}
+
+
+.wrap{
+	margin: 0 auto;
+	width: 1200px;
+    position: relative;
+}
+
+.title{
+	font-size: 36px;
+	font-weight: 500;
+	padding-top: 20px;
+	margin-top: 0;
+	padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.title:before, .title:after{
+	/*content: "";*/
+	position: absolute;
+	right: 2em;
+	top: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	/*transition: all 1s;*/
+}
+
+.title.off:before{
+	border-bottom-color: $color-mian;
+	margin-top: -10px;
+}
+
+.title.off:after{
+	border-bottom-color: #fff;
+	margin-top: -8px;
+}
+
+.title.on:before{
+	border-top-color: $color-mian;
+}
+
+.title.on:after{
+	border-top-color: #fff;
+	margin-top: -2px;
+}
+
+h2{
+	color: #1e282f;
+	font-size: 30px;
+	margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.con-title{
+	font-size: 30px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+p{
+	margin:0 0 10px;
+}
+
+.pt{
+	padding: 6px 1em;
+	border-radius: 2px;
+	border: 1px solid #eee;
+	border-left:4px solid #009a61;
+}
+
+label.code{
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 3px;
+}
+.con-body{
+	margin-right: 0;
+    margin-left: 0;
+    background-color: #fff;
+    border:1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+	position: relative;
+    padding: 45px 15px 15px;
+}
+
+.con-body:after{
+	position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    content: "实例：";
+}
+
+.min-title{
+    float: left;
+    width: 25%;
+    padding-left: 3em;
+    margin-bottom: 1em;
+}
+
+.min-body{
+    float: left;
+    width: 75%;
+    margin-bottom: 1em;
+}
+
+.left{
+	width: 870px;
+	float: left;
+}
+
+.right{    
+	width: 320px;
+    float: right;
+    padding-top: 40px;
+}
+
+.clearfix:after{
+	content: "";
+	display: block;
+	visibility: hidden;
+	height: 0;
+	clear: both;
+}
+
+// .form-title:after{
+// 	content: " :"
+// }
+
+.nav-side{
+	padding-left: 18px;
+
+	.nav-head{
+		font-size: 16px;
+		font-weight: bold;
+		padding: 8px 0 8px 18px;
+		color: #000;
+		border-left: 1px solid #eee;
+	}
+	.sideNav{
+		list-style-type: square;
+		position: relative;
+		padding-left: 36px;
+		border-left: 1px solid #eee;
+		width:300px;
+	}
+
+	ul{
+		padding-left: 18px;
+		transition: all .5s;
+
+		li{
+			list-style-type: square;
+
+			a{
+				display: block;
+				padding: 3px 0;
+				color: #000;
+				position: relative;
+				z-index: 2;
+			}
+
+			ul{
+				display: none;
+			}
+
+			&.active{
+				color:#009a61;
+				ul{
+					display: block;
+				}
+				&::before{
+					content: "";
+					background-color: #f3f3f3;
+					height: 27px;
+					width: 100%;
+					position: absolute;
+					left: 0;
+					z-index: 1;
+					border-left: 2px solid #009a61
+				}
+
+				> a{
+					color:#009a61;
+				}
+
+			}
+		}
+	}
+
+	a {
+		text-decoration: none;
+		cursor: pointer;
+	
+		&:hover{
+			text-decoration: underline;
+		}
+	}
+}
+
+.btn{
+	border: 0;
+    padding: .4em 1em;
+    min-width: 80px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #7ed321;
+    margin: 0 1em;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #7ed321;
+    color: #fff;
+    border-radius: 4px;
+}
