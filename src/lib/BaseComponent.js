@@ -21,6 +21,7 @@
 			ignore:false, //是否忽略组件，true时则不进行该组件取值操作
 			css:'', //自定义css样式
 			required:true, //是否必填
+			sync: true, //表示隐藏组件与补在进行校验是否同步设置，true:表示同步设置visible和ignore的值
 			autoValidate:true, //是否自动进行数据校验
 			defaultValue:"", //默认值
 			description:"", //描述信息
@@ -196,21 +197,22 @@
 		},
 
 		//设置组件是否可见 
-		setVisible: function(val, ignore){
+		setVisible: function(val){
 			this.visible = !!val;
 			if(this.visible){
-				this.show();
+				this.$wrap.show();
 			}else{
-				this.hide();
+				this.$wrap.hide();
 				this.removeValidateText();
 			}
-			this.ignore = !!ignore;
+			this.option.sync && (this.ignore = !val);
 			return this;
 		},
 
-		//设置是否忽略组件 sync:表示visible是否与ignore同步变化
+		//设置是否忽略组件 
 		setIgnore: function(val){
 			this.ignore = !!val;
+			this.option.sync && (this.visible = !val);
 			return this;
 		},
 
@@ -415,15 +417,15 @@
 		},
 
 		show:function(){
-			this.$wrap.show();
+			this.setVisible(true);
 		},
 
 		hide:function(){
-			this.$wrap.hide();
+			this.setVisible(false);
 		},
 
 		toggle:function(){
-			this.$wrap.toggle();
+			this.setVisible(!this.visible);
 		}
 	}
 

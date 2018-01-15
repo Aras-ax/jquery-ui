@@ -65,7 +65,11 @@
 		afterUpdate:function(){},//数据更新后的回调，this指向当前ComponentManager实例对象
 		beforeSubmit:function(data){},//提交数据前，进行一些列自定义数据校验操作，当然基础的数据校验会在这之前进行调用,失败返回false, 成功返回true或者二次处理后需要提交的数据，this指向当前ComponentManager实例对象
 		afterSubmit:function(){}//数据提交后的回调，this指向当前ComponentManager实例对象
-	}
+	},
+	CHECKTYPE = {
+		SUBMIT:1, //数据提交
+		VALIDATE:2 //只做数据校验
+	};
 
 	//todo by xc 增加数据校验
 
@@ -205,16 +209,22 @@
 	    },
 	    /**
 	     * 提交数据
+		 * type: 1表示数据提交，2：表示数据校验，默认值为1
 	     * 返回 false：数据校验失败， true:数据校验成功
 	     */
-	    submit:function(){
+	    submit:function(type){
+			type = type || CHECKTYPE.SUBMIT;
 	    	var result = this.validate(), data;
 	    	if(result){
 	    		data = this.getValue();
-	    		result = this.option.beforeSubmit.call(this, data);
+	    		result = this.option.beforeSubmit && this.option.beforeSubmit.call(this, data);
 	    		if(result === false){
 	    			return false;
-	    		}
+				}
+				
+				if(type === CHECKTYPE.VALIDATE){
+					return true;
+				}
 
 	    		if(result && result !== true){
 	    			data = result;
