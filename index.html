@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reasy-UI详细使用文档</title>
-    <link href="https://cdn.bootcss.com/prettify/r298/prettify.min.css" rel="stylesheet">
-<link href="style.css" rel="stylesheet"></head>
+    <title></title>
+    <link href="./css/min.css" rel="stylesheet">
+</head>
 <body class="clearfix">
     <header>REASY-UI 组件使用实例</header>
     <!-- 组件的调用demo -->
@@ -529,7 +529,7 @@ $("#FormRadioList2").Rcomponent({
 						<h2 class="con-title">方法使用</h2>
 						<div class="con-body">
 							<div id="FormRadioList3" data-key="FormRadioList"></div>
-							<div id="selecttab" style="margin-top: 1em;"></div>
+							<div id="selecttab1" style="margin-top: 1em;"></div>
 						</div>
 						<pre>
 //html
@@ -1095,7 +1095,7 @@ $("#formTab").Rcomponent({
 $("#formTab1").Rcomponent({
     selectArray:["新增", "修改", "删除", "导入", "导出"],
     changeCallBack:function(){
-        alert(`点击`);
+        alert(`点击${this.value}`);
     }
 });
 						</pre>
@@ -2036,8 +2036,8 @@ cmp.updateComponents({});
         </aside>
         <!-- 导航栏 end -->
     </div>
-
-    <script src="./jquery-1.12.4.min.js"></script>
-    <script src="./prettify.min.js"></script>
-<script type="text/javascript" src="component.js"></script><script type="text/javascript" src="bundle.js"></script></body>
+     
+    <script src="./js/componment.js"></script>
+    <script src="./js/main.js"></script>
+</body>
 </html>
