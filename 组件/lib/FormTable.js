@@ -173,7 +173,6 @@
             this.$tbody = $('<tbody></tbody>');
             this.$element.children('tbody').remove();
             this.editData = {};
-            this.defaultOption = option;
 
             this.MSG = {
                 noData: _("No table data")
@@ -858,15 +857,6 @@
                     obj && _this.updatRow(index, obj);
                 }
             });
-        },
-
-        hide:function(){
-            this.$element.hide();
-            this.footBar.$insertArea.hide();
-        },
-        show:function(){
-            this.$element.show();
-            this.footBar.$insertArea.show();
         }
     };
 
@@ -877,7 +867,6 @@
         this.each(function () {
             var $this = $(this);
             formtable = $this.data("formtable");
-            debugger
 
             if (formtable && opt && typeof opt === "string") {
                 if (formtable[opt]) {
@@ -887,7 +876,6 @@
             } else {
                 if (formtable) {
                     formtable.footBar.$insertArea.remove && formtable.footBar.$insertArea.remove();
-                    opt = $.extend({}, formtable.defaultOption, opt);
                 }
                 formtable = new FormTable($this, opt);
                 $this.data('formtable', formtable);

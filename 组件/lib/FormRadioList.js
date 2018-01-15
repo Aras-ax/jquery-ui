@@ -156,11 +156,10 @@
 
         removeItem:function(key){
             var arr = this.option.selectArray,
-                type = Object.prototype.toString.call(arr),
-                val = this.value;
-                
+                type = Object.prototype.toString.call(arr);
+            
             if(type === "[object Array]"){
-                if(typeof key !== "object"){
+                if(typeof key === "string"){
                     arr.splice(arr.indexOf(key), 1);
                     $("#"+this.dataField+key).parent('label').remove();
                 }else if(Object.prototype.toString.call(key) === "[object Array]"){
@@ -172,11 +171,8 @@
                         } 
                     }
                 }
-                if(arr.indexOf(val) === -1 && arr.length > 0){
-                    val = arr[0];
-                }
             }else if(type === "[object Object]"){
-                if(typeof key !== "object"){
+                if(typeof key === "string"){
                     delete arr[key];
                     $("#"+this.dataField+key).parent('label').remove();
                 }else if(Object.prototype.toString.call(key) === "[object Array]"){
@@ -186,16 +182,9 @@
                         $("#" + this.dataField + t).parent('label').remove();
                     }
                 }
-                if(typeof arr[val] === "undefined"){
-                    for(var key in arr){
-                        val = key;
-                        break;
-                    }
-                }
             }
 
-            this.update();
-            this.setValue(val);
+            this.getValue();
         },
 
         //设置值

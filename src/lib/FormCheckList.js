@@ -144,7 +144,7 @@
                 type = Object.prototype.toString.call(arr);
             
             if(type === "[object Array]"){
-                if(typeof key === "string"){
+                if(typeof key !== "object"){
                     arr.splice(arr.indexOf(key), 1);
                     $("#"+this.dataField+key).parent('label').remove();
                 }else if(Object.prototype.toString.call(key) === "[object Array]"){
@@ -157,7 +157,7 @@
                     }
                 }
             }else if(type === "[object Object]"){
-                if(typeof key === "string"){
+                if(typeof key !== "object"){
                     delete arr[key];
                     $("#"+this.dataField+key).parent('label').remove();
                 }else if(Object.prototype.toString.call(key) === "[object Array]"){
@@ -169,7 +169,7 @@
                 }
             }
 
-            this.getValue();
+            this.update();
         },
 
         //设置值
