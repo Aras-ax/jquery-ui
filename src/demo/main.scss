@@ -19,7 +19,7 @@ header{
     line-height: 120px;
     font-size: 50px;
     text-align: center;
-}
+}  
 
 pre.prettyprint{
 	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
@@ -178,6 +178,7 @@ label.code{
 
 .nav-side{
 	padding-left: 18px;
+    overflow: hidden;
 
 	.nav-head{
 		font-size: 16px;

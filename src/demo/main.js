@@ -100,7 +100,9 @@ $(function() {
 					$nav.css({
 						position:"fixed",
 						left: $nav.offset().left,
-						top: "-40px"
+						top: "-40px",
+						maxHeight:$(window).outerHeight() + 40,
+						"overflow-y":"auto"
 					});
 				}
 			}else{
@@ -120,7 +122,9 @@ $(function() {
 			var scrollTop = $(document).scrollTop();
 			if(scrollTop > 160){
 				$(".nav-side").css({
-					left: $("section.left").offset().left + $("section.left").width() + 10
+					left: $("section.left").offset().left + $("section.left").width() + 10,
+					maxHeight:$(window).outerHeight() + 40,
+					"overflow-y":"auto"
 				});
 			}
 		}
