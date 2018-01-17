@@ -1,6 +1,7 @@
 # Reasy-UI
 Form表单组件库
-项目中直接引用
+
+> 项目中直接引用`src/lib`下的文件即可
 
 # 组件使用说明书
 
@@ -26,6 +27,7 @@ Form表单组件库
 | editable    | 是否可编辑，为false则自动加上disabled属性 |  bool  | true |
 | visible     | 是否可见   |  bool  | true |
 | ignore      | 是否忽略,   |  bool  | false |
+| sync | ignore与visible的值是否是同步设置 | bool | true |
 | css    | 自定义样式皮肤 |  string  | -- |
 | required    | 是否必填 |  bool  | true |
 | autoValidate| 数据修改后是否自动调用数据校验 | bool | true |
@@ -38,14 +40,15 @@ Form表单组件库
 | renderedCallBack|组件渲染完成后回调| function | -- |
 
 > 强调说明
-> 1. dataValueType: 设置组件返回值类型，比如设置为`num`则返回整型数据
-> 2. visible：控制组件的显示和隐藏，设置为`false`，则该控件不会进行数据校验等操作，但是在`componentManage`中进行`getValue()`操作不会被忽略
-> 3. ignore：组件是否被忽略，不控制组件的显示和隐藏状态，设置为`false`，则在`componentManage`中进行`getValue()`操作时会忽略该组件，不会进行取值数据提交操作
-> 4. validateCustom(text):自定义错误信息提示方式，定义了该参数则不会显示默认的错误提示样式，参数为需要显示的错误信息，当text为空时不显示任何错误信息或者移除已显示的错误信息。
-> 5. changeCallBack:组件值改变回调函数，只有数据校验成功的情况下才执行该回调，函数内部this指向当前组件实例
-> 6. validateCallBack:数据校验回调函数,有错则返回出错语句，否则为校验成功，函数内部this指向当前组件实例
-> 7. renderedCallBack:组件渲染完成后的回调函数，函数内部this指向当前组件实例
-> 8. dataKey:以组件名称显示调用的情况下可不填
+> 1. `dataValueType`: 设置组件返回值类型，比如设置为`num`则返回整型数据
+> 2. `visible`：控制组件的显示和隐藏，设置为`false`，则该控件不会进行数据校验等操作，但是在`componentManage`中进行`getValue()`操作不会被忽略
+> 3. `ignore`：组件是否被忽略，不控制组件的显示和隐藏状态，设置为`false`，则在`componentManage`中进行`getValue()`操作时会忽略该组件，不会进行取值数据提交操作
+> 4. `validateCustom(text)`:自定义错误信息提示方式，定义了该参数则不会显示默认的错误提示样式，参数为需要显示的错误信息，当`text`为空时不显示任何错误信息或者移除已显示的错误信息。
+> 5. `changeCallBack`:组件值改变回调函数，只有数据校验成功的情况下才执行该回调，函数内部this指向当前组件实例
+> 6. `validateCallBack`:数据校验回调函数,有错则返回出错语句，否则为校验成功，函数内部this指向当前组件实例
+> 7. `renderedCallBack`:组件渲染完成后的回调函数，函数内部this指向当前组件实例
+> 8. `dataKey`:以组件名称显示调用的情况下可不填
+> 9. `sync`: 为true时代表，将组建隐藏设置`visible`为`false`时，同步设置`ignore`为`true`，即组建隐藏就不进行数据校验，`sync`为`false`则表示`visible`和`ignore`两者是独立的没有关联关系
 
 ## 2. 公共方法
 | 方法名称   | 描述   |  参数| 返回值  |
@@ -59,6 +62,10 @@ Form表单组件库
 | show() | 显示该组件 | -- | -- |
 | hide() | 隐藏组件 | -- | -- |
 | toggle() | 显示/隐藏 | -- | -- |
+| valChange() | 触发组件的数据校验onValidate，当校验成功后触发handleChangeEvents
+ | -- | -- |
+ | onValidate | 执行自定义数据校验逻辑和基础数据校验 | -- | -- |
+ | handleChangeEvents | 执行组件数据改变后的自定义逻辑 | -- | -- |
 | addValidateText(text) | 显示错误信息 | string | -- |
 | removeValidateText() | 移除错误提示信息| -- | -- |
 | bindValidateEvent(fc) | 绑定自定义校验   | function | -- | 
@@ -725,6 +732,7 @@ $.modalDialog({
 | data | 表格数据 | array | -- |
 | requestUrl | 数据请求地址 | string | ""|
 | requestOpt | 请求参数 | object | {} |
+| requestType | 请求类型 | get/post | get |
 | dataTarget | 数据项的子项,请求或给定数据对象的某个子属性 | string | "" |
 | perArray  | 每页显示条数数组 | array | [10, 20, 30, 50] |
 | perNum | 每页显示的数据数 |  number  | 10 |
@@ -733,7 +741,7 @@ $.modalDialog({
 | limit | 最多显示的数据条数 | Number | 0(不限制) |
 | filterProperty | 过滤字段 | array | [] |
 | showIndex | 显示序号 | bool | false |
-| key | 主键字段，数据的标识在启用CheckBox的时候需要用到 | string | ID |
+| key | 主键字段，数据的唯一标识在启用CheckBox的时候需要用到，当调用getSelected()获取选中数据时，返回的就是主键值的数组 | string | ID |
 | sortFields | 已排序字段规则优先级顺序 | array | [] |
 | sortOpt | 排序字段对应的排序规则 1：升序，2：降序,例如{Age:1, Name:1} | object | {} |
 | autoHighLight | 高亮与查询字段匹配的字符 | bool | false |
@@ -767,11 +775,14 @@ $.modalDialog({
 | callback | 点击回调 |  function  | -- |
 
 ## 方法
-| 方法名称 |  |  |
+| 方法名称 | 描述 | 参数说明 |
 | :--------   | :-----  | :----  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| show() | 显示组建 | -- |
+| hide() | 隐藏组件 | -- |
+| getSelected() | 获取选中的数据key对应的数组 | -- |
+| goPage(index) | 跳到制定的页 | index从1开始 |
+| reLoad(data) | 刷新表格数据 |data可为空，为空时会根据填写的请求地址进行重新获取数据|
+| getValue() | 获取当前table过滤和排序后用于显示数据 |--|
 
 ##  使用
 ### 1. 基础使用
@@ -1064,16 +1075,18 @@ $("#customTable").FormTable({
 | afterUpdate | 数据更新后的回调，this指向当前ComponentManager实例对象 | function | -- |
 | beforeSubmit | 提交数据前，进行一些列自定义数据校验操作，当然基础的数据校验会在这之前进行调用，失败返回false, 成功返回true或者二次处理后需要提交的数据，this指向当前ComponentManager实例对象 | function | -- |
 | afterSubmit | 数据提交后的回调，this指向当前ComponentManager实例对象 | function | -- |
+| renderedCallBack |模块组件加载完成后的回调，可用于实现组件加载完后的自定义逻辑，this指向当前ComponentManager实例对象 | function | -- |
 
 ##  方法
-| 名称        | 描述   |  参数说明 |
+| 名称        | 描述   |  参数说明 |  返回值|
 | :--------   | :-----:  | :----:  |
-| getComponent(dataField) | 根据组件字段获取对应的组件实例对象 | dataField:组件字段名 |
-| reset() | 重置每个组件的值为默认值 | -- |
-| updateComponents(data) | 更新组件的值-重置为上一次的值或者给定的值 | 组件群的值Object |
-| getComponentByNode(node) | 根据标签节点获取对应的组件实例对象 | html标签节点 |
-| setValue(val, dataField) | 设置组件的值 |val:值， dataFiled:字段|
-| getValue(dataField) | 获取组件的值 |dataField: 组件字段, 为空则返回所有组件的值|
+| getComponent(dataField) | 根据组件字段获取对应的组件实例对象 | dataField:组件字段名 | 组件实例化对象 |
+| reset() | 重置每个组件的值为默认值 | -- | -- |
+| submit(type) | 提交或者校验数据 | type: 1(提交数据),2(数据校验，只做数据校验)| 校验失败返回false，否则返回true |
+| updateComponents(data) | 更新组件的值-重置为上一次的值或者给定的值 | 组件群的值Object |-- |
+| getComponentByNode(node) | 根据标签节点获取对应的组件实例对象 | html标签节点 | 组件实例化对象 |
+| setValue(val, dataField) | 设置组件的值 |val:值， dataFiled:字段| -- |
+| getValue(dataField) | 获取组件的值 |dataField: 组件字段, 为空则返回所有组件的值| 根据组件的类型返回对应的值，若参数为空返回字段和值组成的对象 |
 
 ##  使用
 ### 1. 基础使用
