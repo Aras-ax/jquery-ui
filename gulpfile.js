@@ -25,7 +25,7 @@ gulp.task('uglifyJS1', function() {
 });
 
 gulp.task('minifyCss', function() {
-    gulp.src(['./src/demo/*.scss','./src/demo/*.css','./src/css/*.scss'])
+    gulp.src(['./src/demo/*.scss','./src/demo/*.css','./src/lib/css/*.scss'])
         .pipe(sourcemaps.init())
         .pipe(concat('min.css'))     
         .pipe(sass().on('error', sass.logError))
@@ -35,7 +35,7 @@ gulp.task('minifyCss', function() {
 });
 
 gulp.task('minifyCss1', function() {
-    gulp.src(['./src/demo/*.scss','./src/demo/*.css','./src/css/*.scss'])
+    gulp.src(['./src/demo/*.scss','./src/demo/*.css','./src/lib/css/*.scss'])
         .pipe(concat('min.css'))
         .pipe(sass().on('error', sass.logError))
         .pipe(cleanCSS({compatibility: 'ie8'}))
@@ -45,9 +45,9 @@ gulp.task('minifyCss1', function() {
 gulp.task('other', function(){
     gulp.src(['./src/demo/index.html']).pipe(gulp.dest('dist'));
     gulp.src(['./src/demo/main.js']).pipe(gulp.dest('dist/js'));
-    gulp.src(['./src/css/icon-font/*']).pipe(gulp.dest('dist/css/icon-font'));
-    gulp.src(['./src/css/icon-font/fonts/*']).pipe(gulp.dest('dist/css/icon-font/fonts'));
-    gulp.src(['./src/data/*']).pipe(gulp.dest('dist/data'));
+    gulp.src(['./src/lib/css/icon-font/*']).pipe(gulp.dest('dist/css/icon-font'));
+    gulp.src(['./src/lib/css/icon-font/fonts/*']).pipe(gulp.dest('dist/css/icon-font/fonts'));
+    gulp.src(['./src/demo/data/*']).pipe(gulp.dest('dist/data'));
 });
 
 // 监视文件改动并重新载入

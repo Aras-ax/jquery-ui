@@ -799,6 +799,7 @@
             this.update();
         },
 
+        //获取当前table过滤和排序后用于显示数据
         getValue: function () {
             return this.data;
         },

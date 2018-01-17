@@ -61,10 +61,11 @@
 		formCfg:{},
 		showSubmitBar: false,
 		container:null,
-		beforeUpdate:function(data){},//请求返回的数据，this指向当前ComponentManager实例对象
-		afterUpdate:function(){},//数据更新后的回调，this指向当前ComponentManager实例对象
-		beforeSubmit:function(data){},//提交数据前，进行一些列自定义数据校验操作，当然基础的数据校验会在这之前进行调用,失败返回false, 成功返回true或者二次处理后需要提交的数据，this指向当前ComponentManager实例对象
-		afterSubmit:function(){}//数据提交后的回调，this指向当前ComponentManager实例对象
+		beforeUpdate: null,//请求返回的数据，this指向当前ComponentManager实例对象
+		afterUpdate: null,//数据更新后的回调，this指向当前ComponentManager实例对象
+		beforeSubmit: null,//提交数据前，进行一些列自定义数据校验操作，当然基础的数据校验会在这之前进行调用,失败返回false, 成功返回true或者二次处理后需要提交的数据，this指向当前ComponentManager实例对象
+		afterSubmit: null,//数据提交后的回调，this指向当前ComponentManager实例对象
+		renderedCallBack: null //模块组件加载完成后的回调，可用于实现组件加载完后的自定义逻辑
 	},
 	CHECKTYPE = {
 		SUBMIT:1, //数据提交
@@ -94,6 +95,7 @@
 			}else{
 				this.components = $.renderComponent.call(this.$container.find('[data-key]'), this.option.formCfg);
 			}
+			this.option.renderedCallBack && this.option.renderedCallBack.call(this);
 
 			this.$footbar = $('<div class="cm-footbar md-toolbar"><input type="submit" class="md-btn ok cm-submit" value="' + _("Submit") + '"><input type="button" class="md-btn cancel cm-cancel" value="' + _("Cancel") + '"></div>');
 			this.option.showSubmitBar && this.$footbar.appendTo(this.$formWrap);
@@ -167,7 +169,7 @@
 		 */
 		validate: function(){
 			if(this.$container.find(".error-tip").length > 0){
-				$.FormMessage(_("Incorrect. Check the red text box."));
+				$.formMessage(_("Incorrect. Check the red text box."));
 				return false;
 			}
 			var components = this.components, result = true;
@@ -245,7 +247,7 @@
 	    		            top.window.location.reload();
 	    		            return;
 	    		        }
-	    		        _this.option.afterSubmit.call(_this);
+	    		        _this.option.afterSubmit && _this.option.afterSubmit.call(_this);
 	    		    }
 	    		});
 	    		return true;
@@ -282,7 +284,7 @@
 	     */
 	    updateComponents:function(data){
 	    	var components = this.components;
-			data = this.option.beforeUpdate.call(this, data) || data;
+			data = (this.option.beforeUpdate && this.option.beforeUpdate.call(this, data)) || data;
 
 	    	if(data && !$.isEmptyObject(data)){
 	    	 	$.extend(this.orignalData, data);
@@ -302,7 +304,7 @@
 	    			}
 	    		}
 	    	}
-			this.option.afterUpdate.call(this);
+			this.option.afterUpdate && this.option.afterUpdate.call(this);
 	    },
 
 	    reset:function(){
@@ -314,7 +316,33 @@
 	    			component.removeValidateText();
 	    		}
 	    	}
-	    },
+		},
+		//触发组内各组件的功能方法
+		emmit:function(funName, args){
+			if(!!funName){
+				return;
+			}
+
+			if(typeof args === "undefined"){
+				if(Object.prototype.toString.call(args) !== "[object Array]"){
+					args = [args];
+				}
+			}else{
+				args = [];
+			}
+
+			var data  = {};
+			components = this.components;
+			for(var key in components){
+				if(components.hasOwnProperty(key)){
+					var cmt = components[key];
+					if(cmt[funName] && typeof cmt[funName] === "function"){
+						data[key] = cmt[funName].apply(cmt, args);
+					}
+				}
+			}
+			return data;
+		},
 
 	    //获取单个组件
 	    getComponent: function(field){

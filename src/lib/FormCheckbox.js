@@ -77,7 +77,7 @@
                 this.$element.text(this.value);
             }
             else {
-                this.value ? this.$element.addClass('active'):this.$element.removeClass('active');
+                this.value ? this.$checklabel.addClass('active'):this.$checklabel.removeClass('active');
             }
             confirm && this.valChange();
         },

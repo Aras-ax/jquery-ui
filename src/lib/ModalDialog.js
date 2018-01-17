@@ -405,7 +405,7 @@
         }
     };
 
-    $.formMessage = function(opt){
+    $.formMessage = $.FormMessage = function(opt){
         if(typeof opt === "string"){
             opt = {message: opt};
         }
