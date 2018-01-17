@@ -1,6 +1,56 @@
 # Reasy-UI
 Form表单组件库
 
+## 克隆代码到本地
+
+```
+#clone
+git clone https://github.com/moshang-xc/Reasy-UI.git
+cd Reasy-UI
+
+#安装依赖
+npm install
+
+#run debug server
+npm run server
+
+#生产环境
+npm run build
+
+```
+
+## 目录结构 ##
+
+```
+Reasy-UI
+├── src
+│   ├── demo
+│   │   ├── data
+│   │   │   └── data.json
+│   │   ├── index.html
+│   │   ├── main.scss
+│   │   └── main.js
+│   ├── lib
+│   │   ├── css
+│   │   │   ├── icon-font
+│   │   │   └── components..scss
+│   │   ├── BaseComponent.js
+│   │   ├── reasy-ui.js
+│   │   ├── FormCalendar.js
+│   │   ├── FormCheckbox.js
+│   │   ├── FormChecklist.js
+│   │   ├── FormDropDownList.js
+│   │   ├── FormInput.js
+│   │   ├── FormRadioList.js
+│   │   ├── FormSelect.js
+│   │   ├── FormTab.js
+│   │   ├── FormTable.js
+│   │   ├── ComponentManage.js
+│   │   └── ModalDialog.js
+├── gulpfile.js
+└── package.json
+```
+
 > 项目中直接引用`src/lib`下的文件即可
 
 # 组件使用说明书
