@@ -8,7 +8,7 @@
 </head>
 <body class="clearfix">
     <header>REASY-UI 组件使用实例</header>
-    <!-- 组件的调用demo -->
+<!-- 组件的调用demo -->
     <div class="wrap clearfix">
         <section class="left"> 
             <section class="section">
@@ -71,7 +71,7 @@ $("#demo3").FormInput({
 					</article>
 				</article>
 			</section>
-			<!-- 组件的调用demo end -->
+<!-- 组件的调用demo end -->
 
 			<!-- 组件属性 -->
 			<section class="section">
@@ -191,7 +191,7 @@ $.componentManager({
 			</section> -->
 			<!-- 组件方法 end -->
 			
-			<!-- FormInput -->
+<!-- FormInput -->
 			<section class="section">
                 <h1 class="title">FormInput</h1>
                 <p>文本框组件包含的功能：普通文本，密码文本，通过眼睛图标对明文和密文的显示切换，只读与编辑的切换，常用的数据校验封装，不同数据类型的输入限制等</p>
@@ -349,7 +349,224 @@ $("#formInput7").Rcomponent({
 					</article>
 				</article>
 			</section>
-			<!-- FormInput end -->
+            <!-- FormInput end -->
+            
+            <!-- FormMultiInput -->
+			<section class="section">
+                <h1 class="title">FormMultiInput</h1>
+                <p>根据不同的需求配置不同个数的文本输入框。使用场景：IP地址，密钥输入等</p>
+				<article class="clearfix">
+					<article class="content">
+                        <h2 class="con-title">基础使用</h2>
+                        <p>渲染多个普通文本，例如：IP地址</p>
+						<div class="con-body">
+							<div id="formMultiInpit" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit").Rcomponent({
+    dataKey: "FormMultiInput",
+    dataTitle:"FormMultiInput：",
+    inputCount:4
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">配置默认文本+输入框</h2>
+						<div class="con-body">
+							<div id="formMultiInpit1" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit1" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit1").Rcomponent({
+    dataKey: "FormMultiInput",
+    dataTitle:"IP地址：",
+    inputCount:2,
+    text: "192.168.",
+    validateCallBack:function(){
+        console.log(1);
+    },
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">连接符配置</h2>
+						<div class="con-body">
+							<div id="formMultiInpit2" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit2" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit2").Rcomponent({
+    dataKey: "FormMultiInput",
+    inputCount:4,
+    dataTitle:"序列号",
+    defaultValue:"8545-2345-3445-5676",
+    joiner:"-"
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">配置数据校验</h2>
+						<div class="con-body">
+							<div id="formMultiInpit3" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit3" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit3").Rcomponent({
+    dataKey: "FormMultiInput",
+    dataTitle:"数据校验：",
+    inputCfg:[
+        {dataValueType:'num', dataOptions: {type:"num",args:[192,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}}
+    ]
+});
+                        </pre>
+					</article>
+				</article>
+			</section>
+            <!-- FormMultiInput end -->
+
+            <!-- FormPercent -->
+			<section class="section">
+                <h1 class="title">FormPercent</h1>
+                <p>对滑块拖拽进行值的配置，可设定具体的范围与结果精确的小数位</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">基本使用</h2>
+						<div class="con-body">
+							<div id="formPercent" data-key="FormPercent"></div>
+						</div>
+						<pre>
+//html
+<div id="formPercent" data-key="FormPercent"></div>
+//js
+$("#formPercent").Rcomponent({
+    dataKey: "FormPercent",
+    dataTitle:"FormPercent："
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">负数场景</h2>
+						<div class="con-body">
+							<div id="formPercent1" data-key="FormPercent"></div>
+						</div>
+						<pre>
+//html
+<div id="formPercent1" data-key="FormPercent"></div>
+//js
+$("#formPercent1").Rcomponent({
+    dataKey: "FormPercent",
+    dataTitle:"负数场景：",
+    end:-220,
+    fixed: 1,
+    defaultValue: -100
+});
+                        </pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">起始值大于结束值</h2>
+                        <P>若配置的起始值大于结束值，则会对值进行交互处理</P>
+						<div class="con-body">
+							<div id="formPercent2" data-key="FormPercent"></div>
+						</div>
+						<pre>
+//html
+<div id="formPercent2" data-key="FormPercent"></div>
+//js
+$("#formPercent2").Rcomponent({
+    dataKey: "FormPercent",
+    dataTitle:"开始值大于结束值：",
+    start:160,
+    end:0,
+    fixed: 0
+});
+                        </pre>
+					</article>
+				</article>
+			</section>
+            <!-- FormPercent end -->
+
+            <!-- FormUpload -->
+			<section class="section">
+                <h1 class="title">FormUpload</h1>
+                <p>进行文件上传以及自定义的校验操作</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">基础使用</h2>
+						<div class="con-body">
+							<div id="formUpload" data-key="FormUpload"></div>
+						</div>
+						<pre>
+//html
+<div id="formUpload" data-key="FormUpload"></div>
+//js
+$("#formUpload").Rcomponent({
+    dataKey: "FormUpload",
+    dataTitle:"基本使用：",
+    submitUrl:"xxx",
+    success: function(){
+        alert("success");
+    }
+});
+
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">只显示上传按钮</h2>
+						<div class="con-body">
+							<div id="formUpload1" data-key="FormUpload"></div>
+						</div>
+						<pre>
+//html
+<div id="formUpload1" data-key="FormUpload"></div>
+//js
+$("#formUpload1").Rcomponent({
+    dataKey: "FormUpload",
+    dataTitle:"只显示上传按钮：",
+    submitUrl:"xxx",
+    showFileText: false,
+    uploadText: _("Upload File")
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">数据校验配置</h2>
+						<div class="con-body">
+							<div id="formUpload2" data-key="FormUpload"></div>
+						</div>
+						<pre>
+//html
+<div id="formUpload2" data-key="FormUpload"></div>
+//js
+$("#formUpload2").Rcomponent({
+    dataKey: "FormUpload",
+    dataTitle:"上传校验：",
+    submitUrl:"xxx",
+    uploadText: _("Upload File"),
+    beforeUpload:function(){ return false;},
+    success: function(){
+        alert("success");
+    }
+});
+                        </pre>
+					</article>
+				</article>
+			</section>
+            <!-- FormUpload end -->
 
 			<!-- FormSelect -->
 			<section class="section">
