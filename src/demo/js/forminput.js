@@ -2,6 +2,7 @@ $(function() {
 	$("#formInput1").Rcomponent({
 		dataKey: "FormInput",
 		dataField: 'username',
+		maxLength: 5,
 		dataTitle: "普通文本",
 		placeholder: "普通文本测试"
 	});
