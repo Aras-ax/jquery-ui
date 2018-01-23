@@ -41,10 +41,13 @@ Reasy-UI
 │   │   ├── FormChecklist.js
 │   │   ├── FormDropDownList.js
 │   │   ├── FormInput.js
+│   │   ├── FormMultiInput.js
+│   │   ├── FormPercent.js
 │   │   ├── FormRadioList.js
 │   │   ├── FormSelect.js
 │   │   ├── FormTab.js
 │   │   ├── FormTable.js
+│   │   ├── FormUpload.js
 │   │   ├── ComponentManage.js
 │   │   └── ModalDialog.js
 ├── gulpfile.js
@@ -53,12 +56,13 @@ Reasy-UI
 
 > 项目中直接引用`src/lib`下的文件即可
 
+
 # 组件使用说明书
 
 ------
 
-> 原子组件：文本框，下拉框，开关，checkBoxList，radioList，自定义下拉框，日历
-> 功能组件：，消息提示框，弹出框，纯文本信息展示，table
+> 原子组件：文本框，下拉框，开关，checkBoxList，radioList，日历
+> 功能组件：自定义下拉框，消息提示框，弹出框，纯文本信息展示，table
 
 #### 注：所有组件兼容到IE8，jQuery版本使用1.X兼容IE8的版本
 
@@ -250,6 +254,7 @@ $tk.bindValidateEvent("change",function(){
 | 属性名称        | 描述   |  值类型/范围  | 默认值 |
 | :--------   | :-----:  | :----:  | :----:  |
 | type | 文本框类型| string | text |
+| maxLength | 输入框可输入长度限制 | number | -- |
 | placeholder | 提示语句| string | -- |
 | displayMode | 显示类型 |  readonly，edit，readEdit  | edit |
 | removeSpace | getValue时是否移除首尾空格 |  bool  | false |
@@ -397,6 +402,173 @@ $ts.addItem("test5");
 $ts.addItem("test6","test哈哈");
 $ts.addItem({a:1,b:2});
 ```
+> 其它API遵循BaseComponent的API进行使用
+
+---
+# 多文本输入框组件(FormMiltiInput)
+根据不同的需求配置不同个数的文本输入框
+```
+<!-- html模板 -->
+<div id="formMiltiInput" data-key="FormMiltiInput"></div>
+```
+##  特有配置属性，方法
+| 属性名称     | 描述       |  值类型/范围  | 默认值 |
+| :--------    | :-----:    | :----:  | :----:  |
+| text  | 文本输入框前的可写信息 |  array或object | [] |
+| inputCount  | 文本输入框的个数 |  Number  | 0 |
+| inputCfg  | 各文本输入框的配置信息 |  Array  | [] |
+| joiner  | 各文本框之间的连接符 |  String  | . |
+
+> 若配置inputCfg则inputCount的值会被inputCfg的length覆盖，无需再对inputCount的值进行配置，两个字段至少有一个是必填项，若只配置inputCount则显示默认的普通文本
+
+##  使用
+### 1. 基础使用
+```
+$("#formMultiInpit").Rcomponent({
+    dataKey: "FormMultiInput",
+    inputCount:4
+});
+```
+### 2. text
+```
+$("#formMultiInpit1").Rcomponent({
+    dataKey: "FormMultiInput",
+    inputCount:2,
+    text: "192.168.",
+    validateCallBack:function(){
+        console.log(1);
+    },
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});
+```
+### 3. inputCount,joiner
+```
+$("#formMultiInpit2").Rcomponent({
+    dataKey: "FormMultiInput",
+    inputCount:4,
+    defaultValue:"8545-2345-3445-5676",
+    joiner:"-"
+});
+```
+
+### 4. inputCfg
+```
+$("#formMultiInpit3").Rcomponent({
+    dataKey: "FormMultiInput",
+    inputCfg:[
+        {dataValueType:'num', dataOptions: {type:"num",args:[192,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}}
+    ]
+});
+```
+> 其它API遵循BaseComponent的API进行使用
+
+---
+# 百分比组件(FormPercent)
+拖拽进行百分值的设定
+```
+<!-- html模板 -->
+<div id="formPercent" data-key="FormPercent"></div>
+```
+##  特有配置属性，方法
+| 属性名称     | 描述       |  值类型/范围  | 默认值 |
+| :--------    | :-----:    | :----:  | :----:  |
+| start  | 起始值 |  Number | 0 |
+| end  | 结束值 |  Number  | 100 |
+| fixed     | 结果保留几位有效数字 |  Number  | 0 |
+
+
+##  使用
+### 1. 基础使用
+```
+ $("#formPercent").Rcomponent({
+    dataKey: "FormPercent",
+    start:100,
+    end:220,
+    fixed: 0
+});
+```
+
+### 2. 设定默认值
+```
+$("#formPercent1").Rcomponent({
+    dataKey: "FormPercent",
+    end:220,
+    fixed: 1,
+    defaultValue: 200
+});
+```
+
+### 3. 起始值大于结束值
+```
+$("#formPercent2").Rcomponent({
+    dataKey: "FormPercent",
+    start:160,
+    end:0,
+    fixed: 0
+});
+```
+
+> 其它API遵循BaseComponent的API进行使用
+
+---
+# 上传组件(FormUpload)
+文件上传组件
+```
+<!-- html模板 -->
+<select id="formselect" data-key="FormSelect"></select>
+```
+##  特有配置属性，方法
+| 属性名称     | 描述       |  值类型/范围  | 默认值 |
+| :--------    | :-----:    | :----:  | :----:  |
+| submitUrl  | 提交地址 |  String | -- |
+| showFileText  | 是否显示上传文件名框 |  bool  | true |
+| browseText     | 文件浏览按钮文本 |  String  | 浏览... |
+| uploadText     | 上传按钮文本 |  String  | 上传 |
+| beforeUpload   | 上传文件前的操作 |  Function  | -- |
+| success     | 上传文件返回成功的回调 |  Function  | -- |
+
+> beforeUpload: 可进行格式检查之类的操作，若取消上传，返回false。通过this.value可取到上传文件的文件名,若有相应的数据需要提交，则返回对应的数据对象{}
+
+##  使用
+### 1. 基础使用
+```
+$("#formUpload").Rcomponent({
+    dataKey: "FormUpload",
+    submitUrl:"xxx",
+    success: function(){
+        alert("success");
+    }
+});
+```
+
+### 2. showFileText
+```
+$("#formUpload").Rcomponent({
+    dataKey: "FormUpload",
+    submitUrl:"xxx",
+    showFileText: false
+});
+```
+
+### 3. beforeUpload
+```
+$("#formUpload1").Rcomponent({
+    dataKey: "FormUpload",
+    submitUrl:"xxx",
+    showFileText: false,
+    uploadText: _("Upload File"),
+    beforeUpload:function(){ return false;},
+    success: function(){
+        alert("success");
+    }
+});
+```
+
 > 其它API遵循BaseComponent的API进行使用
 
 ---
