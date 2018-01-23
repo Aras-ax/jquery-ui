@@ -20,6 +20,7 @@
 			visible:true, //是否可见
 			ignore:false, //是否忽略组件，true时则不进行该组件取值操作
 			css:'', //自定义css样式
+			needWrap: true, //组件最外层是否需要容器包裹，若有dataTitle则该值默认为true
 			required:true, //是否必填
 			sync: true, //表示隐藏组件与补在进行校验是否同步设置，true:表示同步设置visible和ignore的值
 			autoValidate:true, //是否自动进行数据校验
@@ -128,31 +129,37 @@
 			this.option.changeCallBack && (this.changeEvents["default"] = this.option.changeCallBack);
 			this.option.validateCallBack && (this.validateEvents["default"] = this.option.validateCallBack);
 			this.option.hasTitle = !!this.option.dataTitle ? true : false;
+			//若组件有title则必须有外层容器包裹
+			this.option.hasTitle && (this.option.needWrap = true);
 		},
 
 		//组件渲染前
 		preRender: function(){
 			this.$wrap = $('<div class="control-wrap clearfix"></div>');
 			!this.visible && this.$wrap.hide();
-			this.$element.after(this.$wrap);
 			
-			if(this.option.hasTitle){
-				var titleCss = "form-title";
-                var bodyCss = "form-content";
-                
-                //标题
-                this.$title = $('<label class="' + titleCss + '">' + this.option.dataTitle + '</label>')
-                if (this.Editable && this.Required) {
-                    this.$Title.append('<i style="color:red;vertical-align:middle">*</i>');
-                }
-                this.$body = $('<div class="' + bodyCss + '"></div>').append(this.$element);
+			if(this.option.needWrap){	
+				this.$element.after(this.$wrap);
+				if(this.option.hasTitle){
+					var titleCss = "form-title";
+					var bodyCss = "form-content";
+					
+					//标题
+					this.$title = $('<label class="' + titleCss + '">' + this.option.dataTitle + '</label>')
+					if (this.Editable && this.Required) {
+						this.$Title.append('<i style="color:red;vertical-align:middle">*</i>');
+					}
+					this.$body = $('<div class="' + bodyCss + '"></div>').append(this.$element);
 
-                this.$wrap.append(this.$title).append(this.$body);
-            }
-            else{
-            	this.$wrap.append(this.$element);
-            	this.$body = this.$wrap;
-            }
+					this.$wrap.append(this.$title).append(this.$body);
+				}
+				else{
+					this.$wrap.append(this.$element);
+					this.$body = this.$wrap;
+				}
+			}else{
+				this.$wrap = this.$body = this.$element;
+			}
 
             this.$wrap.addClass(this.option.css)
 		},
@@ -248,8 +255,6 @@
 		},
 
 		valChange:function(){
-			this.getValue();
-			this.format();
 			if(this.autoValidate){
 				if(this.onValidate()){
 					//只有数据校验成功的情况下才执行自定义change事件
@@ -280,18 +285,7 @@
             	return false;
             }
 
-			if (this.validateEvents == null || $.isEmptyObject(this.validateEvents)) return true;
-			if($.isEmptyObject(this.validateEvents)) return true;
-
-            var events = this.validateEvents;
-            for (var key in events) {
-                var result = events[key].call(this);
-                if(result && (typeof result === "string")){
-					this.addValidateText(result);
-					return false;
-				}
-            }
-            return true;
+            return this.handleValidateEvents();
 		},
 
 		//绑定自定义数据校验回调函数
@@ -308,7 +302,26 @@
 		},
 
 		//执行组件数据改变后的自定义逻辑
+		handleValidateEvents: function(){
+			if (this.validateEvents == null || $.isEmptyObject(this.validateEvents)) 
+			return true;
+
+			if($.isEmptyObject(this.validateEvents)) return true;
+
+            var events = this.validateEvents;
+            for (var key in events) {
+                var result = events[key].call(this);
+                if(result && (typeof result === "string")){
+					this.addValidateText(result);
+					return false;
+				}
+			}
+			return true;
+		},
+
+		//执行组件数据改变后的自定义逻辑
 		handleChangeEvents: function(){
+			this.getValue();
             if (this.changeEvents == null || $.isEmptyObject(this.changeEvents)) return;
             var events = this.changeEvents;
             for (var key in events) {
@@ -356,7 +369,7 @@
 					this.$hideerror = this.$hideerror || $('<i title="' + _("Click to show!") + '" class="form-hideerror icon-warning none hide"></i>');
 
 					var top = pos.top, left = pos.w + pos.left + 7;
-					if(pos.totalW - left < 130){
+					if(this.option.css.indexOf("error-in-top") > -1 || pos.totalW - left < 130){
 						this.$error.addClass('error-top').removeClass('error-left');
 						left = pos.left;
 						top = pos.h + pos.top + 7;
@@ -456,7 +469,8 @@
 	//所有控件都能通过这种方式调用
 	$.fn.Rcomponent = function(opt){
 		var key = this.attr("data-key");
-		if(opt){
+		console.log(!!opt);
+		if(!!opt){ 
 			var component;
 			opt.dataKey = opt.dataKey || key;
 			this.each(function(){

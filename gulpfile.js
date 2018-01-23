@@ -1,4 +1,4 @@
-let gulp = require('gulp'),
+var gulp = require('gulp'),
     concat = require('gulp-concat'),
     sourcemaps = require('gulp-sourcemaps'),
     sass = require('gulp-sass'),
@@ -9,17 +9,29 @@ let gulp = require('gulp'),
     reload = browserSync.reload;
 
 gulp.task('uglifyJS', function() {
-    gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
+    gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/FormMultiInput.js', './src/lib/FormPercent.js', './src/lib/FormUpload.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
     .pipe(sourcemaps.init())
     .pipe(concat('componment.js'))
+    .pipe(uglify())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('dist/js'));
+
+    gulp.src(['./src/demo/main.js', './src/demo/js/*.js'])
+    .pipe(sourcemaps.init())
+    .pipe(concat('main.js'))
     .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('uglifyJS1', function() {
-    gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
+    gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/FormMultiInput.js', './src/lib/FormPercent.js', './src/lib/FormUpload.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
     .pipe(concat('componment.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/js'));
+
+    gulp.src(['./src/demo/main.js', './src/demo/js/*.js'])
+    .pipe(concat('main.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
 });
@@ -43,8 +55,9 @@ gulp.task('minifyCss1', function() {
 });
 
 gulp.task('other', function(){
-    gulp.src(['./src/demo/index.html']).pipe(gulp.dest('dist'));
+    gulp.src(['./src/demo/*.html']).pipe(gulp.dest('dist'));
     gulp.src(['./src/demo/main.js']).pipe(gulp.dest('dist/js'));
+    gulp.src(['./src/demo/js/*.js']).pipe(gulp.dest('dist/js'));
     gulp.src(['./src/lib/css/icon-font/*']).pipe(gulp.dest('dist/css/icon-font'));
     gulp.src(['./src/lib/css/icon-font/fonts/*']).pipe(gulp.dest('dist/css/icon-font/fonts'));
     gulp.src(['./src/demo/data/*']).pipe(gulp.dest('dist/data'));
@@ -52,16 +65,19 @@ gulp.task('other', function(){
 
 // 监视文件改动并重新载入
 gulp.task('serve', function() {
-    browserSync({
+    browserSync.init({
       server: {
         baseDir: './dist'
-      }
+      },
+      port: '8088',
+      files:['./dist/**']
     });
   
-    gulp.watch(['src/*/*.html', 'src/*/*.css', 'src/*/*.sass', 'src/*/*.js', 'src/*/*.json'], ['default'], function(event) {
-        console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+    //gulp.watch(['src/**/*.html', 'src/**/*.css', 'src/**/*.sass', 'src/**/*.js', 'src/**/*.json'], ['default'], function(event) {
+    gulp.watch(['src/**', './gulpfile.js'], ['default'], function(event) {
+        console.log('File ' + event.path + ' was ' + event.type + ', running tasks...'); 
     });
-    
+     
   });
 
 gulp.task('default',['minifyCss', 'uglifyJS', 'other']);

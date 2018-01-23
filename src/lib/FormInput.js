@@ -27,6 +27,7 @@
             dataOptions:[],//[{type:"",args:[]}]
             defaultText:"", // 值为空时显示的默认文本
             defaultTextClass:"gray",
+            maxLength:null,
             switchCallBack:null,//切换模式回调函数
             focusCallBack:null//文本框获取焦点回调
         }
@@ -70,6 +71,8 @@
             if (!this.editable) {
                 this.$element.attr("disabled","disabled").addClass('form-disabled');
             }
+
+            this.option.maxLength && this.$element.attr("maxlength", this.option.maxLength);
 
             if(this.type === "password"){
                 if(this.$element.attr("type") !== "password"){
@@ -293,18 +296,13 @@
                     _this.changeDisplayMode("show");
                     _this.option.switchCallBack && _this.option.switchCallBack.call(_this);
                 });
-
-                // this.$element.unbind("blur.FormInput").bind("blur.FormInput", this, function (e) {
-                //     var _this = e.data;
-                //     _this.valChange();
-                // });
             }
 
-            //G0项目需要数据实时校验
-            this.$element.off("keyup.FormValidate").on("keyup.FormValidate", this, function (e) {
-                _this.format();
-                _this.onValidate()
-            });
+            // //G0项目需要数据实时校验
+            // this.$element.off("keyup.FormValidate").on("keyup.FormValidate", this, function (e) {
+            //     _this.format();
+            //     _this.onValidate()
+            // });
 
             //失去焦点，进行数据校验
             this.$element.unbind("blur.FormInput").bind("blur.FormInput", this, function (e) {

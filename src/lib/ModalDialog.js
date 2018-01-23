@@ -336,8 +336,8 @@
 (function($){
     var DEFAULT = {
         message:"",
-        hideTime:300, //几秒钟后自动关闭，为0则表示不关闭
-        displayTime:1000,
+        hideTime:300, 
+        displayTime:1000,//几秒钟后自动关闭，为0则表示不关闭
         opacity:0.8,
         callback:function(){
             //
@@ -395,13 +395,16 @@
             }
         },
 
-        hide:function(){
+        hide:function(time){
+            time = time || 1000;
             var _this = this;
-            _this.$pop.removeClass('ani-final').css("margin-top", _this.h);;
             setTimeout(function(){
-                _this.$pop.remove();
-                _this = null;
-            }, _this.option.hideTime);
+                _this.$pop.removeClass('ani-final').css("margin-top", _this.h);;
+                setTimeout(function(){
+                    _this.$pop.remove();
+                    _this = null;
+                }, _this.option.hideTime);
+            }, time);
         }
     };
 

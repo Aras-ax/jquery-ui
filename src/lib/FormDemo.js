@@ -57,10 +57,10 @@
             //..........................
             //
             //...自定义业务逻辑写在这...
-            //
+            //如果验证出错可执行调用addValidateText
             //..........................
             //自身业务逻辑-end 
-            return true;
+            // return true;//true验证通过，false验证失败
         },
 
         //设置值
@@ -73,6 +73,7 @@
             else {
                 // this.$element.val(v);
             }
+            this.format();
             confirm && this.valChange();
         },
 
@@ -90,4 +91,4 @@
             return this.getValue();
         }
     });
-}(jQuery))
+}(jQuery));

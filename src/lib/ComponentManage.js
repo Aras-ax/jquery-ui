@@ -27,9 +27,9 @@
 				}else{
 					var cmt = new $.components[comkey](this, opt);
 					if(cmt.$element[0].tagName.toLowerCase() === "div"){
-						cmt.$element.find("input,select").attr("tabindex", i+1);
+						cmt.$element.find("input,select").attr("tabindex", 1);
 					}else{
-						cmt.$element.attr("tabindex", i+1);
+						cmt.$element.attr("tabindex", 1);
 					}
 					// $this.data(comkey, cmt);
 					cmts[cmt.dataField] = cmt;
@@ -42,9 +42,9 @@
 				var opt = args[$this.attr("data-field")];
 				var cmt = new $.components[comkey](this, opt);
 				if(cmt.$element[0].tagName.toLowerCase() === "div"){
-					cmt.$element.find("input,select").attr("tabindex", i+1);
+					cmt.$element.find("input,select").attr("tabindex", 1);
 				}else{
-					cmt.$element.attr("tabindex", i+1);
+					cmt.$element.attr("tabindex", 1);
 				}
 				// $this.data(comkey, cmt);
 				cmts[cmt.dataField] = cmt;
@@ -77,7 +77,7 @@
 	function ComponentManager(opt){
 		this.option = $.extend({}, DEFAULT_OPT, opt);
 		this.$container = $(this.option.container).addClass("form-wrap");
-		this.$formWrap = $("<form></form>").insertAfter(this.$container).append(this.$container);
+		// this.$formWrap = $("<form></form>").insertAfter(this.$container).append(this.$container);
 		this.components = {};//datafield:Component对象键值对
 		this.isSingle = false; //单个组件渲染
 		this.orignalData = {};
@@ -98,7 +98,8 @@
 			this.option.renderedCallBack && this.option.renderedCallBack.call(this);
 
 			this.$footbar = $('<div class="cm-footbar md-toolbar"><input type="submit" class="md-btn ok cm-submit" value="' + _("Submit") + '"><input type="button" class="md-btn cancel cm-cancel" value="' + _("Cancel") + '"></div>');
-			this.option.showSubmitBar && this.$footbar.appendTo(this.$formWrap);
+			// this.option.showSubmitBar && this.$footbar.appendTo(this.$formWrap);
+			this.option.showSubmitBar && this.$footbar.appendTo(this.$container);
 
 			this.request();
 			this.bindEvent();

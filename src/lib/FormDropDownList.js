@@ -250,6 +250,7 @@
                 return v==null?"":v;
             }
             else {
+                this.format();
                 return this.value;
             }
         },

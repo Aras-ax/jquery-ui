@@ -3,7 +3,7 @@ $active-color: #7ed321;
 $font-color: #1e282f;
 $font-color-light: #a9b3bb;
 $bg-color: #eceff2;
-$form-line-height: 30px;
+$form-line-height: 30px;  
 $form-width:170px; /*组件宽度*/
 
 /* 功能函数定义 */
@@ -306,6 +306,10 @@ $form-width:170px; /*组件宽度*/
   text-align: left;
 }
 
+.text-center{
+  text-align: center;
+}
+
 .form-table-th {
   height: 40px;
   font-weight: normal;
@@ -349,7 +353,16 @@ $form-width:170px; /*组件宽度*/
 }
 
 .form-table-empty {
-  height: 150px;
+  height: 140px;
+
+  .icon-nodata{
+    font-size: 60px;
+    color: #999;
+  }
+  div{
+    color: #999;
+    margin-top: 7px;
+  }
 }
 
 .form-table-footbar {
@@ -495,6 +508,14 @@ $form-width:170px; /*组件宽度*/
     cursor: pointer;
     margin-bottom: 0;
   }
+}
+
+.form-multi{
+  line-height: $form-line-height;
+  font-size: 14px;
+  margin: 0;
+  min-width: 170px;
+  display: inline-block;
 }
 
 .host-name {
@@ -1151,4 +1172,134 @@ dl, dt, dd {
 .cm-footbar{
   text-align: left;
   padding: 1em 1em 1em 26%
+}
+
+.form-multi-wrap{
+  display: inline-block;
+
+  .form-multi-input{
+    width: 50px;
+    margin: 0 2px;
+    padding-left:8px;
+  }
+}
+
+.form-percent{
+  height: 30px;
+}
+
+.form-per-wrap{
+  width:$form-width;
+  height: 10px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  border: 1px solid #ccc;
+
+  .form-per-val{
+    font-size: 12px;
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    min-width: 28px;
+    margin-left: -14px;
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 0;
+    text-align: center;
+    background-color: #ababab;
+    display: none;
+    &:hover{
+      display: block;
+    }
+
+    &::before{
+      content: "";
+      position: absolute;
+      height: 0;
+      width: 0;
+      top: 100%;
+      left: 50%;
+      margin-left: -3px;
+      border: 3px solid transparent;
+      border-top-color: #ababab;
+    }
+  }
+
+  .form-per-bar{
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    cursor: move;
+    top: 50%;
+    left:0;
+    margin-top: -8px;
+    background-color: transparent;
+
+    .bar{
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      background-color: #ededed;
+      border: 1px solid #cccccc;
+      border-radius: 2px;
+    }
+  }
+  .form-per-s,.form-per-e{
+    font-style: normal;
+    position: absolute;
+    top: 100%;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #9e9e9e;
+  }
+
+  .form-per-s{
+    left: 0;
+  }
+
+  .form-per-e{
+    right: 0;
+  }
+}
+
+.form-upload{
+  height: $form-line-height;
+  line-height: $form-line-height;
+
+  .form-upload-text{
+    height: 100%;
+    border: 0;
+    background-color: #e3e3e3;
+    border: 1px solid $font-color-light;
+    border-right: 0;
+    @include border-radius(4px 0 0 4px);
+    padding-left: 1em;
+    
+    vertical-align: top;
+    line-height: $form-line-height;
+  }
+
+  .form-upload-btn{
+    height: 100%;
+    border: 0;
+    cursor: pointer;
+    padding: 0 1em;
+    @include border-radius(0 4px 4px 0);
+    background-color: #fff;
+    border: 1px solid $font-color-light;
+  }
+
+  .form-upload-file{
+    display: none;
+  }
+
+  .form-btn-up{
+    margin-left: 2em;
+    background-color: #009f05;
+    border-color: #009f05;
+    @include border-radius(4px);
+    color: #fff;
+  }
 }

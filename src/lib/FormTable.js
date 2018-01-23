@@ -469,7 +469,12 @@
 
                     }
                 } else {
-                    bodyHtml += '<tr class="form-table-empty"><td colspan="' + _this.totalColumn + '" class="text-center nodata">' + _("No data") + '</td></tr>';
+                    bodyHtml += '<tr class="form-table-empty">' +
+                                    '<td colspan="' + _this.totalColumn + '" class="text-center nodata">' + 
+                                        '<i class="icon-nodata"></i>' +
+                                        '<div>' + _("No data") + '</div>' + 
+                                    '</td>' +
+                                '</tr>';
                 }
                 this.$thead.data("selected", selected);
                 if(this.showCheckbox && selected === this.pageData.length){
@@ -878,8 +883,6 @@
         this.each(function () {
             var $this = $(this);
             formtable = $this.data("formtable");
-            debugger
-
             if (formtable && opt && typeof opt === "string") {
                 if (formtable[opt]) {
                     outData = formtable[opt].apply(formtable, args)

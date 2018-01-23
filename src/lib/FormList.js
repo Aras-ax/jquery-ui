@@ -10,6 +10,7 @@
 	function FormList(tar, opt){
 		this.option = $.extend({}, DEFAULT, opt);
 		this.$tar = tar;
+		this.option.css && this.$tar.addClass(this.option.css);
 		this.render();
 	}
 
