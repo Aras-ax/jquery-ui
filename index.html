@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="./css/icon-font/style.css" rel="stylesheet">
+    <link href="./css/min.css" rel="stylesheet">
+</head>
+<body class="clearfix">
+    <header>REASY-UI 组件使用实例</header>
+<!-- 组件的调用demo -->
+    <div class="wrap clearfix">
+        <section class="left"> 
+            <section class="section">
+                <h1 class="title">组件使用API</h1>
+                <p>组件的调用方式，目前有通过Rcomponent统一入口进行调用，也可以通过组件名称直接调用。附<a class="code" target='API' href="https://www.zybuluo.com/moshangxc/note/803905">接口使用文档</a>地址</p>
+    			<article class="clearfix">
+					<article class="content">
+                        <h2 class="con-title">Rcomponent调用时传递参数</h2>
+                        <p>将配置参数以对象字面量的方式传给`Rcomponment`函数</p>
+						<div class="con-body">
+							<input type="text" id="demo1">
+							
+						</div>
+						<pre>
+//html代码
+<div class="htmlCode">
+	<input type="text" id="demo1">
+</div>
+//js代码
+$("#demo1").Rcomponent({
+    dataKey:"FormInput",
+    dataField:"demo1",
+    dataTitle:"传递参数形式调用",
+    placeholder:"测试"
+});</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">Rcomponent标签属性传递参数</h2>
+                        <p>将配置参数添加在标签属性上，组件初始化时会对配置参数进行解析。</p>
+                        <p class="pt">注：标签属性不区分大小写，故对于驼峰法命名的属性，配置标签属性时请用`-`连接，例如`dataKey`对应`data-key`。对象字面量配置的属性优先级高于标签属性的配置。</p>
+						<div class="con-body">
+							<input type="text" id="demo2" data-key="FormInput" placeholder="test" data-title="标签属性传递参数">
+						</div>
+						<pre>
+//html代码
+<div class="htmlCode">
+	<input type="text" id="demo2" data-key="FormInput" placeholder="test" data-title="标签属性传递参数">
+</div>
+//js代码
+$("#demo2").Rcomponent();</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">组件名称显示调用</h2>
+                        <p>通过组件名称直接调用组件，配置参数与`Rcomponent`保持一致。</p>
+						<div class="con-body">
+							<input type="text" id="demo3">
+						</div>
+						<pre>
+//html代码
+<div class="htmlCode">
+	<input type="text" id="demo3">
+</div>
+//js代码
+$("#demo3").FormInput({
+    dataKey:"FormInput",
+    dataField:"demo1",
+    dataTitle:"组件名称显示调用",
+    placeholder:"显示调用"
+});</pre>
+					</article>
+				</article>
+			</section>
+<!-- 组件的调用demo end -->
+
+			<!-- 组件属性 -->
+			<section class="section">
+                <h1 class="title on">组件属性实例</h1>
+                <p>以`FormInput`组件为例，列出了所有公共配置属性的使用及表现形式，这些属性在所有的组件上面都是有效的。</p>
+				<article id="property" class="clearfix">
+					<article class="content con-body">
+						<article class="clearfix">
+							<h5 class="min-title">dataTile为空</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" placeholder="dataTitle为空">
+							</div>
+							<h5 class="min-title">dataTile不为空</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="我是标题" >
+							</div>
+							<h5 class="min-title">editable: false</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="不可编辑" editable="false">
+							</div>
+							<h5 class="min-title">errorType: 1</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="错误提示1" error-type="1">
+							</div>
+							<h5 class="min-title">errorType: 2</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="错误提示2" error-type="2">
+							</div>
+							<h5 class="min-title">required: false</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="非必填项" required="false">
+							</div>
+							<h5 class="min-title">auto-validate: false</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="不自动数据校验" auto-validate="false">
+							</div>
+							<h5 class="min-title">defaultValue</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="默认值：12" default-value="12">
+							</div>
+							<h5 class="min-title">description</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" description="我是描述信息" data-title="描述信息：我是描述信息">
+							</div>
+							<h5 class="min-title">changeCallBack</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-field="changeCallBack" data-title="自定义数据改变回调">
+							</div>
+							<h5 class="min-title">validateCallBack</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-field="validateCallBack" data-title="自定义数据校验">
+							</div>
+							<h5 class="min-title">validateCustom</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-field="validateCustom" data-title="自定义错误信息提示">
+							</div>
+							<h5 class="min-title">renderedCallBack</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-field="renderedCallBack" data-title="组件渲染完成后回调">
+							</div>
+						</article>
+					</article>
+					<pre>
+//html
+<div class="htmlCode">
+    <input type="text" data-key="FormInput" placeholder="dataTitle为空">
+    <input type="text" data-key="FormInput" data-title="我是标题" >
+    <input type="text" data-key="FormInput" data-title="不可编辑" editable="false">
+    <input type="text" data-key="FormInput" data-title="非必填项" required="false">
+    <input type="text" data-key="FormInput" data-title="错误提示1" error-type="1">
+    <input type="text" data-key="FormInput" data-title="错误提示2" error-type="2">
+    <input type="text" data-key="FormInput" data-title="不自动数据校验" auto-validate="false">
+    <input type="text" data-key="FormInput" data-title="默认值：12" default-value="12">
+    <input type="text" data-key="FormInput" description="我是描述信息" data-title="描述信息：我是描述信息">
+    <input type="text" data-key="FormInput" data-field="changeCallBack" data-title="自定义数据改变回调">
+    <input type="text" data-key="FormInput" data-field="validateCallBack" data-title="自定义数据校验">
+    <input type="text" data-key="FormInput" data-field="validateCustom" data-title="自定义错误信息提示">
+    <input type="text" data-key="FormInput" data-field="renderedCallBack" data-title="组件渲染完成后回调">
+</div>
+//js
+$.componentManager({
+    container:"#property",
+    formCfg:{
+        changeCallBack:{
+            changeCallBack: function(){
+                alert(this.value);
+            }
+        },
+        validateCustom:{
+            validateCustom: function(text){
+                if(text){
+                    // this.$element.focus();
+                }
+            }
+        },
+        validateCallBack:{
+            validateCallBack: function(){
+                if(this.value.length < 6){
+                    return "该字段至少为6位字符";
+                }
+            }
+        },
+        renderedCallBack:{
+            renderedCallBack: function(){
+                this.setValue("组件已渲染完成.")
+            }
+        }
+    }
+});
+</pre>
+				</article>
+			</section>
+			<!-- 组件属性 end -->
+
+			<!-- 组件方法 -->
+			<!-- <section class="section">
+				<h1 class="title">组件方法</h1>
+				<article class="clearfix">
+					<article class="content">
+						<h5 class="con-title"></h5>
+						<div class="con-body">
+							<input type="text">
+						</div>
+						<pre></pre>
+					</article>
+				</article>
+			</section> -->
+			<!-- 组件方法 end -->
+			
+<!-- FormInput -->
+			<section class="section">
+                <h1 class="title">FormInput</h1>
+                <p>文本框组件包含的功能：普通文本，密码文本，通过眼睛图标对明文和密文的显示切换，只读与编辑的切换，常用的数据校验封装，不同数据类型的输入限制等</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">普通文本</h2>
+                        <p>普通的文本输入框，可进行公共属性的配置以及数据校验配置。</p>
+						<div class="con-body">
+							<input type="text" id="formInput1">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput1">
+</div>
+//js
+$("#formInput1").Rcomponent({
+    dataKey:"FormInput",
+    dataField:'username',
+    dataTitle:"普通文本",
+    placeholder:"普通文本测试"
+});
+						</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">密码输入框</h2>
+						<div class="con-body">
+							<input type="text" id="formInput2">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput2">
+</div>
+//js
+$("#formInput2").Rcomponent({
+    dataKey:"FormInput",
+    dataField:'username',
+    dataTitle:"密码文本",
+    placeholder:"密码文本测试",
+    type:"password"
+});</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">密码输入框</h2>
+                        <p>该模式下可进行`hasEyes`属性的配置。取值为`true/false`，`true`表示显示眼睛切换按钮，点击按键可进行明文和密文的切换显示。</p>
+						<div class="con-body">
+							<input type="text" id="formInput3">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput3">
+</div>
+//js
+$("#formInput3").Rcomponent({
+    dataKey:"FormInput",
+    dataField:'username',
+    dataTitle:"密码文本",
+    placeholder:"密码文本测试",
+    type:"password",
+    hasEyes:true
+});
+</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">只读模式</h2>
+						<div class="con-body">
+							<input type="text" id="formInput4">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput4">
+</div>
+//js
+$("#formInput4").Rcomponent({
+    dataKey:"FormInput",
+    dataField:'username',
+    dataTitle:"只读模式",
+    displayMode:"readonly",
+    defaultValue:"只读"
+});</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">切换模式</h2>
+                        <p>`displayMode`：edit/readonly/readEdit(编辑/只读/切换)。该模式下可进行`defaultText`，`switchCallBack`属性的配置。</p>
+                        <p>`defaultText`用于显示数据为空只读状态下的默认显示的文本信息。</p>
+                        <p>`switchCallBack`用于配置切换组件显示状态时的回调，可在该回调中配置需要自定义的业务逻辑。</p>
+						<div class="con-body">
+							<input type="text" id="formInput5">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput5">
+</div>
+//js
+$("#formInput5").Rcomponent({
+    dataKey:"FormInput",
+    dataField:'username',
+    dataTitle:"切换模式",
+    placeholder:"切换模式测试",
+    displayMode:"readEdit",
+    required:false,
+    defaultText:"未知数据",
+    switchCallBack:function(){
+        console.log("切换显示模式为：" + this.displayMode);
+    }
+});</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">数据校验模式</h2>
+                        <p>`dataOptions`：[]/{}, 根据自己的要求进行常用的数据校验配置。</p>
+						<div class="con-body">
+							<input type="text" id="formInput6">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput6">
+</div>
+//js
+$("#formInput6").Rcomponent({
+    dataKey:"FormInput",
+    dataField:'username',
+    dataTitle:"普通文本",
+    placeholder:"请输入1-6位整数",
+    dataOptions:[{type:"num",args:[1,6]}]
+});</pre>
+                    </article>
+                    
+
+					<article class="content">
+                        <h2 class="con-title">配置正则表达式, maxLength</h2>
+                        <p class="pt">`regExp`: 允许输入字符正则，`maxLength`：允许输入字符最大长度</p>
+						<div class="con-body">
+							<input type="text" id="formInput7">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput7">
+</div>
+//js
+$("#formInput7").Rcomponent({
+    dataKey: 'FormInput',
+    dataField: 'username',
+    dataTitle: '只能输入字母',
+    placeholder: '输入字母',
+    description: '最多输入6位字母',
+    regExp: /[a-zA-z]/,
+    maxLength: 6
+});</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">其它配置项</h2>
+                        <p class="pt">`removeSpace`: true/false, 是否进行前后空格的移除；`focusCallBac`k：function, 获取焦点后的回调</p>
+						<div class="con-body">
+							<input type="text" id="formInput8">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput8">
+</div>
+//js
+$("#formInput7").Rcomponent({
+    dataKey:"FormInput",
+    dataField:'username',
+    dataTitle:"去除首尾空格",
+    placeholder:"removeSpace",
+    removeSpace: true,
+    focusCallBack:function(){
+        console.log("focus");
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+				</article>
+			</section>
+            <!-- FormInput end -->
+            
+            <!-- FormMultiInput -->
+			<section class="section">
+                <h1 class="title">FormMultiInput</h1>
+                <p>根据不同的需求配置不同个数的文本输入框。使用场景：IP地址，密钥输入等</p>
+				<article class="clearfix">
+					<article class="content">
+                        <h2 class="con-title">基础使用</h2>
+                        <p>渲染多个普通文本，例如：IP地址</p>
+						<div class="con-body">
+							<div id="formMultiInpit" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit").Rcomponent({
+    dataKey: "FormMultiInput",
+    dataTitle:"FormMultiInput：",
+    maxLength: 4,
+    inputCount:4
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">配置默认文本+输入框</h2>
+						<div class="con-body">
+							<div id="formMultiInpit1" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit1" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit1").Rcomponent({
+    dataKey: "FormMultiInput",
+    dataTitle:"IP地址：",
+    inputCount:2,
+    maxLength: 3,
+    regExp: /[0-9]/,
+    text: "192.168.",
+    validateCallBack:function(){
+        console.log(1);
+    },
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">连接符配置</h2>
+						<div class="con-body">
+							<div id="formMultiInpit2" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit2" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit2").Rcomponent({
+    dataKey: "FormMultiInput",
+    inputCount:4,
+    maxLength: 4,
+    dataTitle:"序列号",
+    defaultValue:"8545-2345-3445-5676",
+    joiner:"-"
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">配置数据校验</h2>
+						<div class="con-body">
+							<div id="formMultiInpit3" data-key="FormMultiInput"></div>
+						</div>
+						<pre>
+//html
+<div id="formMultiInpit3" data-key="FormMultiInput"></div>
+//js
+$("#formMultiInpit3").Rcomponent({
+    dataKey: "FormMultiInput",
+    dataTitle:"数据校验：",
+    inputCfg:[
+        {dataValueType:'num', dataOptions: {type:"num",args:[192,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}},
+        {dataValueType:'num', dataOptions: {type:"num",args:[1,255]}}
+    ]
+});
+                        </pre>
+					</article>
+				</article>
+			</section>
+            <!-- FormMultiInput end -->
+
+            <!-- FormPercent -->
+			<section class="section">
+                <h1 class="title">FormPercent</h1>
+                <p>对滑块拖拽进行值的配置，可设定具体的范围与结果精确的小数位</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">基本使用</h2>
+						<div class="con-body">
+							<div id="formPercent" data-key="FormPercent"></div>
+						</div>
+						<pre>
+//html
+<div id="formPercent" data-key="FormPercent"></div>
+//js
+$("#formPercent").Rcomponent({
+    dataKey: "FormPercent",
+    showInput: false,
+    dataTitle:"FormPercent："
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">负数场景</h2>
+						<div class="con-body">
+							<div id="formPercent1" data-key="FormPercent"></div>
+						</div>
+						<pre>
+//html
+<div id="formPercent1" data-key="FormPercent"></div>
+//js
+$("#formPercent1").Rcomponent({
+    dataKey: "FormPercent",
+    dataTitle:"负数场景：",
+    end:-220,
+    fixed: 1,
+    defaultValue: -100
+});
+                        </pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">起始值大于结束值</h2>
+                        <P>若配置的起始值大于结束值，则会对值进行交互处理</P>
+						<div class="con-body">
+							<div id="formPercent2" data-key="FormPercent"></div>
+						</div>
+						<pre>
+//html
+<div id="formPercent2" data-key="FormPercent"></div>
+//js
+$("#formPercent2").Rcomponent({
+    dataKey: "FormPercent",
+    dataTitle:"开始值大于结束值：",
+    start:160,
+    end:0,
+    fixed: 0
+});
+                        </pre>
+					</article>
+				</article>
+			</section>
+            <!-- FormPercent end -->
+
+            <!-- FormUpload -->
+			<section class="section">
+                <h1 class="title">FormUpload</h1>
+                <p>进行文件上传以及自定义的校验操作</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">基础使用</h2>
+						<div class="con-body">
+							<div id="formUpload" data-key="FormUpload"></div>
+						</div>
+						<pre>
+//html
+<div id="formUpload" data-key="FormUpload"></div>
+//js
+$("#formUpload").Rcomponent({
+    dataKey: "FormUpload",
+    dataTitle:"基本使用：",
+    submitUrl:"xxx",
+    success: function(){
+        alert("success");
+    }
+});
+
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">只显示上传按钮</h2>
+						<div class="con-body">
+							<div id="formUpload1" data-key="FormUpload"></div>
+						</div>
+						<pre>
+//html
+<div id="formUpload1" data-key="FormUpload"></div>
+//js
+$("#formUpload1").Rcomponent({
+    dataKey: "FormUpload",
+    dataTitle:"只显示上传按钮：",
+    submitUrl:"xxx",
+    showFileText: false,
+    uploadText: _("Upload File")
+});
+                        </pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">数据校验配置</h2>
+						<div class="con-body">
+							<div id="formUpload2" data-key="FormUpload"></div>
+						</div>
+						<pre>
+//html
+<div id="formUpload2" data-key="FormUpload"></div>
+//js
+$("#formUpload2").Rcomponent({
+    dataKey: "FormUpload",
+    dataTitle:"上传校验：",
+    submitUrl:"xxx",
+    uploadText: _("Upload File"),
+    beforeUpload:function(){ return false;},
+    success: function(){
+        alert("success");
+    }
+});
+                        </pre>
+					</article>
+				</article>
+			</section>
+            <!-- FormUpload end -->
+
+			<!-- FormSelect -->
+			<section class="section">
+                <h1 class="title">FormSelect</h1>
+                <p>下拉框select组件，可进行空选项配置以及添加删除选项操作。</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">selectArray为array</h2>
+						<div class="con-body">
+							<select id="formselect1" data-key="FormSelect"></select>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<select id="formselect1" data-key="FormSelect"></select>
+</div>
+//js
+$("#formselect1").Rcomponent({
+    dataTitle:"selectArray为数组",
+    dataField:"formselect1",
+    selectArray:['test1', 'test2', 'test3', 'test4'],
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">selectArray为object</h2>
+						<div class="con-body">
+							<select id="formselect2" data-key="FormSelect"></select>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<select id="formselect2" data-key="FormSelect"></select>
+</div>
+//js
+$("#formselect2").Rcomponent({
+    dataTitle:"selectArray为对象",
+    dataField:"formselect2",
+    defaultValue:3,
+    selectArray:{1:'test1', 2:'test2', 3:'test3', 4:'test4'},
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">空值配置</h2>
+                        <p>`FormSelect`组件中的空值选项的配置。</p>
+                        <p>`hasNullItem`：true/false，是否含有空值选项，`nullText`：string，空值选项的显示文本。</p>
+						<div class="con-body">
+							<select id="formselect3" data-key="FormSelect"></select>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<select id="formselect3" data-key="FormSelect"></select>
+</div>
+//js
+$("#formselect3").Rcomponent({
+    dataTitle:"hasNullItem为true",
+    dataField:"formselect3",
+    hasNullItem: true,
+    nullText:"请选择",
+    defaultValue:"test1",
+    selectArray:['test1', 'test2', 'test3', 'test4'],
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">方法使用</h2>
+                        <p>常见方法：`addItem`，`removeItem`，`getValue`，`setValue`。具体的参数说明见<a class="code" target='API' href="https://www.zybuluo.com/moshangxc/note/803905">接口使用文档</a>。</p>
+						<div class="con-body">
+							<select id="formselect4" data-key="FormSelect"></select>
+							<div id="selecttab" style="margin-top: 1em;"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<select id="formselect4" data-key="FormSelect"></select>
+	<div id="selecttab" style="margin-top: 1em;"></div>
+</div>
+//js
+var $select = $("#formselect4").Rcomponent({
+    dataTitle:"FormSelect",
+    dataField:"formselect2",
+    defaultValue:3,
+    selectArray:{1:'test1', 2:'test2', 3:'test3', 4:'test4'},
+    changeCallBack:function(){
+        console.log(this.value);
+    },
+    renderedCallBack:function(){
+        
+        $("#selecttab").Rcomponent({
+            dataKey:"FormTab",
+            selectArray:{1:"addItem(5)",2:"addItem({6:'text6', 7:'text7'})", 3:"removeItem(1)", 4:"removeItem([3,5])", 5:"getValue", 6:"setValue(2)"},
+            dataValueType:"num",
+            changeCallBack:function(){
+                switch(this.value){
+                    case 1:{
+                        $select.addItem(5);
+                    }break;
+                    case 2:{
+                        $select.addItem({6:'test6', 7:'test7'});
+                    }break;
+                    case 3:{
+                        $select.removeItem(1);
+                    }break;
+                    case 4:{
+                        $select.removeItem([3,5]);
+                    }break;
+                    case 5:{
+                        alert($select.getValue());
+                    }break;
+                    case 6:{
+                        $select.setValue(2);
+                    }break;
+                }
+            }
+        });
+    }
+});</pre>
+					</article>
+				</article>
+			</section>
+			<!-- FormSelect end -->
+
+			<!-- FormRadioList -->
+			<section class="section">
+                <h1 class="title">FormRadioList</h1>
+                <p>单选组件，功能大体与`FormSelect`相同</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">selectArray为array</h2>
+						<div class="con-body">
+							<div id="FormRadioList1" data-key="FormRadioList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="FormRadioList1" data-key="FormRadioList"></div>
+</div>
+//js
+$("#FormRadioList1").Rcomponent({
+    dataTitle:"selectArray为数组",
+    dataField:"FormRadioList1",
+    selectArray:['test1', 'test2', 'test3', 'test4'],
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">selectArray为object</h2>
+						<div class="con-body">
+							<div id="FormRadioList2" data-key="FormRadioList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="FormRadioList2" data-key="FormRadioList"></div>
+</div>
+//js
+$("#FormRadioList2").Rcomponent({
+    dataTitle:"selectArray为对象",
+    dataField:"FormRadioList2",
+    defaultValue:3,
+    selectArray:{1:'test1', 2:'test2', 3:'test3', 4:'test4'},
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">方法使用</h2>
+						<div class="con-body">
+							<div id="FormRadioList3" data-key="FormRadioList"></div>
+							<div id="selecttab1" style="margin-top: 1em;"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="FormRadioList3" data-key="FormRadioList"></div>
+	<div id="selecttab1" style="margin-top: 1em;"></div>
+</div>
+//js
+var $select = $("#FormRadioList3").Rcomponent({
+    dataTitle:"FormRadioList",
+    dataField:"FormRadioList2",
+    defaultValue:3,
+    selectArray:{1:'test1', 2:'test2', 3:'test3', 4:'test4'},
+    changeCallBack:function(){
+        console.log(this.value);
+    },
+    renderedCallBack:function(){
+        
+        $("#selecttab1").Rcomponent({
+            dataKey:"FormTab",
+            selectArray:{1:"addItem(5)",2:"addItem({6:'text6', 7:'text7'})", 3:"removeItem(1)", 4:"removeItem([3,5])", 5:"getValue", 6:"setValue(2)"},
+            dataValueType:"num",
+            changeCallBack:function(){
+                switch(this.value){
+                    case 1:{
+                        $select.addItem(5);
+                    }break;
+                    case 2:{
+                        $select.addItem({6:'test6', 7:'test7'});
+                    }break;
+                    case 3:{
+                        $select.removeItem(1);
+                    }break;
+                    case 4:{
+                        $select.removeItem([3,5]);
+                    }break;
+                    case 5:{
+                        alert($select.getValue());
+                    }break;
+                    case 6:{
+                        $select.setValue(2);
+                    }break;
+                }
+            }
+        });
+    }
+});</pre>
+					</article>
+				</article>
+			</section>
+			<!-- FormRadioList end -->
+
+			<!-- FormCheckList -->
+			<section class="section">
+                <h1 class="title">FormCheckList</h1>
+                <p>多选组件，配置属性大体与`FormSelect`组件相同。</p>
+				<article class="clearfix">
+					<article class="content">
+						<h2 class="con-title">selectArray为array</h2>
+						<div class="con-body">
+							<div id="FormCheckList1" data-key="FormCheckList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="FormCheckList1" data-key="FormCheckList"></div>
+</div>
+//js
+$("#FormCheckList1").Rcomponent({
+    dataTitle:"selectArray为数组",
+    dataField:"FormCheckList1",
+    defaultValue:"test2",
+    selectArray:['test1', 'test2', 'test3', 'test4'],
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">selectArray为object</h2>
+						<div class="con-body">
+							<div id="FormCheckList2" data-key="FormCheckList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="FormCheckList2" data-key="FormCheckList"></div>
+</div>
+//js
+$("#FormCheckList2").Rcomponent({
+    dataTitle:"selectArray为对象",
+    dataField:"FormCheckList2",
+    defaultValue:3,
+    selectArray:{1:'test1', 2:'test2', 3:'test3', 4:'test4'},
+    changeCallBack:function(){
+        console.log(this.value);
+    }
+});</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">方法使用</h2>
+						<div class="con-body">
+							<div id="FormCheckList3" data-key="FormCheckList"></div>
+							<div id="selecttab3" style="margin-top: 1em;"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="FormCheckList3" data-key="FormCheckList"></div>
+	<div id="selecttab3" style="margin-top: 1em;"></div>
+</div>
+//js
+var $checkList = $("#FormCheckList3").Rcomponent({
+    dataTitle:"FormCheckList",
+    dataField:"FormCheckList2",
+    defaultValue:3,
+    selectArray:{1:'test1', 2:'test2', 3:'test3', 4:'test4'},
+    changeCallBack:function(){
+        console.log(this.value);
+    },
+    renderedCallBack:function(){
+        
+        $("#selecttab3").Rcomponent({
+            dataKey:"FormTab",
+            selectArray:{1:"addItem(5)",2:"addItem({6:'text6', 7:'text7'})", 3:"removeItem(1)", 4:"removeItem([3,5])", 5:"getValue", 6:"setValue(2)"},
+            dataValueType:"num",
+            changeCallBack:function(){
+                switch(this.value){
+                    case 1:{
+                        $checkList.addItem(5);
+                    }break;
+                    case 2:{
+                        $checkList.addItem({6:'test6', 7:'test7'});
+                    }break;
+                    case 3:{
+                        $checkList.removeItem(1);
+                    }break;
+                    case 4:{
+                        $checkList.removeItem([3,5]);
+                    }break;
+                    case 5:{
+                        alert($checkList.getValue());
+                    }break;
+                    case 6:{
+                        $checkList.setValue(2);
+                    }break;
+                }
+            }
+        });
+    }
+});</pre>
+					</article>
+				</article>
+			</section>
+			<!-- FormCheckList end -->
+
+			<!-- FormCheckBox -->
+			<section class="section">
+                <h1 class="title">FormCheckBox</h1>
+                <p>开关组件，可以配置显示文本等信息。</p>
+				<article>
+					<article class="content">
+						<h2 class="con-title">基础使用</h2>
+						<div class="con-body">
+							<div id="formCheckbox" data-key="FormCheckbox">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formCheckbox" data-key="FormCheckbox">
+</div>
+//js
+$("#formCheckbox").Rcomponent({
+    dataTitle:"FormCheckbox",
+    dataField:"formcheckbox",
+    changeCallBack:function(){
+        alert("点我干嘛");
+    }
+});
+    					</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">含有备注信息text</h2>
+						<div class="con-body">
+							<div id="formCheckbox1" data-key="FormCheckbox">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formCheckbox1" data-key="FormCheckbox">
+</div>
+//js
+$("#formCheckbox1").Rcomponent({
+    dataTitle:"FormCheckbox",
+    dataField:"formcheckbox",
+    text:"FormCheckbox",
+    changeCallBack:function(){
+        alert(this.value);
+    }
+});
+						</pre>
+					</article>
+				</article>
+			</section>
+			<!-- FormCheckBox end -->
+
+			<!-- FormDropDownList -->
+			<section class="section">
+                <h1 class="title">FormDropDownList</h1>
+                <p>自定义下拉框组件，可输入自定义的信息，组件输入文本框使用的是`FormInput`组件，故可以配置`FormInput`组件的相关信息。</p>
+				<article>
+					<article class="content">
+                        <h2 class="con-title">基本使用实例</h2>
+                        <p>该实例覆盖组件的大部分功能</p>
+						<div class="con-body">
+							<div id="formDropDownList" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList" data-key="FormDropDownList"></div>
+</div>
+//js
+$("#formDropDownList").Rcomponent({
+    dataTitle:"FormDropDownList",
+    dataField:"formDropDownList",
+    dataValueType:"num",
+    showSelfText:"默认显示的文本",
+    required:false,
+    customText:_("手动输入"),
+    dataOptions:[{type:"num", args:[6, 128]}],
+    selectArray:[16, 32, 64, 128],
+    clickCallBack:function(){
+    },
+    focusCallBack:function(){
+    },
+    changeCallBack:function(){
+    },
+    renderedCallBack:function(){
+    }
+});
+						</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">selectArray为数组</h2>
+						<div class="con-body">
+							<div id="formDropDownList1" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList1" data-key="FormDropDownList"></div>
+</div>
+//js
+$("#formDropDownList1").Rcomponent({
+    dataTitle:"FormDropDownList",
+    dataField:"formDropDownList",
+    selectArray:["中国", "美国", "英国", "德国", "瑞典"]
+});
+    					</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">selectArray为对象</h2>
+						<div class="con-body">
+							<div id="formDropDownList2" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList2" data-key="FormDropDownList"></div>
+</div>
+//js 
+$("#formDropDownList2").Rcomponent({
+    dataTitle:"FormDropDownList",
+    defaultValue:3,
+    dataField:"formDropDownList",
+    selectArray:{1:"中国", 2:"美国", 3:"英国", 4:"德国", 5:"瑞典"}
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">customText:</h2>
+                        <p>自定义输入项在下拉框中显示的文本信息，设置该值则表示开启自定义输入功能</p>
+						<div class="con-body">
+							<div id="formDropDownList3" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList3" data-key="FormDropDownList"></div>
+</div>
+//js   
+$("#formDropDownList3").Rcomponent({
+    dataTitle:"FormDropDownList",
+    dataField:"formDropDownList",
+    customText:"其它国家",
+    defaultText:"奥地利",
+    selectArray:["中国", "美国", "英国", "德国", "瑞典"]
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">数据校验配置</h2>
+                        <p>`dataOptions`：[]/{}，对自定义输入的数据进行校验配置</p>
+						<div class="con-body">
+							<div id="formDropDownList4" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList4" data-key="FormDropDownList"></div>
+</div>
+//js
+$("#formDropDownList4").Rcomponent({
+    dataTitle:"FormDropDownList",
+    dataField:"formDropDownList",
+    customText:"其它国家",
+    defaultValue:"法国",
+    dataOptions:[{type:"len", args:[1, 10]}],
+    selectArray:["中国", "美国", "英国", "德国", "瑞典"]
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">自定义显示文本配置</h2>
+                        <p>`showSelfText`：string，不管组件的值是什么，首次渲染后默认显示的文本信息与`selectArray`值无关，只做显示用，且不会改变组件的值。</p>
+						<div class="con-body">
+							<div id="formDropDownList5" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList5" data-key="FormDropDownList"></div>
+</div>
+//js 
+$("#formDropDownList5").Rcomponent({
+    dataTitle:"FormDropDownList",
+    dataField:"formDropDownList",
+    showSelfText:"默认显示中国",
+    customText:"其它国家",
+    defaultValue:"中国",
+    dataOptions:[{type:"len", args:[1, 10]}],
+    selectArray:["中国", "美国", "英国", "德国", "瑞典"]
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">clickCallBack</h2>
+                        <p>function，下拉框展开和收起的回调函数</p>
+						<div class="con-body">
+							<div id="formDropDownList6" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList6" data-key="FormDropDownList"></div>
+</div>
+//js    
+$("#formDropDownList6").Rcomponent({
+    dataTitle:"FormDropDownList",
+    dataField:"formDropDownList",
+    defaultValue:"德国",
+    selectArray:["中国", "美国", "英国", "德国", "瑞典"],
+    clickCallBack:function(){
+        console.log("下拉框打开或者收缩了");
+    }
+});
+						</pre>
+					</article>
+					<article class="content">
+						<h2 class="con-title">focusCallBack</h2>
+                        <p>function，自定义情况下文本框获取焦点回调函数</p>
+						<div class="con-body">
+							<div id="formDropDownList7" data-key="FormDropDownList"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<div id="formDropDownList7" data-key="FormDropDownList"></div>
+</div>
+//js
+$("#formDropDownList7").Rcomponent({
+    dataTitle:"自定义下拉框组件",
+    dataField:"formDropDownList",
+    defaultValue:"瑞典",
+    customText:"其它国家",
+    dataOptions:[{type:"len", args:[1, 10]}],
+    selectArray:["中国", "美国", "英国", "德国", "瑞典"],
+    focusCallBack:function(){
+        console.log("自定义输入框获取到焦点啦！！！");
+    }
+});
+    					</pre>
+					</article>
+				</article>
+			</section>
+			<!-- FormDropDownList end -->
+
+			<!-- FormCalendar -->
+			<section class="section">
+                <h1 class="title">FormCalendar</h1>
+                <p>日历组件，可进行星期显示，开始结束时间等配置</p>
+				<article>
+					<article class="content">
+						<h2 class="con-title">基本使用实例</h2>
+                        <p>该实例覆盖组件的大部分功能</p>
+						<div class="con-body">
+							<input id="formCalendar" type="input" data-key="FormCalendar">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<input id="formCalendar" type="input" data-key="FormCalendar">
+</div>
+//js
+$("#formCalendar").Rcomponent({
+    dataTitle:"日历组件",
+    dataField:"formCalendar",
+    hasWeekday:true,
+    startYear:2000,
+    endYear:2020,
+    scanAble:false
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">hasWeekday</h2>
+                        <p>true/false，是否显示星期信息</p>
+						<div class="con-body">
+							<input id="formCalendar1" type="input" data-key="FormCalendar">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+</div>
+//js
+$("#formCalendar1").Rcomponent({
+    dataTitle:"日历组件-显示星期",
+    dataField:"formCalendar",
+    hasWeekday:true
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">时间范围</h2>
+                        <p>`startYear`：YYYY-MM-DD，开始时间，`endYear`：YYYY-MM-DD，结束时间</p>
+						<div class="con-body">
+							<input id="formCalendar2" type="input" data-key="FormCalendar">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<input id="formCalendar2" type="input" data-key="FormCalendar">
+</div>
+//js
+$("#formCalendar2").Rcomponent({
+    dataTitle:"日历组件-设置起止时间",
+    dataField:"formCalendar",
+    startYear:2000,
+    endYear:2020
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">scanAble</h2>
+                        <p>true/false，是否可输入</p>
+						<div class="con-body">
+							<input id="formCalendar3" type="input" data-key="FormCalendar">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<input id="formCalendar3" type="input" data-key="FormCalendar">
+</div>
+//js
+$("#formCalendar3").Rcomponent({
+    dataTitle:"日历组件-不可输入",
+    dataField:"formCalendar",
+    scanAble:false
+});
+						</pre>
+					</article>
+				</article>
+			</section>
+			<!-- FormCalendar end -->
+
+			<!-- FormList -->
+			<section class="section">
+				<h1 class="title">FormList</h1>
+				<article>
+					<article class="content">
+						<h2 class="con-title"></h2>
+						<div class="con-body">
+							<input type="text">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+</div>
+//js
+						</pre>
+					</article>
+				</article>
+			</section>
+			<!-- FormList end -->
+
+			<!-- Formtab -->
+			<section class="section">
+                <h1 class="title">Formtab</h1>
+                <p>选项卡组件，可以理解为单选组件的另一种表现形式。有两个主题可选`line-theme`和`bg-theme`，默认值为`line-theme`。</p>
+				<article>
+					<article class="content">
+                        <h2 class="con-title">基本属性使用</h2>
+                        <p>该实例覆盖组件的大部分功能</p>
+						<div class="con-body">
+							<div id="formTab" data-key="FormTab"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="formTab" data-key="FormTab"></div>
+</div>
+//js
+$("#formTab").Rcomponent({
+    selectArray:{1:"新增", 2:"修改", 3:"删除", 4:"导入", 5:"导出"},
+    dataValueType:"num",
+    theme:"bg-theme",
+    defaultValue:2, //默认选中的按钮项
+    changeCallBack:function(){
+        switch(this.value){
+            case 1:{
+                alert("点击新增");
+            }break;
+            case 2:{
+                alert("点击修改");
+            }break;
+            case 3:{
+                alert("点击删除");
+            }break;
+            case 4:{
+                alert("点击导入");
+            }break;
+            case 5:{
+                alert("点击导出");
+            }break;
+        }
+    }
+});
+    					</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">selectArray</h2>
+                        <p></p>
+						<div class="con-body">
+							<div id="formTab1" data-key="FormTab"></div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<div id="formTab1" data-key="FormTab"></div>
+</div>
+//js
+$("#formTab1").Rcomponent({
+    selectArray:["新增", "修改", "删除", "导入", "导出"],
+    changeCallBack:function(){
+        alert(`点击${this.value}`);
+    }
+});
+						</pre>
+					</article>
+				</article>
+			</section>
+			<!-- Formtab end -->
+
+			<!-- FormTable -->
+			<section class="section">
+                <h1 class="title">FormTable</h1>
+                <p>表格组件，功能包含，排序，过滤，搜索</p>
+				<article>
+					<article class="content">
+                        <h2 class="con-title">基本使用1</h2>
+                        <p>在html中对列信息进行配置，不推荐使用这种方式进行组件的渲染.</p>
+						<div class="con-body">
+							<table id="formTable">
+								<thead>
+									<tr>
+										<th data-field="A">A</th>
+										<th data-field="B">B</th>
+										<th data-field="C">C</th>
+										<th data-field="D">D</th>
+										<th data-field="E">E</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+<table id="formTable">
+    <thead>
+        <tr>
+            <th data-field="A">A</th>
+            <th data-field="B">B</th>
+            <th data-field="C">C</th>
+            <th data-field="D">D</th>
+            <th data-field="E">E</th>
+        </tr>
+    </thead>
+</table>
+</div>
+//js
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">基本使用2</h2>
+                        <p>在js中对列信息进行配置，推荐使用该方式进行table的配置和渲染</p>
+						<div class="con-body">
+							<table id="formTable1"></table>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+		<table id="formTable1"></table>
+</div>
+//js
+$("#formTable1").FormTable({
+    data:TABLEDATA,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ]
+});
+						</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">dataTarget</h2>
+                        <p>当表格数据是给定数据源的某个属性时可配置该属性，可为空。</p>
+						<div class="con-body">
+							<table id="formTable2"></table>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<table id="formTable2"></table>
+</div>
+//js
+$("#formTable2").FormTable({
+    data:TABLEDATA1,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ],
+    showCheckbox:true,
+    dataTarget:"getQosUserList"
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">分页属性</h2>
+                        <p class="pt">
+                            `perArray`: []，每页显示数据条数的可选数组，数据用于渲染选择每页显示条数的下拉框，默认值`[10, 20, 30, 50]`<br/>
+                            `perNum`: number, 当前table每页显示的条数，若设置的值不在`perArray`数组内，则选取默认值，默认值为`perArray`的第一个值<br/>
+                            `pageIndex`: 当前显示第几页数据，若配置的值大于总页数，则显示最后一页
+                        </p>
+                        <p>通过配置分页属性可以按需求配置表格的分页展示信息</p>
+                        <div class="con-body">
+                            <table id="formTable3"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable3"></table>
+</div>
+//js
+$("#formTable3").FormTable({
+    data:TABLEDATA,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ],
+    perArray:[5, 10, 20, 30, 50],
+    perNum:5,
+    pageIndex:1
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">showStyle</h2>
+                        <p>`showStyle`:1/2 (分页/显示全部数据)，用于设置table数据的显示类型，`1`为分页显示，`2`为不分页显示全部数据</p>
+                        <p class="pt">
+                            注：`showStyle`的值为`2`的情况下，`showPageLeftBar`和`showPageRightBar`自动变为`false`。
+                        </p>
+                        <div class="con-body">
+                            <table id="formTable5"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable5"></table>
+</div>
+//js
+$("#formTable5").FormTable({
+    data:TABLEDATA,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ],
+    showStyle:2
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">limit, showIndex</h2>
+                        <p>`limit`: `number`，配置当前最多显示的条数信息，`showIndex`：`bool`，配置是否显示序号</p>
+                        <p class="pt">
+                            注：当设置`limit`后，`showStyle`的值自动变为`2`，`showPageLeftBar`和`showPageRightBar`自动变为`false`。
+                        </p>
+                        <div class="con-body">
+                            <table id="formTable4"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable4"></table>
+</div>
+//js
+$("#formTable4").FormTable({
+    data:TABLEDATA,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ],
+    perArray:[5, 10, 20, 30, 50],
+    perNum:5,
+    limit:7,
+    showIndex:true
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">配置列属性</h2>
+                        <p>
+                            `field`：列数据对应的字段名称，必填<br/>
+                           `title`：table列头的显示信息，必填<br/>
+                            `width`：列的宽度，可设置具体的宽度和百分比，例如(50/20%)
+                        </p>
+                        <div class="con-body">
+                            <table id="formTable6"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable6"></table>
+</div>
+//js
+$("#formTable6").FormTable({
+    data:TABLEDATA,
+    columns:[
+        {title:"主机名称", field:"hostName", width:"20%"},
+        {title:"认证类型", field:"hostAuthType", width:50},
+        {title:"IP地址", field:"hostIP", width:100},
+        {title:"下载总流量", field:"hostDownloadSum", width:"24%"},
+        {title:"备注", field:"hostRemark"}
+    ]
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">sortable</h2>
+                        <p>`sortable`: bool，是否可以排序，true表示该字段可以进行排序，对应的列头会出现排序状态图标</p>
+                        <p class="pt">当列设置了可排序后，组件内会有两个字段`sortFields`，`sortOpt`分别记录列排序的优先级信息和升降序信息，如果一开始就有默认的排序规则则需要配置这两个属性，详情见下一个例子。</p>
+                        <div class="con-body">
+                            <table id="formTable7"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable7"></table>
+</div>
+//js
+$("#formTable7").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", sortable:true, field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", sortable:true, field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ]
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">配置初始排序规则</h2>
+                        <p>`sortFields`:[],存储排序字段的优先级顺序排在前面的字段优先级较高。<br/> `sortOpt`:{a:1}，存储排序字段对应的排序规则，`1`为升序`2`为降序</p>
+                        <p class="pt">注：若只设置了`sortFields`和`sortOpt`则不会对字段进行排序，给列字段配置`sortable`属性是前提条件。</p>
+                        <p class="pt"></p>
+                        <div class="con-body">
+                            <table id="formTable7a"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable7a"></table>
+</div>
+//js
+$("#formTable7a").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    sortOpt:{hostDownloadSum:1, hostAuthType:2},
+    sortFields:["hostDownloadSum", "hostAuthType"],
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", sortable:true, field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", sortable:true, field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ]
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">sortFunction</h2>
+                        <p>funciton，自定义排序函数，若配置了该属性，则所有的排序都按照自定义的逻辑进行排序不会触发组件默认的排序功能。</p>
+                        <div class="con-body">
+                            <table id="formTable8"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable8"></table>
+</div>
+//js
+$("#formTable8").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    columns:[
+        {title:"主机名称", sortable:true, field:"hostName"},
+        {title:"认证类型",  field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ],
+    sortFunction:function(a, b){
+        if(typeof this.sortOpt.hostName === "undefined" || this.sortOpt.hostName === 2){
+            return b.hostName < a.hostName;
+        }else{
+            return b.hostName > a.hostName;
+        }
+    }
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">actionColumn</h2>
+                        <p>按钮操作列，配置操作列的按钮，当然也可以通过<a href="#format-btn" calss="code">format,rendered</a>进行相关配置</p>
+                        <div class="con-body">
+                            <table id="formTable9"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable9"></table>
+</div>
+//js
+$("#formTable9").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    columns:[
+        {title:"主机名称", sortable:true, field:"hostName"},
+        {title:"认证类型",  field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ],
+    actionColumn:{
+        columnName: "操作按钮",
+        actions: [
+            {
+                type:"edit",
+                text:"编辑",
+                callback:function(){
+                    alert("Edit");
+                }
+            },
+            {
+                type:"delete",
+                text:"删除",
+                callback:function(){
+                    alert("Delete");
+                }
+            }
+        ]
+    }
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">format</h2>
+                        <p>function：自定义列信息显示，可以对单元格数据进行二次加工，以处理自定义的业务逻辑或者显示，有三个参数`data`,`dataFiled`,`rowData`。
+                            `data`: 该单元个的数据<br/>
+                            `dataField`: 该单元格对应的字段名称<br/>
+                            `rowData`: 该单元格所在行的行数据对象<br/>
+
+                        </p>
+                        <div class="con-body">
+                            <table id="formTable10"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable10"></table>
+</div>
+//js
+$("#formTable10").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", field:"hostAuthType", format:function(data, dataField, rowData){
+                switch(data){
+                    case "Web":
+                        return "portal认证";
+                    case "WeChat":
+                        return "微信连WiFi";
+                    case "PPoE":
+                        return "PPoE认证";
+                }
+            }
+        },
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum", format:function(data, dataField, rowData){
+                return formatSpeed(data);
+            }
+        },
+        {title:"备注", field:"hostRemark"}
+    ]
+});
+
+function formatSpeed(val,num){
+    if(num === "" || num === undefined){
+        num = 2;
+    }
+    if(val){
+        val = ~~val;
+        var speedArr = [" KB", " MB", " GB", " TB"], index = 0;
+        while(val > 1024){
+            val = val / 1024.0;
+            index++;
+        }
+        val = val.toFixed(num) + speedArr[index];
+    }else{
+         val += " KB";
+    }
+    return val;
+}
+                        </pre>
+                    </article>
+                    <article id="format-btn" class="content">
+                        <h2 class="con-title">format与rendered同时使用</h2>
+                        <p>rendered: function, 单元格渲染完成后的回调函数，具体使用见本示例。</p>
+                        <div class="con-body">
+                            <table id="formTable11"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable11"></table>
+</div>
+//js
+$("#formTable11").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    columns:[
+        {title:"主机名称", field:"hostName"},
+        {title:"认证类型", field:"hostAuthType", 
+            format:function(data, dataField, rowData){
+                return '&lt;select class="auth-select" data-key="FormSelect" default-value="' + data + '"&gt;&lt;/secect&gt;';
+            },
+            rendered:function(){
+                this.$element.find("select.auth-select").Rcomponent({
+                    selectArray:{PPoE:"portal认证", Web:"PPoE认证", WeChat:"微信连WiFi"},
+                    changeCallBack:function(){
+                        alert(this.value);
+                    }
+                });
+            }
+        },
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum", format:function(data, dataField, rowData){
+                return '&lt;input type="text" default-value="' + data + '" data-key="FormInput" class="sum-input"&gt;';
+            },
+            rendered:function(){
+                this.$element.find("input.sum-input").Rcomponent({
+                    placeholder: '输入下载流量',
+                    displayMode: "readEdit",
+                    dataOptions:[{type:"num", args:[1,10000]}],//[{type:"",args:[]}]
+                });
+            }
+        },
+        {title:"操作按钮", field:"", format:function(data, dataField, rowData){
+                return '&lt;i class="table-icon icon-edit" data-key="' + rowData["ID"] + '" data-type="edit"&gt;&lt;/i&gt;' + '&lt;i class="table-icon icon-delete" data-key="' + rowData["ID"] + '" data-type="delete"&gt;&lt;/i&gt;';
+            },
+            rendered:function(){
+                this.$element.off("click.acton").on("click.acton", ".table-icon", function(){
+                    var $this = $(this);
+                    if($this.hasClass("icon-edit")){
+                        alert("edit");
+                    }else if($this.hasClass("icon-delete")){
+                        alert("delete");
+                    }
+                });
+            }
+        }
+    ]
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">数据过滤</h2>
+                        <p>filterProperty: [], 需要进行数据过滤的字段, autoHighLight：bool,是否需要对查询字段进行高亮显示</p>
+                        <div class="con-body">
+                            <table id="formTable12"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+</div>
+//js
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">数据选择</h2>
+                        <p>showCheckbox: bool, 是否显示CheckBox，checkbox会出现的table的第一列，并且可以通过`getSelected()`方法获取已选的数据的的主键值的数组</p>
+                        <div class="con-body">
+                            <table id="formTable13"></table>
+                            <button id="getSelected" class="btn-page">getSelected</button>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable13"></table>
+    <button id="getSelected" class="btn-page">getSelected</button>
+</div>
+//js
+var tableTar = $("#formTable13").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    showCheckbox: true,
+    columns:[
+        {title:"主机名称", sortable:true, field:"hostName"},
+        {title:"认证类型",  field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ]
+});
+
+$("#getSelected").off("click.get").on("click.add", function(){
+    alert(tableTar.getSelected().join(","));
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">其它属性</h2>
+                        <p>
+                            `updateCallback`: function, 数据更新回调，this指向当前组件实例对象
+                            `changePageNumCallBack`: function, 改变每页显示条数回调，this指向当前组件实例对象 
+                            `beforeUpdate`: function, 数据更新前操作，可进行数据的二次处理，若有返回值，则返回新的数据，this指向当前组件实例对象 
+                        </p>
+                        <div class="con-body">
+                            <table id="formTable14"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable14"></table>
+</div>
+//js
+$("#formTable14").FormTable({
+    data:TABLEDATA,
+    perArray:[5,10,20],
+    perNum:5,
+    showCheckbox: true,
+    columns:[
+        {title:"主机名称", sortable:true, field:"hostName"},
+        {title:"认证类型",  field:"hostAuthType"},
+        {title:"IP地址", field:"hostIP"},
+        {title:"下载总流量", field:"hostDownloadSum"},
+        {title:"备注", field:"hostRemark"}
+    ],
+    updateCallBack:function(){
+        console.log("数据更新完毕，共" + this.orignalData.length + "条数据");
+    },
+    changePageNumCallBack:function(){
+        alert("changePageNum");
+    },
+    beforeUpdate:function(data){
+        if(data && data.length > 0){
+            data.forEach(function(item){
+                switch(item.hostAuthType){
+                    case "Web":
+                        item.hostAuthType = "portal认证";
+                        break;
+                    case "WeChat":
+                        item.hostAuthType = "微信连WiFi";
+                        break;
+                    case "PPoE":
+                        item.hostAuthType = "PPoE认证";
+                        break;
+                }
+            });
+        }
+    }
+});
+
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">xxxxxxx</h2>
+                        <p>
+                            `updateCallback`: function, 数据更新回调，this指向当前组件实例对象
+                            `changePageNumCallBack`: function, 改变每页显示条数回调，this指向当前组件实例对象 
+                            `beforeUpdate`: function, 数据更新前操作，可进行数据的二次处理，若有返回值，则返回新的数据，this指向当前组件实例对象 
+                        </p>
+                        <div class="con-body">
+                            <table id="formTable15"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable15"></table>
+</div>
+//js
+$("#formTable15").FormTable({
+    requestUrl:'./data/data.json',
+    columns:[
+        {title:"用户名", field:"authUserID", sortable: true},
+        {title:"密码", field:"authUserPwd"},
+        {title:"备注", field:"authUserRemark"},
+        {title:"有效时长", field:"authUserValidPeriod"}
+    ],
+    showCheckbox:true,
+    dataTarget:"getAuthUserList"
+});
+                        </pre>
+                    </article>
+                </article>
+            </section>
+            <!-- FormTable end -->
+
+            <!-- ModalDialog -->
+            <section class="section">
+                <h1 class="title">FormMessage</h1>
+                <p>悬浮消息提示框组件，可以配置显示的时间，同时提示多个消息提示框，会依次排列不会出现重叠的情况。该示例包含组件大部分使用场景。</p>
+                <article>
+                    <article class="content">
+                        <h2 class="con-title">信息提示框</h2>
+                        <div class="con-body">
+							<div id="formtab-fm"></div>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+</div>
+//js
+var formMess = null;
+$("#formtab-fm").Rcomponent({
+    dataKey:"FormTab",
+    selectArray:{1:"只传消息", 2:"displayTime=0", 3:"displayTime=3000", 4:"setMess", 5:"hide"},
+    dataValueType:"num",
+    defaultValue:2, //默认选中的按钮项
+    changeCallBack:function(){
+        switch(this.value){
+            case 1:{
+                $.formMessage("显示提示信息，一秒后自动关闭。");
+            }break;
+            case 2:{
+                if(!formMess){
+                    formMess = $.formMessage({
+                        message:"不会关闭的消息提示框",
+                        displayTime:0
+                    });
+                }
+            }break;
+            case 3:{
+                $.formMessage({
+                    message:"3秒后自动关闭",
+                    displayTime:3000
+                });
+            }break;
+            case 4:{
+                if(formMess){
+                    formMess.setMess("修改提示信息");
+                }else{
+                    formMess = $.formMessage({
+                        message:"修改提示信息",
+                        displayTime:0
+                    });
+                }
+            }break;
+            case 5:{
+                if(formMess){
+                    formMess.hide();
+                    formMess = null;
+                }
+            }break;
+        }
+    }
+});
+                        </pre>
+                    </article>
+                </article>
+			</section>
+			
+			<section class="section">
+					<h1 class="title">ModalDialog</h1>
+					<article>
+						<article class="content">
+                            <h2 class="con-title">弹框组件，基本使用</h2>
+                            <p>内容弹窗组件，内容可以为字符串，jQuery对象，或者iframe。具体详情见<a class="code" target='API' href="https://www.zybuluo.com/moshangxc/note/803905">接口使用文档</a></p>
+							<div class="con-body">
+								<button id="btnModel" class="btn">点击显示弹出框</button>
+								<button id="btnModel1" class="btn">超高弹出框</button>
+							</div>
+							<pre>
+//html
+<div class="htmlCode">
+</div>
+//js
+var modal1 = null, modal2 = null, modal3 = null;
+$("#btnModel").off("click").on("click", function(){
+    if(modal1){
+        modal1.show();
+    }else{
+        modal1 = $.modalDialog({
+            title: "弹出框标题",
+            content:"这个是弹出框的内容！！！"
+        });
+    }
+});
+
+$("#btnModel1").off("click").on("click", function(){
+    if(modal2){
+        modal2.show();
+    }else{
+        modal2 = $.modalDialog({
+            title: "超高弹出框",
+            content:'&lt;div style="height:1000px;"&gt;超高弹出框！！！&lt;/div&gt;'
+        });
+    }
+});
+                            </pre>
+                        </article>    
+                        <article class="content">
+                                <h2 class="con-title">弹框组件具体业务场景使用</h2>
+                                <p>弹窗组件结合`componentManager`一起使用</p>
+                                <div class="con-body">
+                                    <button id="btnModel2" class="btn">新增用户</button>
+                                    <div id="userMess" style="display:none;">
+                                        <input data-field="username" data-key="FormInput">
+                                        <input data-field="password" data-key="FormInput">
+                                        <div data-field="gender" data-key="FormRadioList"></div>
+                                        <select data-field="country" data-key="FormSelect"></select>
+                                        <input data-field="birthday" data-key="FormCalendar">
+                                    </div>
+                                </div>
+                                <pre>
+//html
+<div class="htmlCode">
+    <button id="btnModel2" class="btn">新增用户</button>
+    <div id="userMess" style="display:none;">
+        <input data-field="username" data-key="FormInput">
+        <input data-field="password" data-key="FormInput">
+        <div data-field="gender" data-key="FormRadioList"></div>
+        <select data-field="country" data-key="FormSelect"></select>
+        <input data-field="birthday" data-key="FormCalendar">
+    </div>
+</div>
+//js
+var userCm = $.componentManager({
+    container:$("#userMess"),
+    formCfg:{
+        username:{dataTitle:"用户名：", dataOptions:[{type:"len", args:[3, 14]}]},
+        password:{dataTitle:"密码：", dataOptions:[{type:"len", args:[3, 14]}]},
+        gender:{dataTitle:"性别：", selectArray:{0:"男", 1:"女"}},
+        country:{dataTitle:"国籍：", selectArray:["中国","英国","法国","美国","德国"]},
+        birthday:{dataTitle:"出生日期："}
+    }
+});
+
+$("#btnModel2").off("click").on("click", function(){
+    if(modal3){
+        userCm.reset();
+        modal3.show();
+    }else{
+        modal3 = $.modalDialog({
+            title: "新增用户",
+            width: 500,
+            content:$("#userMess"),
+            buttons:[
+                {
+                    text:"新增",
+                    theme:"ok",
+                    autoHide:false,
+                    callback:function(){
+                        if(userCm.submit()){
+                            modal3.hide();
+                        }
+                    }
+                },
+                {
+                    text:"取消"
+                }
+            ]
+        });
+    }
+});
+                    			</pre>
+							</article>
+					</article>
+				</section>
+            <!-- ModalDialog end -->
+
+            <!-- ComponmentManage -->
+            <section class="section">
+                <h1 class="title">ComponmentManage</h1>
+                <article>
+    				<article class="content">
+                        <h2 class="con-title">组件操作工具</h2>
+                        <p>适用于同时对多个组件进行操作，常见的业务场景为表单的处理。可以使用该类进行表单数据的展示提交校验等工作。具体参见<a class="code" target='API' href="https://www.zybuluo.com/moshangxc/note/803905#componentmanager">接口使用文档</a></p>
+						<div class="con-body">
+							<div id="cmp">
+								<input data-field="remark" data-key="FormInput">
+								<input data-field="timeGroup" data-key="FormInput">
+								<input data-field="connectNum" data-key="FormInput">
+								<input data-field="listUpStream" data-key="FormInput">
+								<input data-field="downStream" data-key="FormInput">
+							</div>
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+    <div id="cmp">
+        <input data-field="remark" data-key="FormInput">
+        <input data-field="timeGroup" data-key="FormInput">
+        <input data-field="connectNum" data-key="FormInput">
+        <input data-field="listUpStream" data-key="FormInput">
+        <input data-field="downStream" data-key="FormInput">
+    </div>
+</div>
+//js
+$.componentManager({
+    submitUrl:"/goform/module",
+    container:"#cmp",
+    formCfg:{
+        remark:{dataTitle:"IP组："},
+        timeGroup:{dataTitle:"时间组："},
+        connectNum:{dataTitle:"最大连接数：", dataValueType:"num",dataOptions:[{type:"num", args:[1, 9999]}]},
+        listUpStream:{dataTitle:"上传速率：", dataValueType:"num", description:"KB/s", dataOptions:[{type:"num", args:[0, 1002]}]},
+        downStream:{dataTitle:"下载速率：", dataValueType:"num", description:"KB/s", dataOptions:[{type:"num", args:[0, 2342]}]}
+    }
+});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">各方法配置属性</h2>
+                        <p>
+                            `showSubmitbar`:是否显示操作按钮行<br/>
+                            `beforeUpdate(data)`:数据更新前操作，this指向当前ComponentManager实例对象<br/>
+                            `afterUpdate()`:数据更新后的回调，this指向当前ComponentManager实例对象<br/>
+                            `beforeSubmit(data)`:提交数据前，进行一些列自定义数据校验操作，当然基础的数据校验会在这之前进行调用，失败返回false, 成功返回true或者二次处理后需要提交的数据，this指向当前ComponentManager实例对象<br/>
+                            `afterSubmit()`:数据提交后的回调，this指向当前ComponentManager实例对象
+                        </p>
+                        <div class="con-body">
+                            <div id="cmp1">
+                                <input data-field="remark" data-key="FormInput">
+                                <input data-field="timeGroup" data-key="FormInput">
+                                <input data-field="connectNum" data-key="FormInput">
+                                <input data-field="listUpStream" data-key="FormInput">
+                                <input data-field="downStream" data-key="FormInput">
+                            </div>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <div id="cmp1">
+        <input data-field="remark" data-key="FormInput">
+        <input data-field="timeGroup" data-key="FormInput">
+        <input data-field="connectNum" data-key="FormInput">
+        <input data-field="listUpStream" data-key="FormInput">
+        <input data-field="downStream" data-key="FormInput">
+    </div>
+</div>
+//js
+var cmp = $.componentManager({
+    submitUrl:"/goform/module",
+    container:"#cmp1",
+    showSubmitBar:true,
+    formCfg:{
+        remark:{dataTitle:"IP组：", dataOptions:[{type:"ip.all"}]},
+        timeGroup:{dataTitle:"时间组："},
+        connectNum:{dataTitle:"最大连接数：", dataValueType:"num",dataOptions:[{type:"num", args:[1, 9999]}]},
+        listUpStream:{dataTitle:"上传速率：", dataValueType:"num", description:"KB/s", dataOptions:[{type:"num", args:[0, 1002]}]},
+        downStream:{dataTitle:"下载速率：", dataValueType:"num", description:"KB/s", dataOptions:[{type:"num", args:[0, 2342]}]}
+    },
+    beforeUpdate: function(data){
+        //key在这个地方手动的给组件添加默认值
+        if($.isEmptyObject(data)){
+            data = {
+                remark: "192.168.3.1",
+                timeGroup: "周末",
+                connectNum: 12,
+                listUpStream: 350,
+                downStream:480
+            }
+        }
+        return data;
+    },
+    updateCallback:function(){
+        $.formMessage("数据已加载成功！");
+    },
+    beforeSubmit:function(data){
+        console.log(data);
+        if(data.listUpStream > data.downStream){
+            alert("上传速率不能大于下载速率。");
+            return false;
+        }
+    },
+    afterSubmit:function(data){    
+        $.formMessage("数据提交成功！");
+    }
+});
+cmp.updateComponents({});
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">方法使用</h2>
+                        <p>
+                            `getComponent`:获取单个组件对象<br/>
+                            `reset(data)`:组件重置值为空<br/>
+                            `updateComponents()`:更新组件的值或者重置为初始值<br/>
+                            `setValue(data)`:设置组件的值<br/>
+                            `getValue()`:获取组件的值
+                        </p>
+                        <div class="con-body">
+                            <div id="cmp2">
+                                <input data-field="remark" data-key="FormInput">
+                                <input data-field="timeGroup" data-key="FormInput">
+                                <input data-field="connectNum" data-key="FormInput">
+                                <input data-field="listUpStream" data-key="FormInput">
+                                <input data-field="downStream" data-key="FormInput">
+                            </div>
+                            <div id="formtab-cm"></div>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <div id="cmp2">
+        <input data-field="remark" data-key="FormInput">
+        <input data-field="timeGroup" data-key="FormInput">
+        <input data-field="connectNum" data-key="FormInput">
+        <input data-field="listUpStream" data-key="FormInput">
+        <input data-field="downStream" data-key="FormInput">
+    </div>
+    <div id="formtab-cm"></div>
+</div>
+//js$("#formtab-cm").Rcomponent({
+    dataKey:"FormTab",
+    selectArray:{1:"reset", 2:"update", 3:"setValue", 4:"getValue", 5:"getComponent"},
+    dataValueType:"num",
+    defaultValue:2, //默认选中的按钮项
+    changeCallBack:function(){
+        switch(this.value){
+            case 1:{
+                cmp1.reset();
+            }break;
+            case 2:{
+                cmp1.updateComponents({
+                    listUpStream:666,
+                    downStream:888
+                });
+            }break;
+            case 3:{
+                cmp1.setValue("弄啥嘞", "timeGroup");
+            }break;
+            case 4:{
+                $.formMessage("IP组: " + cmp1.getValue("remark"))
+            }break;
+            case 5:{
+                var t = cmp1.getComponent("connectNum");
+                $.formMessage("连接数: " + t.getValue());
+            }break;
+        }
+    }
+});
+                        </pre>
+                    </article>
+                </article>
+            </section>
+            <!-- ComponmentManage end -->
+
+        </section>
+        
+        <!-- 导航栏 -->
+        <aside class="right nav-side">
+            <h4 class="nav-head">目录</h4>
+            <ul id="sideNav" class="sideNav nav">
+            </ul>
+        </aside>
+        <!-- 导航栏 end -->
+    </div>
+     
+    <script src="./js/componment.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>
