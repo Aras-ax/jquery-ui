@@ -101,7 +101,7 @@ $(function() {
 						position:"fixed",
 						left: $nav.offset().left,
 						top: "-40px",
-						maxHeight:$(window).outerHeight() + 40,
+						maxHeight:$(window).outerHeight() + 44,
 						"overflow-y":"auto"
 					});
 				}
@@ -123,7 +123,7 @@ $(function() {
 			if(scrollTop > 160){
 				$(".nav-side").css({
 					left: $("section.left").offset().left + $("section.left").width() + 10,
-					maxHeight:$(window).outerHeight() + 40,
+					maxHeight:$(window).outerHeight() + 44,
 					"overflow-y":"auto"
 				});
 			}

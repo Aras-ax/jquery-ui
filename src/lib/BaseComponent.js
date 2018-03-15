@@ -26,7 +26,8 @@
 			autoValidate:true, //是否自动进行数据校验
 			defaultValue:"", //默认值
 			description:"", //描述信息
-			dataValueType:"string",//bool,num,float(input组件则含有其它数据校验格式值)
+			errorType: 1,//错误信息提示方式，1：在组件下面标红提示，2：悬浮标红提示
+			dataValueType: null,//bool,num,float(input组件则含有其它数据校验格式值)
 			validateCustom:null,//自定义错误信息提示方式，定义了该参数则不会显示默认的错误提示样式
 			changeCallBack:null,//组件值改变回调函数，只有数据校验成功的情况下才执行该回调，函数内部this指向当前组件实例
 			validateCallBack:null,//数据校验回调函数,有错则返回出错语句，否则为校验成功，函数内部this指向当前组件实例
@@ -44,7 +45,6 @@
 		this.preRender();
 		this.render();
 		this.rendered();
-		this.isIE = is_IE(8);
 
 		this.$element.data(this.dataKey, this);
 	} 
@@ -94,10 +94,14 @@
 			this.validateResult = true;
 			this.css = this.option.css;
 			
+			this.isIE = is_IE(8);
+			this.supportTransition = support_css3("transition");
+
 			this.visible = this.option.visible = this.option.visible === "false" ? false : !!this.option.visible;
 			this.ignore = this.option.ignore = this.option.ignore === "false" ? false : !!this.option.ignore;
 			this.editable = this.option.editable = this.option.editable === "false" ? false : !!this.option.editable;
 			this.autoValidate = this.option.autoValidate = this.option.autoValidate  === "false" ? false : !!this.option.autoValidate;
+			this.errorType = this.option.errorType;
 
 			if(this.option.defaultValue || this.option.defaultValue === 0){
 				switch(this.option.dataValueType){
@@ -171,10 +175,12 @@
 
 		//组件渲染完成后
 		rendered: function(){
+			
+			
             if(this.option.description){
             	this.$element.after('<em class="form-description">' + this.option.description + '</em>');
-            }
-
+			}
+			
 			this.option.renderedCallBack && this.option.renderedCallBack.call(this);
 		},
 
@@ -268,8 +274,11 @@
 
 		//执行自定义数据校验逻辑和基础数据校验
 		onValidate:function(elem){
-			this.removeValidateText();
-			if (!this.editable) return true;
+			// this.removeValidateText();
+			if (!this.editable){
+				this.removeValidateText();
+				return true;
+			} 
 
 			elem = elem || this.$element;
             var val = this.getValue();
@@ -303,10 +312,10 @@
 
 		//执行组件数据改变后的自定义逻辑
 		handleValidateEvents: function(){
-			if (this.validateEvents == null || $.isEmptyObject(this.validateEvents)) 
-			return true;
-
-			if($.isEmptyObject(this.validateEvents)) return true;
+			if (this.validateEvents == null || $.isEmptyObject(this.validateEvents)){
+				this.removeValidateText();
+				return true;
+			}
 
             var events = this.validateEvents;
             for (var key in events) {
@@ -316,6 +325,7 @@
 					return false;
 				}
 			}
+			this.removeValidateText();
 			return true;
 		},
 
@@ -354,66 +364,80 @@
 			if(_this.option.validateCustom && typeof _this.option.validateCustom === "function"){
 				_this.option.validateCustom.call(this, text);
 			}else{
-				if(!this.$error){
-					var pos = _this.$element.position(),
-						pos1 = _this.$element.parent().position();
-					pos = {
-						h: _this.$element.outerHeight(),
-						w: _this.$element.outerWidth(),
-						top: pos.top,
-						left: pos.left,
-						totalW:_this.$element.parent().outerWidth()
-					};
-
-					this.$error = this.$error || $('<div title="' + _("Click to hide the hint") + '" class="form-error none">'+ text +'</div>');
-					this.$hideerror = this.$hideerror || $('<i title="' + _("Click to show!") + '" class="form-hideerror icon-warning none hide"></i>');
-
-					var top = pos.top, left = pos.w + pos.left + 7;
-					if(this.option.css.indexOf("error-in-top") > -1 || pos.totalW - left < 130){
-						this.$error.addClass('error-top').removeClass('error-left');
-						left = pos.left;
-						top = pos.h + pos.top + 7;
-					}else{
-						this.$error.removeClass('error-top').addClass('error-left');
-					}
-
-					this.$error.text(text).css({
-						top: top + "px",
-						left: left + "px"
-					});
-
-					this.$hideerror.css({
-						left: pos.w + pos.left - 18 + "px"
-					});
-					this.$error.removeClass('none').insertAfter(_this.$element);
-					this.$hideerror.insertAfter(_this.$element);
-
-					this.$error.off("click").on("click", function() {
-						_this.$error.toggleClass('hide');
-						_this.$hideerror.toggleClass('hide');
-
-						if(_this.isIE){
-                            _this.$hideerror.removeClass("icon-warning").addClass("icon-warning");
-                        }
-
-					});
-
-					this.$hideerror.off("click").on("click", function() {
-						_this.$error.toggleClass('hide');
-						_this.$hideerror.toggleClass('hide');
-					});
-				}else{
+				if(this.$error){
 					this.$error.text(text);
+				}else{
+					this.$error = $('<div class="form-error error-down error-none">'+ text +'</div>').appendTo(this.$element.parent());
+					if(this.errorType == 1 ){
+						this.supportTransition || this.$error.removeClass("error-none").addClass("none");
+					}else{
+						var pos = _this.$element.position(),
+							pos1 = _this.$element.parent().position();
+						pos = {
+							h: _this.$element.outerHeight(),
+							w: _this.$element.outerWidth(),
+							top: pos.top,
+							left: pos.left,
+							totalW:_this.$element.parent().outerWidth()
+						};
+	
+						this.$error = this.$error.removeClass("error-down").attr("title",_("Click to hide the hint")).addClass("error-float");
+						this.$hideerror = this.$hideerror || $('<i title="' + _("Click to show!") + '" class="form-hideerror icon-warning none hide"></i>');
+	
+						var top = pos.top, left = pos.w + pos.left + 7;
+						if(this.option.css.indexOf("error-in-top") > -1 || pos.totalW - left < 130){
+							this.$error.addClass('error-top').removeClass('error-left');
+							left = pos.left;
+							top = pos.h + pos.top + 7;
+						}else{
+							this.$error.removeClass('error-top').addClass('error-left');
+						}
+	
+						this.$error.text(text).css({
+							top: top + "px",
+							left: left + "px"
+						});
+	
+						this.$hideerror.css({
+							left: pos.w + pos.left + 6 + "px"
+						});
+						this.$error.removeClass('none').insertAfter(_this.$element);
+						this.$hideerror.insertAfter(_this.$element);
+	
+						this.$error.off("click").on("click", function() {
+							_this.$error.toggleClass('hide');
+							_this.$hideerror.toggleClass('hide');
+	
+							if(_this.isIE){
+								_this.$hideerror.removeClass("icon-warning").addClass("icon-warning");
+							}
+	
+						});
+	
+						this.$hideerror.off("click").on("click", function() {
+							_this.$error.toggleClass('hide');
+							_this.$hideerror.toggleClass('hide');
+						});
+					}
 				}
-
-				this.showError();
+				setTimeout(function(){
+					_this.showError();
+				}, 0);
 			}
 		},
 
 		showError:function(){
+			var _this = this;
 			this.$element.addClass('error-tip');
-			this.$error.removeClass('none');
-			this.$hideerror.removeClass('none');
+			if(this.errorType == 1 && !this.supportTransition){
+				// _this.$error.hasClass("none") && this.$error.slideDown(300, function(){
+				// 	_this.$error.removeClass("none");
+				// });
+				this.$error.slideDown(300);
+			}else{
+				this.$error.removeClass('error-none');
+			}
+			this.$hideerror && this.$hideerror.removeClass('none');
 		},
 
 		//去掉显示的错误信息
@@ -422,8 +446,16 @@
 				this.option.validateCustom();
 			}else{
 				if(this.$error){
-					this.$error.addClass('none');
-					this.$hideerror.addClass('none');
+					var _this = this;
+					if(this.errorType == 1 && !this.supportTransition){
+						this.$error.slideUp(300);
+						// _this.$error.hasClass("none") || this.$error.slideUp(300, function(){
+						// 	_this.$error.addClass("none");
+						// });
+					}else{
+						this.$error.addClass('error-none');
+					}
+					this.$hideerror && this.$hideerror.addClass('none');
 					this.$element.removeClass('error-tip');
 				}
 			}
@@ -469,7 +501,6 @@
 	//所有控件都能通过这种方式调用
 	$.fn.Rcomponent = function(opt){
 		var key = this.attr("data-key");
-		console.log(!!opt);
 		if(!!opt){ 
 			var component;
 			opt.dataKey = opt.dataKey || key;
@@ -492,8 +523,24 @@
 		}
 	}
 
+	function support_css3(prop){
+		var div = document.createElement('div'),
+			vendors = 'Ms O Moz Webkit'.split(' '),
+			len = vendors.length;
 
-
+		if (prop in div.style ) return true;
+		
+		prop = prop.replace(/^[a-z]/, function(val) {
+			return val.toUpperCase();
+		});
+		
+		while(len--) {
+			if ( vendors[len] + prop in div.style ) {
+				return true;
+			} 
+		}
+		return false;
+	}
 }(jQuery));
 
 

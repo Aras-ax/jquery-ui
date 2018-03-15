@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>demo</title>
     <link href="./css/icon-font/style.css" rel="stylesheet">
     <link href="./css/min.css" rel="stylesheet">
 </head>
@@ -14,27 +14,97 @@
             <section class="section">
     			<article class="clearfix">
 					<article class="content">
-                        <h2 class="con-title">Rcomponent调用时传递参数</h2>
-                        <p>将配置参数以对象字面量的方式传给`Rcomponment`函数</p>
+                        <h2 class="con-title">FormInput</h2>
 						<div class="con-body" id="TT">
-							<div id="formMultiInpit" data-field="kd1" data-key="FormMultiInput"></div>
-							<div id="formMultiInpit1" data-field="kd2" data-key="FormMultiInput"></div>
-							<div id="formMultiInpit2" data-field="kd3" data-key="FormMultiInput"></div>
-							<div id="formMultiInpit3" data-field="kd4" data-key="FormMultiInput"></div>
-							<div id="formPercent" data-field="fp" data-key="FormPercent"></div>
-							<div id="formPercent" data-field="fp1" data-key="FormPercent"></div>
-							<div id="formPercent" data-field="fp2" data-key="FormPercent"></div>
-							<div id="formUpload" data-field="ful" data-key="FormUpload"></div>
-							<div id="formUpload1" data-field="ful1" data-key="FormUpload"></div>
+							<input id="fi" type="password" data-field="fi" data-key="FormInput">
+							<input id="fi1" type="password" data-field="fi1" data-key="FormInput">
+							<input id="f2" type="text" data-field="fi2" data-key="FormInput">
+                            <input id="f3" type="text" data-field="fi3" data-key="FormInput">
+                            <input id="f4" type="text" data-field="fi4" data-key="FormInput">
+                            <div id="fp" data-field="fp" data-key="FormPercent"></div>
+                            <div id="fp1" data-field="fp1" data-key="FormPercent"></div>
+                            <div id="fm" data-field="fm" data-key="FormMultiInput"></div>
+                            <div id="val"></div>
                         </div>
-                        <button id="get">get</button> <button id="set">set</button>
-						<pre></pre>
+                        <button id="getFi">GET VALUE</button>
 					</article>
 				</article>
             </section>
+        </section>
+        <button id="modal">modal</button>
+    </div>
 <!-- 组件的调用demo end -->
 
     <script src="./js/componment.js"></script>
-    <script src="./js/multiInput.js"></script>
+    <script>
+        var man = $.componentManager({
+            container:"#TT",
+            formCfg:{
+                fi:{
+                    dataTitle: "有眼睛",
+                    placeholder: "密码文本",
+                    hasEyes: true
+                },
+                fi1:{
+                    dataTitle: "无眼睛",
+                    placeholder:"请输入6-12位整数",
+                    dataOptions:[{type:"len",args:[6,12]}]
+                },
+                fi2: {
+                    dataTitle: "整数输入框",
+                    placeholder:"",
+                    maxLength: 6,
+                    dataOptions:[{type:"num",args:[-1000, 10000]}]
+                }, 
+                fi3: {
+                    dataTitle: "小数输入框",
+                    placeholder:"请输入小于10000的小数",
+                    maxLength: 6,
+                    dataOptions:[{type:"float",args:[-1000, 10000]}]
+                },
+                fi4: {
+                    dataTitle: "只能输入字母",
+                    placeholder:"输入字母",
+                    regExp: /[a-zA-Z]/
+                },
+                fp: {
+                    dataKey: "FormPercent",
+                    dataField: "formPercent",
+                    dataTitle:"FormPercent：",
+                    showInput: false
+                },
+                fp1: {
+                    dataKey: "FormPercent",
+                    dataTitle:"负数场景：",
+                    dataField: "formPercent1",
+                    end:100,
+                    start: -100,
+                    fixed: 1,
+                    defaultValue: -100
+                },
+                fm: {
+                    dataKey: "FormMultiInput",
+                    dataTitle:"FormMultiInput：",
+                    dataField: "formMultiInpit",
+                    inputCount:4,
+                    regExp: '[a-zA-Z0-9]',
+                    maxLength: 4
+                }
+            }
+        });
+
+        $("#getFi").click(function(){
+            $("#val").html(JSON.stringify(man.getValue()));
+        });
+
+        $("#modal").click(function(){
+            $.modalDialog({
+                title: "123123",
+                content: "梵蒂冈十多个电饭锅",
+                height: 1500,
+                width: 600
+            });
+        });
+    </script>
 </body>
 </html>

@@ -26,10 +26,12 @@
             hasEyes:false,// 是否有眼睛图标显示，只有在type为password的情况下才有效
             dataOptions:[],//[{type:"",args:[]}]
             defaultText:"", // 值为空时显示的默认文本
-            defaultTextClass:"gray",
-            maxLength:null,
-            switchCallBack:null,//切换模式回调函数
-            focusCallBack:null//文本框获取焦点回调
+            defaultTextClass: "gray",
+            regExp: null,//允许输入项的正则，覆盖默认的num和float对应的正则
+            maxLength: null,
+            maxCallBack: null, //当输入的值等于max时的回调
+            switchCallBack: null, //切换模式回调函数
+            focusCallBack: null //文本框获取焦点回调
         }
 
     // 继承及控件实现
@@ -45,6 +47,16 @@
             if(this.option.dataOptions && Object.prototype.toString.call(this.option.dataOptions) === "[object Object]"){
                 this.option.dataOptions = [this.option.dataOptions];
             }
+            
+			if(!this.option.dataValueType){
+                var options = this.option.dataOptions;
+                for(var i = 0, l = options.length; i < l; i++){
+                    if(['num', "float"].indexOf(options[i]["type"]) > -1){
+                        this.option.dataValueType = options[i]["type"];
+                        break;
+                    }
+                }
+            }
 
             //记录组件显示状态
             //edit（编辑），read（只读）,readEdit（编辑只读状态互转）
@@ -53,6 +65,17 @@
             this.value = this.option.defaultValue;
 
             this.$holderplace = null;
+            if(!this.option.regExp){
+                if(this.option.dataValueType === "num"){
+                    this.option.regExp = /[0-9\-]/;
+                }else if(this.option.dataValueType === "float"){
+                    this.option.regExp = /[0-9\.\-]/;
+                }
+            }
+
+            if(this.option.regExp){
+                this.regExp = typeof this.option.regExp === "object" ? this.option.regExp : new RegExp(this.option.regExp);
+            }
 
             //渲染Html页面
             this.htmlRender();
@@ -73,7 +96,6 @@
             }
 
             this.option.maxLength && this.$element.attr("maxlength", this.option.maxLength);
-
             if(this.type === "password"){
                 if(this.$element.attr("type") !== "password"){
                     if(this.supportChangeType){
@@ -104,7 +126,7 @@
 
                 for(var i=0, l = attrs.length; i<l; i++){
                     var attr = attrs[i];
-                    if(attr.nodeName !="type"){
+                    if(attr.nodeName !="type" && attr.nodeName != "id"){
                         this.$textElem.attr(attr.nodeName, attr.nodeValue);
                     }
                 }
@@ -135,26 +157,62 @@
             this.$element.unbind("focus.FormInput").bind("focus.FormInput", this, function (e) {
                 var _this = e.data;
                 _this.option.focusCallBack && _this.option.focusCallBack.call(_this);
-                _this.removeValidateText();
             });
 
-            //值类型为整数或者小数时，进行输入限制
-            if(this.option.dataValueType === "num"){
-                this.$element.unbind("keydown.FormInput").bind("keydown.FormInput", this, function (e) {
-                    var code = e.keyCode, ignoreCode = [8, 9, 37, 39, 46];// backspace键，tab键，左键，右键，delete键
-                    
-                    if(!((code >= 48 && code <= 57) || (code >=96 && code <= 105) || ignoreCode.indexOf(code) > -1)){
-                        // e.preventDefault();
+            this.$element.unbind("keyup.FormInput").bind("keyup.FormInput", function(e){
+                if(this.value && this.value.length >= _this.option.maxLength){
+                    _this.option.maxCallBack && _this.option.maxCallBack.call(_this, e);
+                }
+            });
+
+            //根据配置正则对输入项进行校验
+            this.$element.off("keypress.FormInput").on("keypress.FormInput", function(e){
+                // var ignoreCode = [8, 9, 37, 38, 39, 40, 46];// backspace键，tab键，左键，上键，右键，下键，delete键
+                // console.log(e.keyCode,e.keyCode);
+                // return;
+                // if(ignoreCode.indexOf(e.keyCode) > -1){
+                //     return;
+                // }
+
+                //处理ctrl+v/ctrl+c的情况
+                // if((e.keyCode === 99 || e.keyCode === 118) && e.ctrlKey){
+                //     return;
+                // }
+                var key = String.fromCharCode(e.keyCode);
+                if(_this.regExp && key){
+                    if(!_this.regExp.test(key)){
                         return false;
                     }
-                });
+                }
 
+                if(_this.option.dataValueType === "float" || _this.option.dataValueType === "num"){
+                    if(this.value !== "" && key === "-"){
+                        return false;
+                    }
+                }
+
+                if(_this.option.dataValueType === "float"){
+                    if(this.value === "" && key === "."){
+                        return false;
+                    }
+
+                    //.键
+                    if(key === "." && this.value.indexOf(".") > -1){
+                        return false;
+                    }
+                }
+            });
+
+            if(this.option.dataValueType === "num"){
                 this.$element.unbind("keyup.FormInput").bind("keyup.FormInput", this, function (e) {
+                    if(this.value === "-"){
+                        return;
+                    }
                     var v;
                     if(this.value == "0"){
                         v = 0;
                     }else{
-                        v = this.value.replace(/[^\d]+/g,"");
+                        v = this.value.replace(/[^\-\d]+/g,"");
                     }
 
                     v !== "" && (v = Number(v));
@@ -162,46 +220,114 @@
                         this.value = v;
                     }
                 });
-            }else if(this.option.dataValueType === "float"){
-                this.$element.unbind("keydown.FormInput").bind("keydown.FormInput", this, function (e) {
-                    var code = e.keyCode, ignoreCode = [8, 9, 37, 39, 46, 110, 190];// backspace键，tab键，左键，右键，delete键，小键盘.键，.键
-                    if(!((code >= 48 && code <= 57) || (code >=96 && code <= 105) || ignoreCode.indexOf(code) > -1)){
-                        return false;
-                    }
 
-                    if(this.value === "" && (code === 190 || code === 110)){
-                        return false;
-                    }
-
-                    //.键
-                    if(code === 190 || code === 110){
-                        if(this.value.indexOf(".") > -1){
-                            return false;
+                this.$element.unbind("blur.FormInputNum").bind("blur.FormInputNum", this, function (e) {
+                    if(this.value){
+                        var v = this.value === "-" ? "0" : Number(this.value);
+                        if(isNaN(v)){
+                            v = 0;
                         }
+                        this.value = v;
                     }
                 });
-
+            }else if(this.option.dataValueType === "float"){
                 this.$element.unbind("keyup.FormInput").bind("keyup.FormInput", this, function (e) {
                     var curVal = this.value;
-                    if(curVal === ""){
+                    if(curVal === "" || this.value === "-"){
                         return;
                     }
-                    curVal = curVal.replace(/([^\d\.]|\s)/g, "");
-                    if (/\./.test(curVal)) {
-                        // var split = curVal.split(".");
-                        // curVal = ~~(split[0]) + ".";
-                        // split.shift();
-                        // curVal += split.join("");
-                        curVal = curVal.replace(/[^\d\.]+/g,"");
+                    curVal = curVal.replace(/([^\-\d\.]|\s)/g, "");
+                    if (/\./.test(curVal) || /^\-/.test(curVal)) {
+                        curVal = curVal.replace(/[^\-\d\.]+/g,"");
                     }else if(curVal !== ""){
-                        // curVal = curVal == "0" ? curVal : curVal.replace(/^0+/g,"");
                         curVal = Number(curVal);
                     }
                     if(this.value !== curVal){
                         this.value = curVal;
                     }
                 });
+
+                this.$element.unbind("blur.FormInputFloat").bind("blur.FormInputFloat", this, function (e) {
+                    if(this.value){
+                        var v = this.value === "-" ? "0" : Number(this.value);
+                        if(isNaN(v)){
+                            v = 0;
+                        }
+                        this.value = v;
+                    }
+                });
+            }else 
+            if(_this.regExp){
+                _this.$element.off("keyup.FormInput").on("keyup.FormInput", function(e){
+                    var ignoreCode = [187, 189, 192];
+                    if(this.value &&(/[^\x00-\xff]/.test(this.value) || ignoreCode.indexOf(e.keyCode) > -1)){
+                        var v, reg = new RegExp(_this.regExp, "g");
+                        v = this.value.match(reg, function(a){}) || [];
+                        this.value = v.join("");
+                    }
+                });
             }
+
+            // //值类型为整数或者小数时，进行输入限制
+            // if(this.option.dataValueType === "num"){
+            //     this.$element.unbind("keydown.FormInput").bind("keydown.FormInput", this, function (e) {
+            //         var code = e.keyCode, ignoreCode = [8, 9, 37, 39, 46];// backspace键，tab键，左键，右键，delete键
+                    
+            //         if(!((code >= 48 && code <= 57) || (code >=96 && code <= 105) || ignoreCode.indexOf(code) > -1)){
+            //             // e.preventDefault();
+            //             return false;
+            //         }
+            //     });
+
+            //     this.$element.unbind("keyup.FormInput").bind("keyup.FormInput", this, function (e) {
+            //         var v;
+            //         if(this.value == "0"){
+            //             v = 0;
+            //         }else{
+            //             v = this.value.replace(/[^\d]+/g,"");
+            //         }
+
+            //         v !== "" && (v = Number(v));
+            //         if(this.value !== v){
+            //             this.value = v;
+            //         }
+            //     });
+            // }else if(this.option.dataValueType === "float"){
+            //     this.$element.unbind("keydown.FormInput").bind("keydown.FormInput", this, function (e) {
+            //         var code = e.keyCode, ignoreCode = [8, 9, 37, 39, 46, 110, 190];// backspace键，tab键，左键，右键，delete键，小键盘.键，.键
+            //         if(!((code >= 48 && code <= 57) || (code >=96 && code <= 105) || ignoreCode.indexOf(code) > -1)){
+            //             return false;
+            //         }
+
+            //         if(this.value === "" && (code === 190 || code === 110)){
+            //             return false;
+            //         }
+
+            //         //.键
+            //         if(code === 190 || code === 110){
+            //             if(this.value.indexOf(".") > -1){
+            //                 return false;
+            //             }
+            //         }
+            //     });
+
+            //     this.$element.unbind("keyup.FormInput").bind("keyup.FormInput", this, function (e) {
+            //         var curVal = this.value;
+            //         if(curVal === ""){
+            //             return;
+            //         }
+            //         curVal = curVal.replace(/([^\d\.]|\s)/g, "");
+            //         if (/\./.test(curVal)) {
+            //             curVal = curVal.replace(/[^\d\.]+/g,"");
+            //         }else if(curVal !== ""){
+            //             // curVal = curVal == "0" ? curVal : curVal.replace(/^0+/g,"");
+            //             curVal = Number(curVal);
+            //         }
+            //         if(this.value !== curVal){
+            //             this.value = curVal;
+            //         }
+            //     });
+            // }
 
             //当前的输入框为密码时
             if(this.type === "password"){
@@ -215,6 +341,7 @@
                             }else{
                                 _this.$element.attr("type", "text");
                             }
+                            _this.$element.focus();
                             $(this).toggleClass('active');
                             return false;
                         });
@@ -236,26 +363,27 @@
                                 _this.setValue(_this.$textElem.val());
                                 _this.$textElem.hide();
                                 _this.$element.show();
+                                _this.focus(_this.$element[0]);
                             }else{
                                 _this.setValue(_this.$element.val());
                                 _this.$textElem.show();
                                 _this.$element.hide();
+                                _this.focus(_this.$textElem[0]);
                             }
                             $(this).toggleClass('active');
                             return false;
                         });
-                        
-                        _this.$textElem.on('keyup.FormInputpass', function () {
+
+                        this.$textElem.off('blur.FormInputpass').on('blur.FormInputpass', function () {
                             var $this = $(this);
-                            _this.setValue($this.val());
+                            _this.setValue($this.val(), true);
+
+                            if(_this.$element.hasClass("error-tip")){
+                                _this.$textElem.addClass("error-tip");
+                            }else{
+                                _this.$textElem.removeClass("error-tip");
+                            }
                         });
-
-                        // this.$textElem.on('blur.FormInput.pass', function () {
-                        //     var $this = $(this);
-
-                        //     _this.setValue($this.val());
-                        //     _this.$element.blur();
-                        // });
                     }else{
                         _this.$element.off("focus.FormInputpass").on('focus.FormInputpass', function () {
                             var val = this.value, pos = $(this).position();
@@ -267,25 +395,36 @@
                             setTimeout(function() {
                                 // _this.$textElem.focus();
                                 _this.focus(_this.$textElem[0]);
-                                _this.removeValidateText();
+                                // _this.removeValidateText();
                                 $.setCursorPos(_this.$textElem[0], val.length);
                             }, 0);
-                        });
-                        
-                        _this.$textElem.on('keyup.FormInputpass', function () {
-                            var $this = $(this);
-                            _this.setValue($this.val());
                         });
 
                         _this.$textElem.on('blur.FormInputpass', function () {
                             var $this = $(this);
 
-                            _this.setValue($this.val());
+                            _this.setValue($this.val(), true);
                             $this.hide();
-                            // _this.$element.removeClass('hide');
-                            _this.$element.blur();
+
+                            if(_this.$element.hasClass("error-tip")){
+                                _this.$textElem.addClass("error-tip");
+                            }else{
+                                _this.$textElem.removeClass("error-tip");
+                            }
                         });
                     }
+
+                    this.$textElem.unbind("focus.FormInputpass").bind("focus.FormInputpass", this, function (e) {
+                        var _this = e.data;
+                        _this.option.focusCallBack && _this.option.focusCallBack.call(_this);
+                        // _this.removeValidateText();
+                        // _this.$textElem.removeClass("error-tip");
+                    });
+                    
+                    // this.$textElem.off('keyup.FormInputpass').on('keyup.FormInputpass', function () {
+                    //     var $this = $(this);
+                    //     _this.setValue($this.val(), true);
+                    // });
                 }
             }
 
@@ -339,7 +478,10 @@
                 });
                 
                 _this.$holderplace.click(function(e) {
-                    // _this.$element.focus();
+                    if(_this.$textElem && _this.option.hasEyes && _this.$eyes.hasClass("active")){
+                        _this.focus(_this.$textElem[0]);
+                        return;
+                    }
                     _this.focus();
                 });
             }
@@ -490,10 +632,11 @@
         setValue: function (v, confirm) {
             // if (v == null) return;
             if (!this.editable) {
-                this.value = (v + "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                this.value = v;
                 this.$element.val(this.value);
             }
             else {
+                this.value = v;
                 this.$element.val(v);
                 this.$textElem && this.$textElem.val(v);
                 

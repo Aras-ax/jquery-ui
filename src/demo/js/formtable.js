@@ -12,6 +12,7 @@ $(function() {
 
 	$("#formTable1").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		columns:[
 			{title:"主机名称", field:"hostName"},
 			{title:"认证类型", field:"hostAuthType"},
@@ -23,6 +24,7 @@ $(function() {
 
 	$("#formTable2").FormTable({
 		requestUrl:'./data/data.json',
+        requestType: "get",
 		columns:[
 			{title:"主机名称", field:"hostName"},
 			{title:"认证类型", field:"hostAuthType"},
@@ -36,6 +38,7 @@ $(function() {
 
 	$("#formTable3").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		columns:[
 			{title:"主机名称", field:"hostName"},
 			{title:"认证类型", field:"hostAuthType"},
@@ -50,6 +53,7 @@ $(function() {
 	
 	$("#formTable4").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		columns:[
 			{title:"主机名称", field:"hostName"},
 			{title:"认证类型", field:"hostAuthType"},
@@ -65,6 +69,7 @@ $(function() {
 
 	$("#formTable5").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		columns:[
 			{title:"主机名称", field:"hostName"},
 			{title:"认证类型", field:"hostAuthType"},
@@ -77,6 +82,7 @@ $(function() {
 
 	$("#formTable6").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		columns:[
 			{title:"主机名称", field:"hostName", width:"20%"},
 			{title:"认证类型", field:"hostAuthType", width:50},
@@ -88,6 +94,7 @@ $(function() {
 	
 	$("#formTable7").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		columns:[
@@ -100,6 +107,7 @@ $(function() {
 	});
 	$("#formTable7a").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		sortOpt:{hostDownloadSum:1, hostAuthType:2},
@@ -115,6 +123,7 @@ $(function() {
 	
 	$("#formTable8").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		columns:[
@@ -135,6 +144,7 @@ $(function() {
 	
 	$("#formTable9").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		columns:[
@@ -167,6 +177,7 @@ $(function() {
 
 	$("#formTable10").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		columns:[
@@ -211,6 +222,7 @@ $(function() {
 
 	$("#formTable11").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		columns:[
@@ -260,6 +272,7 @@ $(function() {
 	
 	var tableTar = $("#formTable13").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		showCheckbox: true,
@@ -278,6 +291,7 @@ $(function() {
 
 	$("#formTable14").FormTable({
 		requestUrl:'./data/tabledata.json',
+        requestType: "get",
 		perArray:[5,10,20],
 		perNum:5,
 		showCheckbox: true,
@@ -311,5 +325,18 @@ $(function() {
 				});
 			}
 		}
+	});
+
+	$("#formTable15").FormTable({
+		requestUrl:'./data/data.json',
+        requestType: "get",
+		columns:[
+			{title:"用户名", field:"authUserID", sortable: true, sortValueType:1},
+			{title:"密码", field:"authUserPwd"},
+			{title:"备注", field:"authUserRemark"},
+			{title:"有效时长", field:"authUserValidPeriod"}
+		],
+		showCheckbox:true,
+		dataTarget:"getAuthUserList"
 	});
 });

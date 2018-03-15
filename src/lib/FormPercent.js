@@ -19,7 +19,8 @@
     var DEFAULT = {
         start: 0,
         end: 100,
-        fixed: 2 //保留小数点后几位
+        showInput: true,
+        fixed: 0 //保留小数点后几位
     }
 
     $.components.FormPercent.inherit($.BaseComponent, {
@@ -46,7 +47,7 @@
             //绑定事件
             this.bindEvent();
 
-            if (this.value) {
+            if ($.isNotNullOrEmpty(this.value)) {
                 this.setValue(this.value);
             }
         },
@@ -63,13 +64,33 @@
                                 '<i class="form-per-e">' + this.option.end + '</i>' +
                             '</div>';
             this.$element.append(htmlNode);
-
+            this.$input = $('<input type="text" class="form-per-input none" name="' + this.dataField + '">').appendTo(this.$element);
             this.$bar = this.$element.find("div.form-per-bar");
             this.$text = this.$element.find("label.form-per-val")
 
             var that = this;
             
             that.totalWidth = that.$element.children(".form-per-wrap").width() - that.barWidth;
+            this.option.showInput && this.renderFormInput();
+        },
+
+        renderFormInput: function(){
+            var _this = this;
+            this.perInput = this.$input.Rcomponent({
+                dataField:_this.dataField,
+                dataKey:"FormInput",
+                errorType: this.errorType,
+                needWrap: false,
+                dataValueType: "float",
+                validateCustom:function(text){
+                    return true;
+                },
+                validateCallBack: _this.option.validateCallBack,
+                changeCallBack:function(){
+                    _this.setValue(this.value, true);
+                }
+            });
+            this.$input.removeClass("none");
         },
 
         //绑定事件
@@ -86,22 +107,23 @@
                     left: parseInt(that.$bar.css("left"))
                 }
                 that.$text.show();
-            });
 
-            $(document).off("mousemove." + that.dataField).on("mousemove." + that.dataField, function(e){
-                e.preventDefault();
-                if(!that.startMove){
-                    return;
-                }
-                var width = e.pageX - that.startPoint.x;
-                width = that.startPoint.left + width;
-                that.setValueByWidth(width);
+                $(document).off("mousemove." + that.dataField).on("mousemove." + that.dataField, function(e){
+                    e.preventDefault();
+                    if(!that.startMove){
+                        return;
+                    }
+                    var width = e.pageX - that.startPoint.x;
+                    width = that.startPoint.left + width;
+                    that.setValueByWidth(width);
+                });
             });
 
             $(document).off("mouseup." + that.dataField).on("mouseup." + that.dataField, function(e){
                 that.startMove = false;
                 that.$text.hide();
 
+                $(document).off("mousemove." + that.dataField)
             });
             //数据改变时调用基类的valChange方法执行自定义业务逻辑
         },
@@ -112,7 +134,7 @@
 
             this.value = (this.option.start + (width / this.totalWidth) * this.total).toFixed(this.option.fixed);
             this.$text.text(this.value).css("margin-left", -(this.$text.width()/2));
-
+            this.perInput ? this.perInput.setValue(this.value) : this.$input.val(this.value);
             this.valChange();
         },
 
@@ -130,6 +152,7 @@
 
             this.$bar.css("left", width);
             this.$text.text(this.value).css("margin-left", -(this.$text.width()/2));
+            this.perInput ? this.perInput.setValue(this.value) : this.$input.val(this.value);
 
             confirm && this.valChange();
         },

@@ -2,7 +2,6 @@ $(function() {
 	$("#formInput1").Rcomponent({
 		dataKey: "FormInput",
 		dataField: 'username',
-		maxLength: 5,
 		dataTitle: "普通文本",
 		placeholder: "普通文本测试"
 	});
@@ -55,8 +54,17 @@ $(function() {
 			args: [1, 666]
 		}]
 	});
-
 	$("#formInput7").Rcomponent({
+		dataKey: 'FormInput',
+		dataField: 'username',
+		dataTitle: '只能输入字母',
+		placeholder: '输入字母',
+		description: '最多输入6位字母',
+		regExp: /[a-zA-z]/,
+		maxLength: 6
+	});
+
+	$("#formInput8").Rcomponent({
 		dataKey: "FormInput",
 		dataField: 'username',
 		dataTitle: "去除首尾空格",

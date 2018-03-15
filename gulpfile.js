@@ -5,15 +5,14 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     cssmin = require('gulp-minify-css'),
     cleanCSS = require('gulp-clean-css'),
-    browserSync = require('browser-sync'),
-    reload = browserSync.reload;
+    connect = require('gulp-connect');
 
 gulp.task('uglifyJS', function() {
     gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/FormMultiInput.js', './src/lib/FormPercent.js', './src/lib/FormUpload.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
     .pipe(sourcemaps.init())
     .pipe(concat('componment.js'))
-    .pipe(uglify())
-    .pipe(sourcemaps.write())
+    // .pipe(uglify())
+    // .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/js'));
 
     gulp.src(['./src/demo/main.js', './src/demo/js/*.js'])
@@ -27,7 +26,7 @@ gulp.task('uglifyJS', function() {
 gulp.task('uglifyJS1', function() {
     gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/FormMultiInput.js', './src/lib/FormPercent.js', './src/lib/FormUpload.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
     .pipe(concat('componment.js'))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
 
     gulp.src(['./src/demo/main.js', './src/demo/js/*.js'])
@@ -64,21 +63,20 @@ gulp.task('other', function(){
 });
 
 // 监视文件改动并重新载入
-gulp.task('serve', function() {
-    browserSync.init({
-      server: {
-        baseDir: './dist'
-      },
-      port: '8088',
-      files:['./dist/**']
-    });
-  
-    //gulp.watch(['src/**/*.html', 'src/**/*.css', 'src/**/*.sass', 'src/**/*.js', 'src/**/*.json'], ['default'], function(event) {
-    gulp.watch(['src/**', './gulpfile.js'], ['default'], function(event) {
-        console.log('File ' + event.path + ' was ' + event.type + ', running tasks...'); 
-    });
-     
-  });
+gulp.task('connect',function(){
+    connect.server({
+        root:'./dist',  
+        ip:'127.0.0.1',
+        port: '8088',
+        livereload:true
+    })
+});
+
+gulp.task('watch',function(){
+    gulp.watch(['src/**', './gulpfile.js'], ['default']);
+});
+
+gulp.task('server',['connect', 'watch']);
 
 gulp.task('default',['minifyCss', 'uglifyJS', 'other']);
 

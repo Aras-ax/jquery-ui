@@ -80,17 +80,25 @@ $("#demo3").FormInput({
 				<article id="property" class="clearfix">
 					<article class="content con-body">
 						<article class="clearfix">
-							<h5 class="min-title">dataTile不为空</h5>
-							<div class="min-body">
-								<input type="text" data-key="FormInput" data-title="我是标题" >
-							</div>
 							<h5 class="min-title">dataTile为空</h5>
 							<div class="min-body">
 								<input type="text" data-key="FormInput" placeholder="dataTitle为空">
 							</div>
+							<h5 class="min-title">dataTile不为空</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="我是标题" >
+							</div>
 							<h5 class="min-title">editable: false</h5>
 							<div class="min-body">
 								<input type="text" data-key="FormInput" data-title="不可编辑" editable="false">
+							</div>
+							<h5 class="min-title">errorType: 1</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="错误提示1" error-type="1">
+							</div>
+							<h5 class="min-title">errorType: 2</h5>
+							<div class="min-body">
+								<input type="text" data-key="FormInput" data-title="错误提示2" error-type="2">
 							</div>
 							<h5 class="min-title">required: false</h5>
 							<div class="min-body">
@@ -129,10 +137,12 @@ $("#demo3").FormInput({
 					<pre>
 //html
 <div class="htmlCode">
-	<input type="text" data-key="FormInput" data-title="我是标题" >
     <input type="text" data-key="FormInput" placeholder="dataTitle为空">
+    <input type="text" data-key="FormInput" data-title="我是标题" >
     <input type="text" data-key="FormInput" data-title="不可编辑" editable="false">
     <input type="text" data-key="FormInput" data-title="非必填项" required="false">
+    <input type="text" data-key="FormInput" data-title="错误提示1" error-type="1">
+    <input type="text" data-key="FormInput" data-title="错误提示2" error-type="2">
     <input type="text" data-key="FormInput" data-title="不自动数据校验" auto-validate="false">
     <input type="text" data-key="FormInput" data-title="默认值：12" default-value="12">
     <input type="text" data-key="FormInput" description="我是描述信息" data-title="描述信息：我是描述信息">
@@ -322,10 +332,12 @@ $("#formInput6").Rcomponent({
     placeholder:"请输入1-6位整数",
     dataOptions:[{type:"num",args:[1,6]}]
 });</pre>
-					</article>
+                    </article>
+                    
+
 					<article class="content">
-                        <h2 class="con-title">其它配置项</h2>
-                        <p class="pt">`removeSpace`: true/false, 是否进行前后空格的移除；`focusCallBac`k：function, 获取焦点后的回调</p>
+                        <h2 class="con-title">配置正则表达式, maxLength</h2>
+                        <p class="pt">`regExp`: 允许输入字符正则，`maxLength`：允许输入字符最大长度</p>
 						<div class="con-body">
 							<input type="text" id="formInput7">
 						</div>
@@ -333,6 +345,28 @@ $("#formInput6").Rcomponent({
 //html
 <div class="htmlCode">
 	<input type="text" id="formInput7">
+</div>
+//js
+$("#formInput7").Rcomponent({
+    dataKey: 'FormInput',
+    dataField: 'username',
+    dataTitle: '只能输入字母',
+    placeholder: '输入字母',
+    description: '最多输入6位字母',
+    regExp: /[a-zA-z]/,
+    maxLength: 6
+});</pre>
+					</article>
+					<article class="content">
+                        <h2 class="con-title">其它配置项</h2>
+                        <p class="pt">`removeSpace`: true/false, 是否进行前后空格的移除；`focusCallBac`k：function, 获取焦点后的回调</p>
+						<div class="con-body">
+							<input type="text" id="formInput8">
+						</div>
+						<pre>
+//html
+<div class="htmlCode">
+	<input type="text" id="formInput8">
 </div>
 //js
 $("#formInput7").Rcomponent({
@@ -369,6 +403,7 @@ $("#formInput7").Rcomponent({
 $("#formMultiInpit").Rcomponent({
     dataKey: "FormMultiInput",
     dataTitle:"FormMultiInput：",
+    maxLength: 4,
     inputCount:4
 });
                         </pre>
@@ -386,6 +421,8 @@ $("#formMultiInpit1").Rcomponent({
     dataKey: "FormMultiInput",
     dataTitle:"IP地址：",
     inputCount:2,
+    maxLength: 3,
+    regExp: /[0-9]/,
     text: "192.168.",
     validateCallBack:function(){
         console.log(1);
@@ -408,6 +445,7 @@ $("#formMultiInpit1").Rcomponent({
 $("#formMultiInpit2").Rcomponent({
     dataKey: "FormMultiInput",
     inputCount:4,
+    maxLength: 4,
     dataTitle:"序列号",
     defaultValue:"8545-2345-3445-5676",
     joiner:"-"
@@ -455,6 +493,7 @@ $("#formMultiInpit3").Rcomponent({
 //js
 $("#formPercent").Rcomponent({
     dataKey: "FormPercent",
+    showInput: false,
     dataTitle:"FormPercent："
 });
                         </pre>
@@ -1887,6 +1926,35 @@ $("#formTable14").FormTable({
     }
 });
 
+                        </pre>
+                    </article>
+                    <article class="content">
+                        <h2 class="con-title">xxxxxxx</h2>
+                        <p>
+                            `updateCallback`: function, 数据更新回调，this指向当前组件实例对象
+                            `changePageNumCallBack`: function, 改变每页显示条数回调，this指向当前组件实例对象 
+                            `beforeUpdate`: function, 数据更新前操作，可进行数据的二次处理，若有返回值，则返回新的数据，this指向当前组件实例对象 
+                        </p>
+                        <div class="con-body">
+                            <table id="formTable15"></table>
+                        </div>
+                        <pre>
+//html
+<div class="htmlCode">
+    <table id="formTable15"></table>
+</div>
+//js
+$("#formTable15").FormTable({
+    requestUrl:'./data/data.json',
+    columns:[
+        {title:"用户名", field:"authUserID", sortable: true},
+        {title:"密码", field:"authUserPwd"},
+        {title:"备注", field:"authUserRemark"},
+        {title:"有效时长", field:"authUserValidPeriod"}
+    ],
+    showCheckbox:true,
+    dataTarget:"getAuthUserList"
+});
                         </pre>
                     </article>
                 </article>

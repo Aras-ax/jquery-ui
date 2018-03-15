@@ -1,9 +1,10 @@
 /* 变量定义 */
 $active-color: #7ed321;
-$font-color: #1e282f;
+$font-color: #616b72;
 $font-color-light: #a9b3bb;
 $bg-color: #eceff2;
 $form-line-height: 30px;  
+$error-color:#ec1c3d;
 $form-width:170px; /*组件宽度*/
 
 /* 功能函数定义 */
@@ -344,7 +345,7 @@ $form-width:170px; /*组件宽度*/
   border-bottom: 1px solid #fafafa;
 
   td {
-    padding: 0 0 0 1em;
+    padding: 0 0 0 8px;
   }
 
   &:hover {
@@ -367,21 +368,22 @@ $form-width:170px; /*组件宽度*/
 
 .form-table-footbar {
   margin-bottom: 15px;
+  text-align: center;
 }
 
 .select-page {
-  height: $form-line-height;
+  height: 30px;
   margin: 0 0.5em;
 }
 
 .btn-page {
-  height: $form-line-height;
-  line-height: $form-line-height;
+  height: 30px;
+  line-height: 30px;
   padding: 0 14px;
   font-size: 13px;
   color: #333;
   border: 1px solid $font-color-light;
-  background-color: #fff;
+  background-color: #f2f2f2;
   margin-left: 3px;
   cursor: pointer;
   display: inline-block;
@@ -403,7 +405,7 @@ $form-width:170px; /*组件宽度*/
 }
 
 .page-right {
-  float: right;
+  display: inline-block;
 }
 
 .disabled {
@@ -414,7 +416,7 @@ $form-width:170px; /*组件宽度*/
 }
 
 .page-left {
-  float: left;
+  display: inline-block;
 }
 
 .page-left, .page-right {
@@ -423,7 +425,7 @@ $form-width:170px; /*组件宽度*/
 }
 
 .page-total {
-  color: #aaa;
+  color: #999;
   font-style: normal;
   font-size: 13px;
   padding: 0 1em;
@@ -572,7 +574,7 @@ $form-width:170px; /*组件宽度*/
   .form-title {
     text-align: right;
     margin: 0;
-    color: #666;
+    color: $font-color;
     line-height: 50px;
     font-weight: normal;
   }
@@ -587,26 +589,42 @@ $form-width:170px; /*组件宽度*/
   top: 50%;
   margin-top: -7px;
   cursor: pointer;
-  color: #f60;
+  color: $error-color;
   font-size: 14px;
+  z-index: 12;
 }
 
-.form-error {
+.form-error.error-down{
+  font-size: 12px;
+  line-height: 18px;
+  color: $error-color;
+  max-height: 54px;
+  overflow: hidden;
+  @include transition(max-height .4s linear);
+
+  &.error-none{
+    max-height: 0;
+  }
+}
+
+.form-error.error-float {
   border-radius: 2px;
-  font-size: 14px;
+  font-size: 12px;
   padding: 5px 6px;
   max-width: 180px;
   min-width: 100px;
   line-height: 18px;
   left: 100px;
-  color: #f00;
+  color: $error-color;
   margin: 0;
   cursor: pointer;
   position: absolute;
   z-index: 111;
-  border: 1px solid #c93;
-  background-color: #ffc;
-
+  border: 1px solid $error-color;
+  background-color: #fff;
+  &.error-none{
+    display: none;
+  }
   &:before {
     content: "";
     height: 0;
@@ -631,24 +649,24 @@ $form-width:170px; /*组件宽度*/
 }
 
 .error-left {
-  &.form-error:before {
-    border-right-color: #a96b01;
+  &.error-float:before {
+    border-right-color: $error-color;
   }
 
-  &.form-error:after {
-    border-right-color: #ffc;
+  &.error-float:after {
+    border-right-color: #fff;
   }
 }
 
 .error-top {
-  &.form-error:before {
-    border-bottom: 8px solid #a96b01;
+  &.error-float:before {
+    border-bottom: 8px solid $error-color;
     left: 1em;
     top: -16px;
     margin-top: 0;
   }
-  &.form-error:after {
-    border-bottom: 8px solid #ffc;
+  &.error-float:after {
+    border-bottom: 8px solid #fff;
     left: 1em;
     top: -15px;
     margin-top: 0;
@@ -656,12 +674,12 @@ $form-width:170px; /*组件宽度*/
 }
 
 .error-tip {
-  outline: 1px solid #f00;
+  outline: 1px solid $error-color;
   border-color: transparent;
 
   &.form-input {
     outline: 0;
-    border: 1px solid #f00;
+    border: 1px solid $error-color;
   }
 }
 
@@ -700,6 +718,7 @@ $form-width:170px; /*组件宽度*/
   line-height: $form-line-height;
   width: 33.3%;
   text-align: right;
+  color: $font-color;
 }
 
 .form-content {
@@ -1038,6 +1057,7 @@ dl, dt, dd {
   font-size: 14px;
   position: relative;
   position: absolute;
+  color: $font-color-light;
   background-color: transparent;
   line-height: $form-line-height;
   white-space: nowrap;
@@ -1066,8 +1086,9 @@ dl, dt, dd {
   line-height: 30px;
   line-height: 30px;
   left: 0;    
-  top: 50%;
-  margin-top: -9px;
+  top: 0;
+  // top: 50%;
+  // margin-top: -15px;
   font-size: 18px;
   z-index: 11;
 }
@@ -1188,12 +1209,22 @@ dl, dt, dd {
   height: 30px;
 }
 
+.form-per-input{
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0;
+  text-align: center;
+  margin-left: .5em;
+}
+
 .form-per-wrap{
   width:$form-width;
   height: 10px;
   border-radius: 3px;
   background-color: #ededed;
   position: relative;
+  display: inline-block;
   border: 1px solid #ccc;
 
   .form-per-val{
@@ -1283,6 +1314,7 @@ dl, dt, dd {
 
   .form-upload-btn{
     height: 100%;
+    margin-right: 2em;
     border: 0;
     cursor: pointer;
     padding: 0 1em;
@@ -1296,7 +1328,6 @@ dl, dt, dd {
   }
 
   .form-btn-up{
-    margin-left: 2em;
     background-color: #009f05;
     border-color: #009f05;
     @include border-radius(4px);

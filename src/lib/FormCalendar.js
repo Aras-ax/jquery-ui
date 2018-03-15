@@ -71,7 +71,7 @@
 
         //渲染html内容
         htmlRender: function () {
-            this.$element.addClass('form-input');
+            this.$element.addClass('form-input').attr("name", this.dataField);
             if (this.editable) {
                 var htmls = [];
                 htmls.push('<div class="form-calendar">');

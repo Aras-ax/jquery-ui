@@ -18,9 +18,11 @@
     // 组件特有配置项
     var DEFAULT = {
         text: "", //文本框前面显示的数据，该数据最后会与input内部的数据合并成组件的value值
+        maxLength: 0,
+        regExp: "",
         inputCfg: [], //文本输入框的的配置信息，必须为数组
-        inputCount:0, //文本框的格式 inputCfg/inputCount中有一个必填
-        joiner:"." //连接符号
+        inputCount: 0, //文本框的格式 inputCfg/inputCount中有一个必填
+        joiner: "." //连接符号
     }
 
     $.components.FormMultiInput.inherit($.BaseComponent, {
@@ -50,12 +52,12 @@
                 if(this.option.joiner && text && text.lastIndexOf(this.option.joiner) === text.length - 1){
                     this.option.text = text = text.substring(0, text.length-1);
                 }
+                htmlNode += '<div class="form-multi-wrap">';
                 if(text){
                     htmlNode += '<label id="form-multi-text">' + text + this.option.joiner + '</label>';
                 }
-                htmlNode += '<div class="form-multi-wrap">';
                 for(var i = 0 , l = this.option.inputCount; i < l; i++){
-                    htmlNode += (i === 0 ? '' : this.option.joiner) + '<input type="input" data-field="' + this.dataField + i + '" data-key="FormInput">';
+                    htmlNode += (i === 0 ? '' : this.option.joiner) + '<input type="input" data-field="' + this.dataField + '-' + i + '" data-key="FormInput">';
                 }
                 htmlNode += "</div>";
 
@@ -71,20 +73,37 @@
             var formCfg = {}, that = this;
             for(var i = 0, l = this.option.inputCount; i < l; i++){
                 var obj = {
-                    css:"form-multi-input error-in-top",
+                    css:"form-multi-input",
+                    maxLength: that.option.maxLength,
+                    regExp: that.option.regExp,
                     needWrap: false,
-                   validateCallBack: function(){
-                       if(that.autoValidate){
-                            that.getValue.call(that);
-                            that.handleValidateEvents.call(that);
-                       }
-                   },
-                   changeCallBack: function(){
+                    validateCallBack: function(){
+                        if(that.autoValidate){
+                                that.getValue.call(that);
+                                that.handleValidateEvents.call(that);
+                        }
+                    },
+                    changeCallBack: function(){
                         that.handleChangeEvents.call(that);
-                   }
+                    },
+                    maxCallBack: function(e){    
+                        //如果是tab键直接返回
+                        var ignorekey = [8, 9, 37, 38, 39, 40, 46];// backspace键，tab键，左键，上键，右键，下键，delete键
+                        if(ignorekey.indexOf(e.keyCode) > -1 ){
+                            return;
+                        }
+                        var fields = this.dataField.split("-"),
+                            index = ~~fields.pop() + 1,
+                            dataField = fields.join() + '-' + index,
+                            $next = this.$element.siblings('[name=' + dataField + ']');
+        
+                        if($next.length > 0){
+                            $next.focus();
+                        }
+                    }
                 }
 
-                formCfg[this.dataField + i] = $.extend({}, obj, this.option.inputCfg[i] || {});
+                formCfg[this.dataField + '-' + i] = $.extend({}, obj, this.option.inputCfg[i] || {});
             }
             this.cManager = $.componentManager({submitUrl:"/goform/module",
                 container: this.$inputWrap,

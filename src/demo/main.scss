@@ -223,7 +223,7 @@ label.code{
 				&::before{
 					content: "";
 					background-color: #f3f3f3;
-					height: 27px;
+					height: 25px;
 					width: 100%;
 					position: absolute;
 					left: 0;
@@ -268,3 +268,8 @@ label.code{
     margin-top: -1px;
     border: 1px solid #ddd;
 }
+
+::-webkit-scrollbar-track-piece{width:10px;background-color:#eee ;  }
+::-webkit-scrollbar{width:10px;height:6px ; }
+::-webkit-scrollbar-thumb{height:50px;background: rgba(0,0,0,.3); border-radius: 3px; cursor:pointer;}
+::-webkit-scrollbar-thumb:hover{background: rgba(0,0,0,.3) ; cursor:pointer; border-radius: 3px;}

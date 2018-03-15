@@ -46,10 +46,11 @@
                 this.$element.attr("disabled","disabled").addClass('form-disabled');
             }
             else {
-                var css = this.option.defaultValue ? "active" : "";
-                this.$checklabel = $('<label class="check-label '+ css +'"></label>');
-                // this.$element.addClass('check-label').addClass(css);
-                this.$element.addClass("form-container").append(this.$checklabel);
+                var css = this.option.defaultValue ? "active" : "",
+                    ID = $.IGuid();
+                this.$checklabel = $('<label class="check-label '+ css +'" for="' + ID + '"></label>');
+                this.$input = $('<input type="checkbox" name="' + this.dataField + '" id="' + ID + '" class="none">');
+                this.$element.addClass("form-container").append(this.$checklabel).append(this.$input);
 
                 this.option.text && this.$element.append('<label class="form-label" for="' + this.dataField + '">'+ this.option.text +'</label>');
             }
@@ -59,7 +60,12 @@
         bindEvent: function () {
             var _this = this;
             //事件绑定
-            this.$element.off("click.FormCheckbox").on("click.FormCheckbox", function(){
+            // this.$element.off("click.FormCheckbox").on("click.FormCheckbox", function(){
+            //     _this.$checklabel.toggleClass('active');
+
+            //     _this.valChange.call(_this);
+            // });
+            this.$input.off("change.FormCheckbox").on("change.FormCheckbox", function(){
                 _this.$checklabel.toggleClass('active');
 
                 _this.valChange.call(_this);
@@ -78,6 +84,7 @@
             }
             else {
                 this.value ? this.$checklabel.addClass('active'):this.$checklabel.removeClass('active');
+                this.$input.prop("checked", this.value);
             }
             confirm && this.valChange();
         },

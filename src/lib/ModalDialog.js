@@ -108,12 +108,13 @@
         },
 
         calcScrollBarWidth:function(){
-            var $d = $('<div style="width:100px;"></div>').appendTo("body");
-            var w1 = $d[0].clientWidth;
-            $d.css("overflow", "scroll");
-            this.scrollW = w1 - $d[0].clientWidth;
-            $d.remove();
-            console.log(this.scrollW);
+            var noScroll, scroll, div = document.createElement("div");
+            div.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+            noScroll = document.body.appendChild(div).clientWidth;
+            div.style.overflowY = "scroll";
+            scroll = div.clientWidth;
+            document.body.removeChild(div);
+            this.scrollW = noScroll-scroll;
         },
 
         reload:function(opt){
@@ -157,11 +158,12 @@
         //显示
         show:function(){
             var _this = this;
-           
-            $("body").css({
-                overflow:"hidden",
-                "padding-right": _this.scrollW
-            });
+           if(document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)){
+                $("body").css({
+                    overflow:"hidden",
+                    "padding-right": _this.scrollW
+                });
+           }
             _this.$mask.css("overflow", "auto");
 
             var height = _this.$content.outerHeight();

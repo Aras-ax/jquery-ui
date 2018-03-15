@@ -110,7 +110,7 @@
 			// 获取数据，更新组件的值
 			if(this.option.requestUrl){
 				$.ajax({
-		            url: this.option.requestUrl,
+		            url: this.option.requestUrl + "?" + Math.random(),
 		            cache: false,
 		            type: "post",
 		            dataType: "text",
@@ -236,7 +236,7 @@
 	    		var _this = this;
 
 	    		$.ajax({
-	    		    url: this.option.submitUrl,
+	    		    url: this.option.submitUrl + "?" + Math.random(),
 	    		    cache: false,
 	    		    type: "post",
 	    		    dataType: "text",

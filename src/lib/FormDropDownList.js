@@ -108,6 +108,7 @@
             this.dropInput = this.$DropHandle.find(".drop-input").Rcomponent({
                 dataField:that.dataField,
                 dataKey:"FormInput",
+                errorType: this.errorType,
                 dataValueType: that.option.dataValueType,
                 dataOptions:that.option.dataOptions,
                 validateCustom:function(text){

@@ -1,4 +1,8 @@
 (function ($, undefined) {
+    var PAGELEFTTYPE = {
+        TOTAL: 1, // 共X页，X条数据
+        SELECT: 2 // 显示每页条数选择框，且显示总条数
+    }
     var DEFAULT = {
         data: [], //表格数据
         requestUrl: "",
@@ -8,12 +12,14 @@
         pageIndex: 0, //当前起始页
         showStyle: 1, //数据显示类型  1:分页，2：不分页
         limit: 0, //最多显示几条数据，默认值为0，显示所有
+        pageLeftType: PAGELEFTTYPE.TOTAL,
         columns: [
             // {
             //     field:"",
             //     title："",//列显示标题
             //     width:"20%",
             //     sortable:false,
+            //     sortValueType:0,0:字段自身类型，1：Number,2:string
             //     format:function(data, field, dataObj){
             //         data:当前字段的值，
             //         field:当前的字段
@@ -71,16 +77,13 @@
         showIndex: false,//显示序号
         sortFields: [],
         sortOpt: {},
+        requestType: "get",
         autoHighLight:false, //高亮与查询字段匹配的字符
         sortFunction:null, //排序函数和排序字段不能同时存在
         maxIndex: 7, //分页栏最多显示按钮数
-        beforeUpdate: function () {
-        },//数据更新前操作，可进行数据的二次处理，若有返回值，则返回新的数据
-        updateCallBack: function () {
-        }, //数据更新回调
-        changePageNumCallBack:function () {
-            //改变每页显示条数回调
-        }
+        beforeUpdate: null,//数据更新前操作，可进行数据的二次处理，若有返回值，则返回新的数据
+        updateCallBack: null, //数据更新回调
+        changePageNumCallBack:null //改变每页显示条数回调
     };
 
     function FormTable($element, opt) {
@@ -92,25 +95,26 @@
             if (option.perArray.indexOf(this.perNum) == -1) {
                 this.perNum = option.perArray[0];
             }
-            // for(var key in option){
-            //     if(option.hasOwnProperty(key) && key !== "perNum"){
-            //         this[key] = option[key];
-            //     }
-            // }
 
-            this.showStyle = option.showStyle;
-            this.perArray = option.perArray;
+            for(var key in option){
+                if(option.hasOwnProperty(key) && key !== "perNum"){
+                    this[key] = option[key];
+                }
+            }
+
+            // this.showStyle = option.showStyle;
+            // this.perArray = option.perArray;
             this.orignalData = option.data;
-            this.updateCallBack = option.updateCallBack;
-            this.changePageNumCallBack = option.changePageNumCallBack;
-            this.beforeUpdate = option.beforeUpdate;
-            this.updateState = option.updateState;
+            // this.updateCallBack = option.updateCallBack;
+            // this.changePageNumCallBack = option.changePageNumCallBack;
+            // this.beforeUpdate = option.beforeUpdate;
+            // this.updateState = option.updateState;
 
-            this.columns = option.columns;
-            this.showCheckbox = option.showCheckbox;
-            this.actionColumn = option.actionColumn;
+            // this.columns = option.columns;
+            // this.showCheckbox = option.showCheckbox;
+            // this.actionColumn = option.actionColumn;
             this.hasActionColumn = option.actionColumn.actions.length > 0 ? true : false;
-            this.limit = option.limit;
+            // this.limit = option.limit;
 
             if(this.limit > 0){
                 this.showStyle = 2;
@@ -123,20 +127,20 @@
                 this.showPageRightBar = option.showPageRightBar;
                 this.showPageLeftBar = option.showPageLeftBar;
             }
-            this.key = option.key;
-            this.editColumn = option.editColumn;
-            this.showIndex = option.showIndex;
-            this.filterProperty = option.filterProperty;
+            // this.key = option.key;
+            // this.editColumn = option.editColumn;
+            // this.showIndex = option.showIndex;
+            // this.filterProperty = option.filterProperty;
             this.filterValue = "";
-            this.dataTarget = option.dataTarget;
-            this.autoHighLight = option.autoHighLight;
-            this.requestUrl = option.requestUrl;
-            this.requestType = option.requestType || "get";
-            this.requestOpt = option.requestOpt;
-            this.sortFields = option.sortFields; 
+            // this.dataTarget = option.dataTarget;
+            // this.autoHighLight = option.autoHighLight;
+            // this.requestUrl = option.requestUrl;
+            // this.requestType = option.requestType || "get";
+            // this.requestOpt = option.requestOpt;
+            // this.sortFields = option.sortFields; 
             this.sortFields.length > 0 && this.sortFields.reverse();//优先级最高的排序字段放在数组最后面
-            this.sortOpt = option.sortOpt; //记录字段的排序规则 1：升序，2：降序
-            this.sortFunction = option.sortFunction;
+            // this.sortOpt = option.sortOpt; //记录字段的排序规则 1：升序，2：降序
+            // this.sortFunction = option.sortFunction;
 
             //第一条数据索引值
             this.dataIndex = 0;
@@ -209,8 +213,8 @@
                 this.requestData(function () {
                     _this.hasInit || _this.bindEvent.call(_this);
                     _this.hasInit = true;
-                    this.showPageLeftBar || this.footBar.$pageLeft.hide();
-                    this.showPageRightBar || this.footBar.$pageRight.hide();
+                    _this.showPageLeftBar || _this.footBar.$pageLeft.hide();
+                    _this.showPageRightBar || _this.footBar.$pageRight.hide();
                 });
             } else {
                 if (typeof _this.beforeUpdate == 'function') {
@@ -227,14 +231,18 @@
         updateTable: function () {
             if (this.showStyle == 1) {
                 this.pageNum = Math.ceil(this.data.length / this.perNum);
-                // this.setIndex(this.footBar.pageIndex);
             }
 
             this.getData.call(this);
             this.selectedRow = this.getSelected();
-            // this.footBar.pageIndex = this.footBar.pageIndex <= this.pageNum ? this.footBar.pageIndex : 1;
             this.goPage(this.footBar.pageIndex);
-            this.showPageLeftBar && this.footBar.$pageLeft.find("em.page-total").text(_("%s data in total", this.data.length + ""));
+            if(this.showPageLeftBar){
+                if(this.pageLeftType == PAGELEFTTYPE.TOTAL){
+                    this.footBar.$pageLeft.find(".page-total").html( _('%s pages ', Math.ceil(this.data.length / this.perNum) + "") + _("%s data in total", this.data.length + ""));
+                }else{
+                    this.footBar.$pageLeft.find("em.page-total").text(_("%s data in total", this.data.length + ""));
+                }
+            }
         },
 
         //请求数据
@@ -243,7 +251,7 @@
             _this.showLoader && _this.$tbody.html('<tr><td colspan="' + _this.totalColumn + '" class="text-center">' + _("Loading data...") + '</td></tr>');
 
             $.ajax({
-                url: this.requestUrl,
+                url: this.requestUrl + "?" + Math.random(),
                 cache: false,
                 type: _this.requestType,
                 dataType: "text",
@@ -339,9 +347,9 @@
                 _this.data.sort(function(a, b){
                     return _this.sortFunction.apply(_this, arguments);
                 });
-            }else{
+            }else if(_this.sortFields && _this.sortFields.length > 0){
                 _this.data.sort(function (a, b) {
-                    return SortByProps(a, b, _this.sortFields, _this.sortOpt);
+                    return SortByProps(a, b, _this.sortFields, _this.sortOpt, _this.columns);
                 }); 
             }
 
@@ -398,7 +406,7 @@
             }
 
             this.tableHandle.createTable.call(this);
-            this.updateFootBar.call(this);
+            this.showStyle === 1 && this.updateFootBar.call(this);
         },
 
         tableHandle: {
@@ -505,7 +513,7 @@
                     _this.$element.find('thead').remove();
                 } else {
                     _this.columnCount = 0;
-                    headHtml = '<tr>';
+                    headHtml = '<tr>';  
                     for (var key in _this.columns) {
                         _this.tHead.push(key);
                         var colObj = _this.columns[key];
@@ -513,7 +521,7 @@
                         if (colObj["width"] && String(colObj["width"]).indexOf("%") === -1 && String(colObj["width"]).indexOf("px") === -1) {
                             colObj["width"] += "px";
                         }
-                        headHtml += '<th data-field="' + key + '" ' + (colObj.sortable ? 'class="sortabled" title="' + _("Click to sort") + '"' : '') + (colObj["width"] ? 'width="' + colObj["width"] + '"' : "") + '>' + (colObj["title"] || key) + (colObj.sortable ? '<i class="table-sort ' + (_this.sortOpt[key] === 1 ? "asc" : "desc") + '">' : '') + '</th>';
+                        headHtml += '<th data-field="' + key + '" ' + (colObj.sortable ? 'class="sortabled" title="' + _("Click to sort") + '"' : '') + (colObj["width"] ? 'width="' + colObj["width"] + '"' : "") + '>' + (colObj["title"] || key) + (colObj.sortable ? '<i class="table-sort ' + (_this.sortOpt[key] ? (_this.sortOpt[key] === 1 ? "asc" : "desc") : "") + '">' : '') + '</th>';
                     }
                     headHtml += '</tr>';
                 }
@@ -741,23 +749,28 @@
 
             if (!this.hasInit) {
                 var leftHtml = [];
-
-                var select = '<select class="select-page">';
-                for (var i = 0, l = this.perArray.length; i < l; i++) {
-                    var count = this.perArray[i];
-                    select += '<option value="' + count + '" ' + (count === this.perNum ? 'selected' : '') + '>' + count + '</option>';
+                if(this.pageLeftType === PAGELEFTTYPE.TOTAL){
+                    leftHtml.push('<div class="page-left page-total">' + _('%s pages ', Math.ceil(this.data.length / this.perNum) + ""));
+                    leftHtml.push(_("%s data in total", this.data.length + ""));
+                    leftHtml.push('</div>');
+                }else{
+                    var select = '<select class="select-page">';
+                    for (var i = 0, l = this.perArray.length; i < l; i++) {
+                        var count = this.perArray[i];
+                        select += '<option value="' + count + '" ' + (count === this.perNum ? 'selected' : '') + '>' + count + '</option>';
+                    }
+                    select += '</select>';
+                    
+                    leftHtml.push('<div class="page-left">' + _('data/Page %s,', select));
+                    leftHtml.push('<em class="page-total">' + _("%s data in total", this.data.length + "") + '</em>');
+                    leftHtml.push('</div>');
                 }
-                select += '</select>';
-                
-                leftHtml.push('<div class="page-left">' + _('data/Page %s,', select));
-
-                // leftHtml.push(select);
-                leftHtml.push('<em class="page-total">' + _("%s data in total", this.data.length + "") + '</em>');
-                leftHtml.push('</div>');
                 this.footBar.$pageLeft = $(leftHtml.join(""));
-                this.footBar.$insertArea.html(this.footBar.$pageLeft).append(this.footBar.$pageRight);
+                
+                this.showPageLeftBar && this.footBar.$insertArea.html(this.footBar.$pageLeft);
+                this.showPageRightBar && this.footBar.$insertArea.append(this.footBar.$pageRight);
             } else {
-                this.footBar.$insertArea.children('.page-right').replaceWith(this.footBar.$pageRight);
+                this.showPageRightBar && this.footBar.$insertArea.children('.page-right').replaceWith(this.footBar.$pageRight);
             }
 
             this.footBar.$insertArea.find('input').val(this.footBar.pageIndex);
@@ -905,7 +918,7 @@
 
     $.fn.TablePage = $.fn.FormTable;
 
-    function SortByProps(item1, item2, fields, options) {
+    function SortByProps(item1, item2, fields, options, columns) {
         "use strict";
 
         var cps = []; // 存储排序属性比较结果。
@@ -916,6 +929,18 @@
             for (var i = fields.length; i > -1 ; i--) {
                 var prop = fields[i];
                 asc = options[prop] === 1;
+                if(columns[prop]){
+                    switch(columns[prop]["sortValueType"]){
+                        case 1:
+                        item1[prop] = Number(item1[prop]);
+                        item2[prop] = Number(item2[prop]);
+                        break;
+                        case 2:
+                        item1[prop] = String(item1[prop]);
+                        item2[prop] = String(item2[prop]);
+                        break;
+                    }
+                }
 
                 if (item1[prop] > item2[prop]) {
                     cps.push(asc ? 1 : -1);

@@ -57,7 +57,7 @@
                         var item = arr[i],
                             id = this.dataField + item;
                             
-                        checkboxs.push('<label for="' + id + '" class="form-label"><input type="checkbox" id="' + id + '" class="form-checklist" value="' + item + '"/>'+ item +'</label>');
+                        checkboxs.push('<label for="' + id + '" class="form-label"><input type="checkbox" name="' + this.dataField + '" id="' + id + '" class="form-checklist" value="' + item + '"/>'+ item +'</label>');
                     }
                 }else if(Object.prototype.toString.call(arr) === "[object Object]"){
                     for(var key in arr){

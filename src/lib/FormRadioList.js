@@ -72,7 +72,7 @@
                         var item = arr[i],
                             id = this.dataField + $.IGuid();
                             
-                        radios.push('<label for="' + id + '" class="form-label"><input type="radio" id="' + id + '" name="'+name+'" class="form-radiolist" value="' + item + '"/>'+ item +'</label>');
+                        radios.push('<label for="' + id + '" class="form-label"><input type="radio" id="' + id + '" name="'+ this.dataField +'" class="form-radiolist" value="' + item + '"/>'+ item +'</label>');
                     }
                 }else if(Object.prototype.toString.call(arr) === "[object Object]"){
                     var name = $.IGuid();
@@ -80,7 +80,7 @@
                         if(arr.hasOwnProperty(key)){
                             var item = arr[key],
                                 id = this.dataField + $.IGuid();
-                            radios.push('<label for="' + id + '" class="form-label"><input type="radio" id="' + id + '" name="'+name+'" class="form-radiolist" value="' + key + '"/>'+ item +'</label>');
+                            radios.push('<label for="' + id + '" class="form-label"><input type="radio" id="' + id + '" name="'+ this.dataField +'" class="form-radiolist" value="' + key + '"/>'+ item +'</label>');
                         }
                     }
                 }
