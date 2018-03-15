@@ -26,7 +26,7 @@ gulp.task('uglifyJS', function() {
 gulp.task('uglifyJS1', function() {
     gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/FormMultiInput.js', './src/lib/FormPercent.js', './src/lib/FormUpload.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
     .pipe(concat('componment.js'))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
 
     gulp.src(['./src/demo/main.js', './src/demo/js/*.js'])
@@ -56,7 +56,7 @@ gulp.task('minifyCss1', function() {
 gulp.task('other', function(){
     gulp.src(['./src/demo/*.html']).pipe(gulp.dest('dist'));
     gulp.src(['./src/demo/main.js']).pipe(gulp.dest('dist/js'));
-    gulp.src(['./src/demo/js/*.js']).pipe(gulp.dest('dist/js'));
+    // gulp.src(['./src/demo/js/*.js']).pipe(gulp.dest('dist/js'));
     gulp.src(['./src/lib/css/icon-font/*']).pipe(gulp.dest('dist/css/icon-font'));
     gulp.src(['./src/lib/css/icon-font/fonts/*']).pipe(gulp.dest('dist/css/icon-font/fonts'));
     gulp.src(['./src/demo/data/*']).pipe(gulp.dest('dist/data'));
