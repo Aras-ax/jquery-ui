@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link href="./css/icon-font/style.css" rel="stylesheet">
-    <link href="./css/min.css" rel="stylesheet">
+    <title>Reasy-UI组件使用示例</title>
+    <link href="./css/icon-font/style.css?v=1897734" rel="stylesheet">
+    <link href="./css/min.css?v=1897734" rel="stylesheet">
 </head>
 <body class="clearfix">
     <header>REASY-UI 组件使用实例</header>
@@ -1969,11 +1969,14 @@ $("#formTable15").FormTable({
                     <article class="content">
                         <h2 class="con-title">信息提示框</h2>
                         <div class="con-body">
-							<div id="formtab-fm"></div>
+                            <button id="btn-fm" style="float: left;z-index: 1;position:  relative;" class="btn">点我点我</button>
+                            <div id="formtab-fm"></div>
                         </div>
                         <pre>
 //html
 <div class="htmlCode">
+    <button id="btn-fm" class="btn">点我点我</button>
+    <div id="formtab-fm"></div>
 </div>
 //js
 var formMess = null;
@@ -2019,6 +2022,10 @@ $("#formtab-fm").Rcomponent({
             }break;
         }
     }
+});
+
+$("#btn-fm").click(function(){
+    $.formMessage("你还真点我啊！！！");
 });
                         </pre>
                     </article>
@@ -2323,7 +2330,7 @@ cmp.updateComponents({});
         <!-- 导航栏 end -->
     </div>
      
-    <script src="./js/componment.js"></script>
-    <script src="./js/main.js"></script>
+    <script src="./js/componment.js?v=1897734"></script>
+    <script src="./js/main.js?v=1897734"></script>
 </body>
 </html>
