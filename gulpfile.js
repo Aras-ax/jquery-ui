@@ -5,7 +5,11 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     cssmin = require('gulp-minify-css'),
     cleanCSS = require('gulp-clean-css'),
-    connect = require('gulp-connect');
+    connect = require('gulp-connect'),
+        
+    runSequence = require('run-sequence'),   
+    rev = require('gulp-rev'),    
+    revCollector = require('gulp-rev-collector');
 
 gulp.task('uglifyJS', function() {
     gulp.src(['./src/demo/jquery-1.12.4.min.js','./src/demo/prettify.min.js', './src/lib/reasy-ui.js', './src/lib/BaseComponent.js', './src/lib/FormInput.js', './src/lib/FormCheckbox.js', './src/lib/FormCheckList.js', './src/lib/FormRadioList.js', './src/lib/FormDropDownList.js', './src/lib/FormSelect.js', './src/lib/FormCalendar.js', './src/lib/FormList.js', './src/lib/FormTab.js', './src/lib/FormTable.js', './src/lib/FormMultiInput.js', './src/lib/FormPercent.js', './src/lib/FormUpload.js', './src/lib/ComponentManage.js','./src/lib/ModalDialog.js'])
@@ -62,6 +66,19 @@ gulp.task('other', function(){
     gulp.src(['./src/demo/data/*']).pipe(gulp.dest('dist/data'));
 });
 
+// gulp.task('revJs', function(){    
+//     return gulp.src([])        
+//    .pipe(rev())        
+//    .pipe(rev.manifest())        
+//    .pipe(gulp.dest('rev/js'));
+// });
+
+// gulp.task('revHtml', function () {    
+//     return gulp.src(['rev/**/*.json', 'WEB-INF/views/*.html'])  /*WEB-INF/views是本地html文件的路径，可自行配置*/        
+//    .pipe(revCollector())        
+//    .pipe(gulp.dest('WEB-INF/views'));  /*Html更换css、js文件版本,WEB-INF/views也是和本地html文件的路径一致*/
+// });
+ 
 // 监视文件改动并重新载入
 gulp.task('connect',function(){
     connect.server({

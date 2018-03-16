@@ -99,6 +99,7 @@
         },
 
         getValue: function () {
+            this.format();
             return this.value;
         },
 

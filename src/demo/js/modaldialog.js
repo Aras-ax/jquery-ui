@@ -43,6 +43,10 @@ $(function() {
 			}
 		}
 	});
+	
+	$("#btn-fm").click(function(){
+		$.formMessage("你还真点我啊！！！");
+	});
 //FormMessage end
 
 //ModalDialog
