@@ -8,6 +8,6 @@ node_modules/
 dist/
 src/
 
-#svn
-.svn/
+#doc
 doc/
+.svn/
