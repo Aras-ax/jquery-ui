@@ -12,7 +12,7 @@
 
 	// 构造函数
     $.components.FormPercent = function (element, options) {
-        $.components.FormPercent.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     // 组件特有配置项

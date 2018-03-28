@@ -11,7 +11,7 @@
 
     // 构造函数
     $.components.FormDropDownList = function (element, options) {
-        $.components.FormDropDownList.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     // 组件特有配置项

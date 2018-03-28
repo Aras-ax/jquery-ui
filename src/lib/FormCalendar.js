@@ -12,7 +12,7 @@
 
 	// 构造函数
     $.components.FormCalendar = function (element, options) {
-        $.components.FormCalendar.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     // 组件特有配置项

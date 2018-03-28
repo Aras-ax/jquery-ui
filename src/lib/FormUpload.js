@@ -12,7 +12,7 @@
 
 	// 构造函数
     $.components.FormUpload = function (element, options) {
-        $.components.FormUpload.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     // 组件特有配置项

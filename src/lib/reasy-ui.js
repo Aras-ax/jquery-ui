@@ -93,11 +93,9 @@ if ("undefined" === typeof jQuery && "undefined" === typeof REasy) {
     }
 
     Function.prototype.inherit = function(parent, overrides){
-        if (typeof parent != 'function') return this;
-        // 保存对父类的引用
-        this.Base = parent.prototype;
-        this.Base.constructor = parent;
-        // 继承
+		if (typeof parent != 'function') return this;
+		
+        // 继承基类的原型链
         var f = function () { };
         f.prototype = parent.prototype;
         this.prototype = new f();

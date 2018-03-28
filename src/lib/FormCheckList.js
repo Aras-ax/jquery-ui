@@ -11,7 +11,7 @@
 
 	// 构造函数
     $.components.FormCheckList = function (element, options) {
-        $.components.FormCheckList.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     // 组件特有配置项

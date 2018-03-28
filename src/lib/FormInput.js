@@ -11,7 +11,7 @@
 
 	// 构造函数
     $.components.FormInput = function (element, options) {
-        $.components.FormInput.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     var displayMode = {

@@ -12,7 +12,7 @@
 
 	// 构造函数
     $.components.FormMultiInput = function (element, options) {
-        $.components.FormMultiInput.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     // 组件特有配置项

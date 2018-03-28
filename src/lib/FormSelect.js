@@ -12,7 +12,7 @@
 
 	// 构造函数
     $.components.FormSelect = function (element, options) {
-        $.components.FormSelect.Base.constructor.call(this, element, options);
+        $.BaseComponent.call(this, element, options);
     };
 
     // 继承及控件实现
