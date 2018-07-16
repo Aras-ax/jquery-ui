@@ -80,9 +80,11 @@ Reasy-UI
 | dataTitle   | 组件左侧显示标题(为空则表示不显示标题) |  string  | -- |
 | editable    | 是否可编辑，为false则自动加上disabled属性 |  bool  | true |
 | visible     | 是否可见   |  bool  | true |
-| ignore      | 是否忽略,   |  bool  | false |
-| sync | ignore与visible的值是否是同步设置 | bool | true |
+| ignore      | 是否忽略组件，true时则不进行该组件取值操作|  bool  | null |
+| sync | setVisible()中是否需要将visible的值与ignore同步 | bool | true |
 | css    | 自定义样式皮肤 |  string  | -- |
+| desClass | 描述信息css类 |  string  | -- |
+| needWrap    | 组件最外层是否需要容器包裹 |  bool  | true |
 | required    | 是否必填 |  bool  | true |
 | autoValidate| 数据修改后是否自动调用数据校验 | bool | true |
 | defaultValue    | 默认值/初始值 |  取决于组件  | "" |
@@ -90,19 +92,20 @@ Reasy-UI
 | description    | 组件尾部描述信息 |  string  | -- |
 | changeCallBack    | 组件数据改变回调 |  function  | -- |
 | validateCallBack    | 组件数据校验回调 |  function  | -- |
-| validateCustom(text)|自定义错误信息显示方式| function | -- |
+| validateCustom |自定义错误信息显示方式| function | -- |
 | renderedCallBack|组件渲染完成后回调| function | -- |
+| afterChangeCallBack| 值改变回调 | function | -- |
 
 > 强调说明
-> 1. `dataValueType`: 设置组件返回值类型，比如设置为`num`则返回整型数据
+> 1. `dataValueType`: 设置组件返回值类型，比如设置为`num`则返回整型数据，可选值有`bool`,`float`,`num`，默认不进行任何值类型的转换
 > 2. `visible`：控制组件的显示和隐藏，设置为`false`，则该控件不会进行数据校验等操作，但是在`componentManage`中进行`getValue()`操作不会被忽略
-> 3. `ignore`：组件是否被忽略，不控制组件的显示和隐藏状态，设置为`false`，则在`componentManage`中进行`getValue()`操作时会忽略该组件，不会进行取值数据提交操作
-> 4. `validateCustom(text)`:自定义错误信息提示方式，定义了该参数则不会显示默认的错误提示样式，参数为需要显示的错误信息，当`text`为空时不显示任何错误信息或者移除已显示的错误信息。
+> 3. `ignore`：组件是否被忽略，不控制组件的显示和隐藏状态，设置为`false`，则在`componentManage`中进行`getValue()`操作时会忽略该组件，不会进行取值数据提交操作，不设置该值的情况下默认与`visible`的值进行对应
+> 4. `sync`: 为true时代表，将组建隐藏设置`visible`为`false`时，同步设置`ignore`为`true`，即组建隐藏就不进行数据校验，且不进行`getValue()`操作，该参数的设定只在`setVisible()`中生效，对其它地方的设置如`setIgnore()`,不会产生任何影响，
 > 5. `changeCallBack`:组件值改变回调函数，只有数据校验成功的情况下才执行该回调，函数内部this指向当前组件实例
 > 6. `validateCallBack`:数据校验回调函数,有错则返回出错语句，否则为校验成功，函数内部this指向当前组件实例
 > 7. `renderedCallBack`:组件渲染完成后的回调函数，函数内部this指向当前组件实例
 > 8. `dataKey`:以组件名称显示调用的情况下可不填
-> 9. `sync`: 为true时代表，将组建隐藏设置`visible`为`false`时，同步设置`ignore`为`true`，即组建隐藏就不进行数据校验，`sync`为`false`则表示`visible`和`ignore`两者是独立的没有关联关系
+> 9. `validateCustom(text)`:自定义错误信息提示方式，定义了该参数则不会显示默认的错误提示样式，参数为需要显示的错误信息，当`text`为空时不显示任何错误信息或者移除已显示的错误信息。
 
 ## 2. 公共方法
 | 方法名称   | 描述   |  参数| 返回值  |
@@ -129,6 +132,15 @@ Reasy-UI
 > 强调说明：
 > 1. show，hide，toggle只做组件的显示隐藏处理，对组件的其它功能属性没有任何影响
 > 2. bindValidateEvent,bindChangeEvent参数的返回值同上面属性的介绍
+
+### 流程图
+*  组件主逻辑
+
+![组件主逻辑](https://github.com/moshang-xc/gitskills/blob/master/share/reasy-ui1.jpg)
+
+*  数据校验逻辑
+
+![数据校验逻辑](https://github.com/moshang-xc/gitskills/blob/master/share/reasy-ui2.jpg)
 
 ## 3. 调用形式（以FormInput为例）
 
@@ -1309,6 +1321,10 @@ $("#customTable").FormTable({
 | getComponentByNode(node) | 根据标签节点获取对应的组件实例对象 | html标签节点 | 组件实例化对象 |
 | setValue(val, dataField) | 设置组件的值 |val:值， dataFiled:字段| -- |
 | getValue(dataField) | 获取组件的值 |dataField: 组件字段, 为空则返回所有组件的值| 根据组件的类型返回对应的值，若参数为空返回字段和值组成的对象 |
+
+## 流程图
+数据校验逻辑
+![数据校验逻辑](https://github.com/moshang-xc/gitskills/blob/master/share/reasy-ui3.jpg)
 
 ##  使用
 ### 1. 基础使用
