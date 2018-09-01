@@ -78,8 +78,8 @@
                 for (let key in item) {
                     i === 0 && this.setDefaultValue(key);
                     let text = item[key],
-                        id = this.ID + key;
-                    radios.push('<label for="' + id + '" class="form-label icon-radio-off"><input type="radio" id="' + id + '" name="' + inputName + '" class="form-radiolist" value="' + key + '" ' + (this.editable || "disabled") + '/>' + text + '</label>');
+                        id = this.ID + $.IGuid();
+                    radios.push(this.createHtml(id, key, text, inputName));
                     items[key] = text;
                     break;
                 }
@@ -152,8 +152,15 @@
             value === undefined && (value = key);
             this.items[key] = value;
 
-            let id = this.ID + key;
-            this.$element.append('<label for="' + id + '" class="form-label icon-radio-off"><input type="radio" id="' + id + '" name="' + this.dataField + this.ID + '" class="form-radiolist" value="' + key + '"/>' + value + '</label>');
+            let id = this.ID + $.IGuid();
+            this.$element.append(this.createHtml(id, key, value, this.dataField + this.ID));
+        },
+
+        createHtml(id, key, text, inputName) {
+            key = $.htmlEncode(key);
+            text = $.htmlEncode(text);
+
+            return `<label for="${id}" class="form-label icon-radio-off ellipsis-label" title="${text}"><input type="radio" id="${id}" name="${inputName}" class="form-radiolist" value="${key}" ${(this.editable || "disabled")}/>${text}</label>`;
         },
 
         addItems: function(items) {
@@ -234,7 +241,7 @@
         getValue: function() {
             if (this.editable) {
                 let val = this.$element.find('input[type="radio"]:checked').val();
-                this.value = val;
+                this.value = $.htmlDecode(val);
             }
             this.format();
             return this.value;
