@@ -140,9 +140,9 @@
             selects.push('<select class="form-c-month">');
             for (let i = 1; i <= 12; i++) {
                 if (i == this.month) {
-                    selects.push('<option value=' + i + ' selected>' + i + _("M") + '</option>');
+                    selects.push('<option value=' + i + ' selected>' + i + '</option>');
                 } else {
-                    selects.push('<option value=' + i + '>' + i + _("M") + '</option>');
+                    selects.push('<option value=' + i + '>' + i + '</option>');
                 }
             }
             selects.push('</select></div><a class="m-icon fc-right">\></>');
