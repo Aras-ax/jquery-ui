@@ -136,12 +136,21 @@ Reasy-UI
 > 2. bindValidateEvent,bindChangeEvent参数的返回值同上面属性的介绍
 
 ### 流程图
+<<<<<<< HEAD
 * 组件主逻辑
  
 ![组件主逻辑](https://github.com/moshang-xc/gitskills/blob/master/share/reasy-ui1.jpg)
 
 * 数据校验逻辑
  
+=======
+*  组件主逻辑
+
+![组件主逻辑](https://github.com/moshang-xc/gitskills/blob/master/share/reasy-ui1.jpg)
+
+*  数据校验逻辑
+
+>>>>>>> f45badd3c52e7582e62bcafc24ebc37f4e5b8103
 ![数据校验逻辑](https://github.com/moshang-xc/gitskills/blob/master/share/reasy-ui2.jpg)
 
 ## 3. 调用形式（以FormInput为例）
