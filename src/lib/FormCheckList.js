@@ -102,8 +102,8 @@
                 let item = keyValues[i];
                 for (let key in item) {
                     let text = item[key];
-                    let id = this.ID + key;
-                    checkboxs.push('<label for="' + id + '" class="form-label icon-check-off"><input type="checkbox" name="' + this.dataField + '" id="' + id + '" class="form-checklist" value="' + key + '" ' + (this.editable || "disabled") + '/>' + text + '</label>');
+                    let id = this.ID + $.IGuid();
+                    checkboxs.push(this.createHtml(id, key, text));
                     items[key] = text;
                     this.length++;
                     break;
@@ -126,6 +126,11 @@
             }
             return this;
         },
+        createHtml(id, key, text) {
+            text = $.htmlEncode(text);
+            key = $.htmlEncode(key);
+            return `<label for="${id}" class="form-label icon-check-off ellipsis-label" title="${text}"><input type="checkbox" name="${this.dataField}" id="${id}" class="form-checklist" value="${key}" ${(this.editable || "disabled")}/>${text}</label>`;
+        },
         /**
          * 添加单项
          */
@@ -133,8 +138,8 @@
             value === undefined && (value = key);
             this.items[key] = value;
             this.length++;
-            let id = this.ID + key;
-            this.$element.append('<label for="' + id + '" class="form-label icon-check-off"><input type="checkbox" name="' + this.dataField + '" id="' + id + '" class="form-checklist" value="' + key + '"/>' + value + '</label>');
+            let id = this.ID + $.IGuid();
+            this.$element.append(this.createHtml(id, key, value));
         },
         /**
          * 添加多项
@@ -265,7 +270,7 @@
                 let val = [];
                 this.$element.find("input").each(function() {
                     if (this.checked) {
-                        val.push(this.value);
+                        val.push($.htmlDecode(this.value));
                     }
                 });
                 this.value = val;
