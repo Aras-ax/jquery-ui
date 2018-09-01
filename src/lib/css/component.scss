@@ -506,10 +506,6 @@ input::-moz-focus-inner {
     &.check {
         width: 30px;
     }
-
-    label {
-        // display: inline-block;
-    }
 }
 
 .sortabled {
@@ -1615,6 +1611,15 @@ dd {
         display: table-cell;
         line-height: 20px;
     }
+}
+
+.ellipsis-label {
+    word-wrap: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    *width: 50%;
 }
 
 .line-height-20 {
