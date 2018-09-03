@@ -157,6 +157,7 @@
                 this.option.end = end;
                 this.option.start = start;
             }
+            this.total = this.option.end -  this.option.start;
 
             this.$element.find('.form-per-s').text(this.option.start);
             this.$element.find('.form-per-e').text(this.option.end);

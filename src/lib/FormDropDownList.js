@@ -244,7 +244,7 @@
                     let text = (item[key] + '').replace(/(\s|<|>)/g, function(a) {
                         return htmlCode[a];
                     });
-                    nodeHtml += '<li id="' + (this.ID + key) + '" class="dropdownlist-item ' + (this.value == key ? 'active' : "") + '" data-value="' + key + '"><a class="drop-item-btn">' + text + '</a></li>';
+                    nodeHtml += this.createHtml(this.ID + $.IGuid(), key, text);
                     selectOption += '<option value="' + key + '">' + text + '</option>';
                     items[key] = item[key];
                     break;
@@ -350,7 +350,7 @@
                         that.hasCustom && that.switchDisplay(true);
                         that.dropInput.focus();
                     } else {
-                        that.setValue.apply(that, [$this.attr("data-value")]);
+                        that.setValue.apply(that, [$.htmlDecode($this.attr("data-value"))]);
                         that.hasCustom && that.switchDisplay(false);
                         that.valChange.call(that);
                     }
@@ -394,9 +394,16 @@
             value === undefined && (value = key);
             this.items[key] = value;
 
-            let id = this.ID + key;
-            this.$DropList.append('<li id="' + id + '" class="dropdownlist-item ' + (this.value == key ? 'active' : "") + '" data-value="' + key + '"><a class="drop-item-btn">' + value + '</a></li>');
+            let id = this.ID + $.IGuid();
+            this.$DropList.append(this.createHtml(id, key, value));
             this.$select.append('<option value="' + key + '">' + value + '</option>');
+        },
+        createHtml(id, key, text) {
+            var css = this.value == key ? 'active' : "";
+            key = $.htmlEncode(key);
+            text = $.htmlEncode(text);
+
+            return `<li id="${id}" class="dropdownlist-item ${css}" data-value="${key}"><a class="drop-item-btn">${text}</a></li>`;
         },
         /**
          * 同时添加多个选项
@@ -488,7 +495,7 @@
                 let text = this.items[val] || val + this.unit;
                 this.$DropText.text(text).attr("title", $.htmlEscape(text));
                 if (this.items[val]) {
-                    this.$DropList.find("li[data-value='" + val + "']").addClass('active');
+                    this.$DropList.find("li[data-value='" + $.htmlEncode(val) + "']").addClass('active');
                     this.hasCustom && this.switchDisplay(false);
                 } else {
                     this.unit || (this.hasCustom && this.switchDisplay(true));
@@ -538,7 +545,7 @@
          */
         getValue: function() {
             if (!this.editable) {
-                let v = this.value;
+                let v = $.htmlDecode(this.value);
                 return v == null ? "" : v;
             } else {
                 this.format();

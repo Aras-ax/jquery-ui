@@ -48,7 +48,7 @@
             this.$input = $('<input type="checkbox" name="' + this.dataField + '" id="' + ID + '" class="check-hide">');
             this.$element.addClass('check-wrap').append(this.$checklabel).append(this.$input);
 
-            this.option.text && this.$element.append('<label class="form-label" for="' + this.dataField + '">' + this.option.text + '</label>');
+            this.option.text && this.$element.append('<label class="form-label" for="' + this.dataField + '">' + $.htmlEncode(this.option.text) + '</label>');
             // }
         },
 

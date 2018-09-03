@@ -657,7 +657,11 @@
                     reg1 = new RegExp('\\{\\[' + field + '\\-title\\]\\}', 'g'),
                     titleText = (dataObj[field] === "" || dataObj[field] === undefined) ? '' : dataObj[field];
 
-                  rowHtml = rowHtml.replace(reg, (node === "" || node === undefined) ? "--" : node).replace(reg1, titleText);
+                  rowHtml = rowHtml.replace(reg, function(){
+                    return (node === "" || node === undefined) ? "--" : node;
+                  }).replace(reg1, function(){
+                    return titleText;
+                  });
                 }
               }
               bodyHtml += rowHtml;

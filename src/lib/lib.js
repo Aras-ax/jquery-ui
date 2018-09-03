@@ -568,16 +568,30 @@ $.valid = {
             return _("Invalid URL");
         }
     },
-    authUrl: function(str) {
-        var goUrl = "",
-            strregex = /^((ht|f)tps?):\/\/[\w\\-]+(.[\w\\-]+)+([\w-,@?^=%&:\/~+#]*[\w-@?^=%&\/~.+#])?$/,
-            re = new RegExp(strregex);
+    // 新版规格通用域名
+    // 域名长度限制1-128字节，只能输入英文字母、数字、下划线、减号和句点(.)，并且开头和结尾不能是句点(.)，也不能为纯数字
+    normalDomain: function(str) {
+        let totalLength = $.getUtf8Length(str);
+        if (totalLength > 128) {
+            return _("Max. length of a domain name is 128 bytes.");
+        }
 
-        if (str !== "") {
-            goUrl = "http://" + encodeURI(str);
-            if (!re.test(goUrl)) {
-                return _("Invalid URL");
-            }
+        if (/^\.|\.$/.test(str)) {
+            return _("Enter a valid domain name");
+        }
+
+        if (/^[0-9]+$/.test(str)) {
+            return _("Enter a valid domain name");
+        }
+
+        if (!/^[0-9a-zA-Z_\-_\.]+$/.test(str)) {
+            return _("Enter a valid domain name");
+        }
+    },
+    // 不能为空，可输入数字、字母、英文符号(包括@#等特殊符号)
+    authUrl: function(str) {
+        if (!/^[\x21-\x2f\x3a-\x40\x5b-\x60\x7B-\x7F\s0-9a-zA-Z]+$/.test(str)) {
+            return _("Invalid URL");
         }
     },
     phoneNumber: function(str, len) {
@@ -750,11 +764,6 @@ $.valid = {
         }
 
         return _("Enter a valid domain name");
-
-        /*let reg = /(^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$)|(^\*(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62}){2,}$)|(^[a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.\*(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$)/;
-        if (!reg.test(str)) {
-            return _("Domain name format error.");
-        }*/
     },
     mac: {
         all: function(str) {
@@ -860,6 +869,13 @@ $.valid = {
             return _("Enter a valid subnet mask");
         }
     },
+    // 可以输入全255.255.255.255
+    allMask: function(str) {
+        let rel = /^(254|252|248|240|224|192|128)\.0\.0\.0$|^(255\.(254|252|248|240|224|192|128|0)\.0\.0)$|^(255\.255\.(254|252|248|240|224|192|128|0)\.0)$|^(255\.255\.255\.(255|254|252|248|240|224|192|128|0))$/;
+        if (!rel.test(str)) {
+            return _("Enter a valid subnet mask");
+        }
+    },
 
     email: function(str) {
         // let rel = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -916,26 +932,22 @@ $.valid = {
             let strCode = str.charCodeAt(i);
             if ((strCode > 65248) || (strCode == 12288)) {
                 return _("Full-width characters are not allowed.");
-                break;
             }
         }
     },
 
     ascii: function(str, min, max) {
         /*chkHalf*/
-        for (let i = 0; i < str.length; i++) {
-            let strCode = str.charCodeAt(i);
-            if ((strCode > 65248) || (strCode == 12288)) {
-                return _("Full-width characters are not allowed.");
-                break;
-            }
+        var error = $.valid.chkHalf(str);
+        if (error) {
+            return error;
         }
 
         if (!(/^[ -~]+$/g).test(str)) {
             return _("Please enter non-Chinese characters.");
         }
         if (min || max) {
-            return $.valid.len(str, min, max);
+            return $.valid.byteLen(str, min, max);
         }
     },
 
@@ -1019,7 +1031,7 @@ $.valid = {
         }
     },
 
-    ssidNoBlank: function(str) {
+    startEndNoBlank: function(str) {
         if ((/^\s|\s$/).test(str)) {
             return _("The first and last characters of the SSID cannot be spaces.");
         }
@@ -1058,3 +1070,39 @@ $.valid = {
         }
     }
 };
+
+var enCodeChar = {
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        '\'': '&#39;'
+    },
+    decodeChar = {
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"',
+        '&#39;': '\''
+    };
+
+$.htmlEncode = function(str) {
+    if (!str) {
+        return str;
+    }
+
+    str += '';
+    return str.replace(/[<>\"\']/g, function(c) {
+        return enCodeChar[c];
+    });
+}
+
+$.htmlDecode = function(str) {
+    if (!str) {
+        return str;
+    }
+
+    str += '';
+    var reg = new RegExp('(&lt;)|(&gt;)|(&quot;)|(&#39;)', 'g');
+    return str.replace(reg, function(c) {
+        return decodeChar[c];
+    });
+}
