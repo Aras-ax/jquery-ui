@@ -1,208 +1,275 @@
-/**
+/** 
  * 推荐如下调用形式
  * <input type="text" data-key="FormCheckList"/>
  * 其中data-key为组件的名称，便于解析
  * 依赖jQuery
  */
-(function($, undefined){
-	$.fn.FormCheckList = function(){
-	    return $.renderComponent.call(this, arguments, "FormCheckList");
-	}
+(function($) {
+    $.fn.FormCheckList = function() {
+        return new $.components.FormCheckList(this, arguments);
+    };
 
-	// 构造函数
-    $.components.FormCheckList = function (element, options) {
+    // 构造函数
+    $.components.FormCheckList = function(element, options) {
         $.BaseComponent.call(this, element, options);
     };
 
-    // 组件特有配置项
-    // selectArray:[]/{}
-    var DEFAULT = {
-        selectArray:[]
-    }
+    const VALUE_TYPE = {
+        STRING: 1, //字符串
+        ARRAY: 2, // 数组
+        BOOLEAN: 3 //bool //当只有一个选项且值为true或者false时，可设置为该类型
+    };
+
+    let DEFAULT = {
+        // 选项列表[],{},[{}]都可以
+        selectArray: [],
+        valueType: VALUE_TYPE.STRING,
+        // 单个CheckBox的change事件，与整个组件的change不同，在整个组件的change之后执行
+        singleChange: null,
+        // 数据为字符串时，选项之间的连接符
+        joiner: ';'
+    };
 
     $.components.FormCheckList.inherit($.BaseComponent, {
-    	//重写基类的render方法
-    	render: function () {
-            //是否可见
-            if (!this.visible) { 
-                this.$wrap.hide(); 
-                return; 
-            }
-
+        //重写基类的render方法
+        render: function() {
             this.option = $.extend({}, DEFAULT, this.option);
             this.value = this.option.defaultValue;
-            
+
             //渲染Html页面
             this.htmlRender();
             //绑定事件
             this.bindEvent();
-
-            if (this.value) {
-                this.setValue(this.value);
-            }
         },
 
-        //渲染html内容
-        htmlRender: function () {
+        /**
+         * 渲染html内容
+         */
+        htmlRender: function() {
             if (!this.editable) {
-                this.$element.attr("disabled","disabled").addClass('form-disabled');
+                this.$element.attr("disabled", "disabled").addClass('form-disabled');
             }
-            else {
-                // this.$element = $('<div class="form-container">').appendTo(this.$body);
-                this.$element.addClass('form-container');
-                var arr = this.option.selectArray, 
-                    checkboxs = [];
-                if(Object.prototype.toString.call(arr) === "[object Array]"){
-                    for(var i=0, len= arr.length; i<len; i++){
-                        var item = arr[i],
-                            id = this.dataField + item;
-                            
-                        checkboxs.push('<label for="' + id + '" class="form-label"><input type="checkbox" name="' + this.dataField + '" id="' + id + '" class="form-checklist" value="' + item + '"/>'+ item +'</label>');
-                    }
-                }else if(Object.prototype.toString.call(arr) === "[object Object]"){
-                    for(var key in arr){
-                        if(arr.hasOwnProperty(key)){
-                            var item = arr[key],
-                                id = this.dataField + key;
-                            checkboxs.push('<label for="' + id + '" class="form-label"><input type="checkbox" id="' + id + '" class="form-checklist" value="' + key + '"/>'+ item +'</label>');
-                        }
-                    }
-                }
-                this.$element.append(checkboxs.join(''));
-            }
+            this.$element.addClass('form-container');
+            this.ID = $.IGuid();
+            this.updateItems(this.option.selectArray);
+
         },
 
-        //绑定事件
-        bindEvent: function () {
-            var _this = this;
+        /**
+         * 绑定事件
+         */
+        bindEvent: function() {
+            let _this = this;
             //事件绑定
-            this.$element.off("change.formCheckList").on("change.formCheckList", ".form-checklist", function(e){
+            this.$element.off("change.formCheckList").on("change.formCheckList", ".form-checklist", function(e) {
+                if (!_this.editable) {
+                    return false;
+                }
                 _this.valChange.call(_this);
+                $(this).parent().toggleClass('icon-check-on').toggleClass('icon-check-off');
+
+                _this.option.singleChange && _this.option.singleChange.call(_this, this);
             });
         },
-
-        // //数据验证
-        // validate: function () {
-        // },
-
-        update:function(){
-            var arr = this.option.selectArray, 
-                checkboxs = [];
-            if(Object.prototype.toString.call(arr) === "[object Array]"){
-                for(var i=0, len= arr.length; i<len; i++){
-                    var item = arr[i],
-                        id = this.dataField + item;
-                        
-                    checkboxs.push('<label for="' + id + '" class="form-label"><input type="checkbox" id="' + id + '" name="'+this.dataField+'" class="form-checklist" value="' + item + '"/>'+ item +'</label>');
-                }
-            }else if(Object.prototype.toString.call(arr) === "[object Object]"){
-                for(var key in arr){
-                    if(arr.hasOwnProperty(key)){
-                        var item = arr[key],
-                            id = this.dataField + key;
-                        checkboxs.push('<label for="' + id + '" class="form-label"><input type="checkbox" id="' + id + '" name="'+this.dataField+'" class="form-checklist" value="' + key + '"/>'+ item +'</label>');
+        /**
+         * 更新选项，覆盖原有的选项
+         */
+        updateItems: function(selectArray) {
+            this.length = 0;
+            let arr = selectArray,
+                checkboxs = [],
+                items = {},
+                keyValues = [];
+            if ($.getType(arr) === "[object Array]") {
+                for (let i = 0, len = arr.length; i < len; i++) {
+                    let item = arr[i];
+                    if ($.getType(item) === "[object Object]") {
+                        keyValues.push(item);
+                    } else {
+                        let obj = {};
+                        obj[item] = item;
+                        keyValues.push(obj);
                     }
                 }
+            } else if ($.getType(arr) === "[object Object]") {
+                for (let key in arr) {
+                    let obj = {};
+                    obj[key] = arr[key];
+                    keyValues.push(obj);
+                }
             }
-            this.$element.html("").append(checkboxs.join(''));
+            for (let i = 0, l = keyValues.length; i < l; i++) {
+                let item = keyValues[i];
+                for (let key in item) {
+                    let text = item[key];
+                    let id = this.ID + key;
+                    checkboxs.push('<label for="' + id + '" class="form-label icon-check-off"><input type="checkbox" name="' + this.dataField + '" id="' + id + '" class="form-checklist" value="' + key + '" ' + (this.editable || "disabled") + '/>' + text + '</label>');
+                    items[key] = text;
+                    this.length++;
+                    break;
+                }
+            }
+            this.items = items;
+            this.$element.html(checkboxs.join(''));
+
             this.setValue(this.value);
         },
-
-        addItem:function(key){
-            if(!key) return;
-
-            var arr = this.option.selectArray,
-                type = Object.prototype.toString.call(arr),
-                argType = Object.prototype.toString.call(key);
-
-            if(type === "[object Array]"){
-                if(argType != "[object Object]"){
-                    this.option.selectArray = arr.concat(key);
-                }else {
-                    for(var k in key){
-                        key.hasOwnProperty(k) && arr.push(k);
-                    }
-                }
+        setEditable: function(editable) {
+            this.editable = !!editable;
+            if (this.editable) {
+                this.$element.removeAttr('disabled').removeClass('form-disabled');
+                this.$element.find('.form-checklist').removeAttr('disabled');
+            } else {
+                this.removeValidateText();
+                this.$element.prop('disabled', true).addClass('form-disabled');
+                this.$element.find('.form-checklist').prop('disabled', true);
             }
-            else{
-                if(argType === "[object Array]"){
-                    for(var i = 0, l = key.length; i<l;i++){
-                        arr[key[i]] = key[i];
-                    }
-                }else if(argType === "[object Object]"){
-                    $.extend(arr, key);
-                }
-                else{    
-                    arr[key] = key;
-                }
-            }
-            this.update();
+            return this;
         },
+        /**
+         * 添加单项
+         */
+        addItem: function(key, value) {
+            value === undefined && (value = key);
+            this.items[key] = value;
+            this.length++;
+            let id = this.ID + key;
+            this.$element.append('<label for="' + id + '" class="form-label icon-check-off"><input type="checkbox" name="' + this.dataField + '" id="' + id + '" class="form-checklist" value="' + key + '"/>' + value + '</label>');
+        },
+        /**
+         * 添加多项
+         */
+        addItems: function(items) {
+            let type = $.getType(items);
 
-        removeItem:function(key){
-            var arr = this.option.selectArray,
-                type = Object.prototype.toString.call(arr);
-            
-            if(type === "[object Array]"){
-                if(typeof key !== "object"){
-                    arr.splice(arr.indexOf(key), 1);
-                    $("#"+this.dataField+key).parent('label').remove();
-                }else if(Object.prototype.toString.call(key) === "[object Array]"){
-                    for(var i = 0,l = key.length;i<l;i++){
-                        var index = arr.indexOf(key[i]);
-                        if(index >-1){
-                            $("#"+this.dataField+key[i]).parent('label').remove();
-                            arr.splice( index, 1);
-                        } 
+            if (type === "[object Array]") {
+                for (let i = 0, item;
+                    (item = items[i]);) {
+                    if ($.getType(item) === '[object Object]') {
+                        this.addItems(item);
+                    } else {
+                        this.addItem(item, item);
                     }
                 }
-            }else if(type === "[object Object]"){
-                if(typeof key !== "object"){
-                    delete arr[key];
-                    $("#"+this.dataField+key).parent('label').remove();
-                }else if(Object.prototype.toString.call(key) === "[object Array]"){
-                    for(var i = 0,l = key.length;i<l;i++){
-                        var t = key[i];
-                        delete arr[t];
-                        $("#" + this.dataField + t).parent('label').remove();
-                    }
+            } else if (type === "[object Object]") {
+                for (let key in items) {
+                    this.addItem(key, items[key]);
+                }
+            }
+        },
+        /**
+         * 移除单项或者多项
+         */
+        removeItem: function(key) {
+            let arr = this.items,
+                type = $.getType(arr),
+                val = this.value;
+
+            if (typeof key !== "object") {
+                delete arr[key];
+                this.length--;
+                $("#" + this.ID + key).parent('label').remove();
+            } else if ($.getType(key) === "[object Array]") {
+                for (let i = 0, l = key.length; i < l; i++) {
+                    let t = key[i];
+                    delete arr[t];
+                    this.length--;
+                    $("#" + this.ID + t).parent('label').remove();
+                }
+            }
+            if (arr[val] === undefined) {
+                for (let key in arr) {
+                    val = key;
+                    break;
                 }
             }
 
-            this.update();
+            this.setValue(val);
         },
 
         //设置值
         //v为以;隔开的字符串
-        setValue: function (v, confirm) {
-            // if (v == null) return;
-            this.value = (v + "").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-            if (!this.editable) {
-                this.$element.text(this.value);
-            }
-            else {
-                v += ""; 
-                v = v.split(";");
-                var inputs = this.$element.find('input');
-                inputs.prop("checked", false);
-                inputs.each(function(){
-                    if(v.indexOf(this.value) > -1){
-                        this.checked = true;
-                    }
-                });
-            }
-            confirm && this.valChange();
-        },
+        setValue: function(val, confirm) {
+            // if (val == null) return;
+            this.value = val;
 
-        getValue: function () {
+            if (this.option.valueType === VALUE_TYPE.BOOLEAN) {
+                if (val) {
+                    for (let key in this.items) {
+                        val = [key];
+                        break;
+                    }
+                } else {
+                    val = [];
+                }
+            } else {
+                if ($.getType(val) !== "[object Array]") {
+                    val += "";
+                    val = val.split(this.option.joiner);
+                }
+            }
+            val = val.map((item) => String(item));
+
+            let inputs = this.$element.find('input');
+            inputs.prop("checked", false);
+            this.$element.find('.form-label').removeClass('icon-check-on').addClass('icon-check-off');
+            inputs.each(function() {
+                if (val.indexOf(this.value) > -1) {
+                    this.checked = true;
+                    $(this).parent().addClass('icon-check-on').removeClass('icon-check-off');
+                }
+            });
+
+            // confirm && this.valChange();
+            this.validateOrChange(confirm);
+            return this;
+        },
+        /**
+         * 全选中
+         */
+        setAllValue: function() {
+            let val = [];
+            for (let key in this.items) {
+                val.push(key);
+            }
+            this.setValue(val);
+        },
+        /**
+         * 根据设置的valueType和dataValueType对数据进行格式化
+         * 首先根据valueType进行一轮格式化，再根据dataValueType进行二轮格式化
+         */
+        format: function() {
+            if ($.getType(this.value) === '[object Array]') {
+                switch (this.option.valueType) {
+                    case VALUE_TYPE.STRING:
+                        this.value = this.value.join(this.option.joiner);
+                        break;
+                    case VALUE_TYPE.ARRAY:
+                        if (this.option.dataValueType === 'num') {
+                            this.value = this.value.map((item) => Number(item));
+                        } else {
+                            this.value = this.value.map((item) => String(item));
+                        }
+                        break;
+                    case VALUE_TYPE.BOOLEAN:
+                        this.value = this.value.length > 0;
+                        break;
+                }
+            }
+        },
+        /**
+         * 获取值
+         */
+        getValue: function() {
             if (this.editable) {
-                var val = [];
-                this.$element.find("input").each(function () {
+                let val = [];
+                this.$element.find("input").each(function() {
                     if (this.checked) {
                         val.push(this.value);
                     }
                 });
-                this.value = val.join(";");
+                this.value = val;
+                this.format();
             }
             return this.value;
         }

@@ -4,34 +4,34 @@
  * 其中data-key为组件的名称，便于解析
  * 依赖jQuery
  */
-(function($, undefined){
-	$.fn.FormTab = function(){
-	    return $.renderComponent.call(this, arguments, "FormTab");
-	}
+(function($) {
+    $.fn.FormTab = function() {
+        return new $.components.FormTab(this, arguments);
+    };
 
-	// 构造函数
-    $.components.FormTab = function (element, options) {
+    // 构造函数
+    $.components.FormTab = function(element, options) {
         $.BaseComponent.call(this, element, options);
     };
 
     // 组件特有配置项
     var DEFAULT = {
-        selectArray:[],
-        theme:'line-theme'//bg-theme,line-theme
-    }
+        selectArray: [],
+        theme: 'line-theme' //bg-theme,line-theme
+    };
 
     $.components.FormTab.inherit($.BaseComponent, {
-    	//重写基类的render方法
-    	render: function () {
+        //重写基类的render方法
+        render: function() {
             //是否可见
-            if (!this.visible) { 
-                this.$wrap.hide(); 
-                return; 
+            if (!this.visible) {
+                this.$wrap.hide();
+                return;
             }
 
             this.option = $.extend({}, DEFAULT, this.option);
             this.setDefaultValue();
-            
+
             //渲染Html页面
             this.htmlRender();
             //绑定事件
@@ -39,14 +39,14 @@
 
             this.setValue(this.value);
         },
-        
-        setDefaultValue: function(){
-            if(!$.isNotNullOrEmpty(this.option.defaultValue)){
+
+        setDefaultValue: function() {
+            if (!$.isNotNullOrEmpty(this.option.defaultValue)) {
                 var items = this.option.selectArray;
-                if(Object.prototype.toString.call(items) === "[object Array]"){
+                if (Object.prototype.toString.call(items) === "[object Array]") {
                     items.length > 0 && (this.option.defaultValue = items[0]);
-                }else if(Object.prototype.toString.call(items) === "[object Object]"){
-                    for(var key in items){
+                } else if (Object.prototype.toString.call(items) === "[object Object]") {
+                    for (var key in items) {
                         this.option.defaultValue = key;
                     }
                 }
@@ -55,16 +55,17 @@
         },
 
         //渲染html内容
-        htmlRender: function () {
+        htmlRender: function() {
             //渲染结构
             this.$element.addClass('formtab ' + this.option.theme);
-            var selectArray = this.option.selectArray, nodes ="";
-            if(Object.prototype.toString.call(selectArray) === "[object Array]"){
-                for(var i=0,len = selectArray.length; i<len;i++){
+            var selectArray = this.option.selectArray,
+                nodes = "";
+            if (Object.prototype.toString.call(selectArray) === "[object Array]") {
+                for (var i = 0, len = selectArray.length; i < len; i++) {
                     nodes += '<a class="btn-tab" data-value="' + selectArray[i] + '">' + selectArray[i] + '</a>';
                 }
-            }else if(Object.prototype.toString.call(selectArray) === "[object Object]"){
-                for(var key in selectArray){
+            } else if (Object.prototype.toString.call(selectArray) === "[object Object]") {
+                for (var key in selectArray) {
                     nodes += '<a class="btn-tab" data-value="' + key + '">' + selectArray[key] + '</a>';
                 }
             }
@@ -73,12 +74,12 @@
         },
 
         //绑定事件
-        bindEvent: function () {
+        bindEvent: function() {
             //事件绑定
-            var _this = this        
-            this.$element.off("click.FormTab").on("click.FormTab", ".btn-tab", function(){
+            var _this = this;
+            this.$element.off("click.FormTab").on("click.FormTab", ".btn-tab", function() {
                 var $this = $(this);
-                if($(this).hasClass('active')){
+                if ($(this).hasClass('active')) {
                     return false;
                 }
 
@@ -91,19 +92,19 @@
         },
 
         //设置值
-        setValue: function (v, confirm) {
+        setValue: function(v, confirm) {
             if (v == null) return;
             this.value = v;
             this.$element.children('.btn-tab').removeClass('active').end().find(".btn-tab[data-value='" + v + "']").addClass('active');
             confirm && this.valChange(this.value);
         },
 
-        getValue: function () {
+        getValue: function() {
             this.format();
             return this.value;
         },
 
-        getText: function () {
+        getText: function() {
             return this.getValue();
         }
     });
