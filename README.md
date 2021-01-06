@@ -1,4 +1,4 @@
-# Reasy-UI
+# Jquery-UI
 Form表单组件库
 
 > 项目中直接引用`src/lib`下的文件即可
